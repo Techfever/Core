@@ -4,5 +4,5 @@
   */
 
 // use library generated autoloader
-require_once 'library/autoload.php';
+require_once 'vendor/autoload.php';
 ?>
