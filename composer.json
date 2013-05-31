@@ -5,7 +5,6 @@
     "homepage": "http://www.technation.cc/",
     "license": "MIT",
     "require": {
-        "php": ">=5.3.2",
-        "zendframework/zendframework": "2.2.0"
+        "php": ">=5.3.2"
     }
 }
