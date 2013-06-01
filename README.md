@@ -14,6 +14,4 @@ Using Composer (recommended)
 	$ curl -s https://getcomposer.org/installer | php
 	$ php composer.phar install
 
-    Test and enjoy of your just installed site :).
-
-	Change pubic/robots.txt file to your demands.
+Test and enjoy of your just installed site :).
