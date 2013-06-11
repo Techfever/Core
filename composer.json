@@ -1,17 +1,59 @@
 {
-    "name": "Techfever/Core",
-    "description": "Techfever Core is an Opensource Project",
-    "keywords": ["multisystem"],
-    "homepage": "http://www.technation.cc/",
-    "license": "MIT",
-	"authors": [
-		{
-			"name": "LkM",
-			"email": "liew@technation.cc",
-			"role": "Developer"
+	"name" : "Techfever/Core",
+	"description" : "Techfever Core is an Opensource Project",
+	"authors" : [{
+			"name" : "LkM",
+			"email" : "liew@technation.cc",
+			"role" : "Developer"
 		}
 	],
-    "require": {
-        "php": ">=5.3.0"
-    }
+	"keywords" : [
+		"Multisystem"
+	],
+	"homepage" : "http://www.technation.cc/",
+	"license" : [
+		"MIT"
+	],
+	"require" : {
+		"Techfever/Cache" : "dev-master",
+		"Techfever/Session" : "dev-master",
+		"Techfever/Theme" : "dev-master",
+		"php" : ">=5.3.14",
+		"Techfever/Database" : "dev-master",
+		"Techfever/Javascript" : "dev-master",
+		"Techfever/Log" : "dev-master"
+	},
+	"autoload" : {
+		"psr-0" : {
+			"Techfever/Database" : "vendor/Techfever/Database",
+			"Techfever/Database/Driver" : "vendor/Techfever/Database/Driver"
+		}
+	},
+	"minimum-stability" : "dev",
+	"repositories" : [{
+			"name" : "Techfever/Database",
+			"type" : "git",
+			"url" : "https://github.com/Techfever/Database.git"
+		}, {
+			"name" : "Techfever/Session",
+			"type" : "git",
+			"url" : "https://github.com/Techfever/Session.git"
+		}, {
+			"name" : "Techfever/Cache",
+			"type" : "git",
+			"url" : "https://github.com/Techfever/Cache.git"
+		}, {
+			"name" : "Techfever/Log",
+			"type" : "git",
+			"url" : "https://github.com/Techfever/Log.git"
+		}, {
+			"name" : "Techfever/Javascript",
+			"type" : "git",
+			"url" : "https://github.com/Techfever/Javascript.git"
+		}, {
+			"name" : "Techfever/Theme",
+			"type" : "git",
+			"url" : "https://github.com/Techfever/Theme.git"
+		}
+	]
 }
