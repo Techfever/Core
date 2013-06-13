@@ -7,7 +7,7 @@ class Service {
 	 * @var Service
 	 */
 	private static $_service = array();
-
+	
 	/**
 	 * Constructor.
 	 *
