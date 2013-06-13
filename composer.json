@@ -27,7 +27,6 @@
 	"autoload" : {
 		"psr-0" : {
 			"Kernel" : "kernel",
-			"Kernel/Startup" : "kernel/Startup.php",
 			"Techfever/Database" : "vendor/Techfever/Database",
 			"Techfever/Database/Driver" : "vendor/Techfever/Database/Driver"
 		}
