@@ -1,6 +1,7 @@
 {
 	"name" : "Techfever/Core",
 	"description" : "Techfever Core is an Opensource Project",
+	"type" : "PHP Multisystem",
 	"authors" : [{
 			"name" : "LkM",
 			"email" : "liew@technation.cc",
@@ -55,5 +56,8 @@
 			"type" : "git",
 			"url" : "https://github.com/Techfever/Theme.git"
 		}
-	]
+	],
+	"config" : {
+		"notify-on-install" : false
+	}
 }
