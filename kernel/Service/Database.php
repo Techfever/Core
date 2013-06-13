@@ -16,8 +16,6 @@ class Database extends ServiceClass {
 	 * @return void
 	 */
 	public function __construct() {
-		global $Kernel;
-		print_r($Kernel->getConfig('Database'));
 	}
 
 	/**

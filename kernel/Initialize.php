@@ -1,6 +1,6 @@
 <?php
-
-class Kernel {
+namespace Kernel;
+class Initialize {
 
 	/**
 	 *
