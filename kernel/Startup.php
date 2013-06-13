@@ -1,6 +1,6 @@
 <?php
 namespace Kernel;
-class Initialize {
+class Startup {
 
 	/**
 	 *
@@ -13,14 +13,6 @@ class Initialize {
 	 * @var Config
 	 */
 	private static $Config = array();
-
-	/**
-	 * Constructor.
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-	}
 
 	/**
 	 * Initialize Kernel
