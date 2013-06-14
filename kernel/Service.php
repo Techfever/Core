@@ -1,4 +1,5 @@
 <?php
+namespace Kernel;
 
 class Service {
 
@@ -7,7 +8,7 @@ class Service {
 	 * @var Service
 	 */
 	private static $_service = array();
-	
+
 	/**
 	 * Constructor.
 	 *
@@ -25,8 +26,8 @@ class Service {
 	public function initialize() {
 		require_once KERNEL_PATH . '/Service/ServiceClass.php';
 		foreach (self::$_service as $_serviceKey => $_serviceInfo) {
-			require_once $_serviceInfo['path'];
-			self::$_service[$_serviceKey]['object'] = new $_serviceInfo['filename']();
+			$classname = "Kernel\Service\\" . $_serviceInfo['filename'];
+			self::$_service[$_serviceKey]['object'] = new $classname();
 			self::$_service[$_serviceKey]['object']->start();
 		}
 	}

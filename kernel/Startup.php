@@ -15,6 +15,14 @@ class Startup {
 	private static $Config = array();
 
 	/**
+	 * Constructor.
+	 *
+	 * @return void
+	 */
+	public function __construct() {
+	}
+
+	/**
 	 * Initialize Kernel
 	 *
 	 * @return void

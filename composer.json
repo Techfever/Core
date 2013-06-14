@@ -22,14 +22,8 @@
 		"php" : ">=5.3.14",
 		"Techfever/Database" : "dev-master",
 		"Techfever/Javascript" : "dev-master",
-		"Techfever/Log" : "dev-master"
-	},
-	"autoload" : {
-		"psr-0" : {
-			"Kernel" : "kernel",
-			"Techfever/Database" : "vendor/Techfever/Database",
-			"Techfever/Database/Driver" : "vendor/Techfever/Database/Driver"
-		}
+		"Techfever/Log" : "dev-master",
+		"Techfever/Loader" : "dev-master"
 	},
 	"minimum-stability" : "dev",
 	"repositories" : [{
@@ -44,6 +38,10 @@
 			"name" : "Techfever/Cache",
 			"type" : "git",
 			"url" : "https://github.com/Techfever/Cache.git"
+		}, {
+			"name" : "Techfever/Loader",
+			"type" : "git",
+			"url" : "https://github.com/Techfever/Loader.git"
 		}, {
 			"name" : "Techfever/Log",
 			"type" : "git",
