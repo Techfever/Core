@@ -2,7 +2,7 @@
 return array(
 	'autoloader' => array(
 		'namespaces' => array(
-			"Kernel" => __DIR__ . "/../Kernel",
+			"Kernel" => KERNEL_PATH,
 		), "autoregister_zf" => true,
 	)
 );

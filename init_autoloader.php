@@ -4,7 +4,7 @@
  */
 
 define('CORE_PATH', getcwd());
-define('KERNEL_PATH', CORE_PATH . '/techfever/Kernel');
+define('KERNEL_PATH', CORE_PATH . '/kernel');
 
 // use library generated autoloader
 
@@ -18,9 +18,9 @@ if (is_dir('vendor')) {
 	$vendorPath = 'vendor';
 }
 $kernelPath = false;
-if (is_dir('techfever')) {
-	$kernelPath = 'techfever';
-	$configuration = include $kernelPath . '/Config/Kernel.Config.php';
+if (is_dir('kernel')) {
+	$kernelPath = 'kernel';
+	$configuration = include CORE_PATH . '/config/Kernel.Config.php';
 } else {
 	$configuration = array(
 		"autoloader" => array(

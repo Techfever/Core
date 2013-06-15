@@ -40,7 +40,7 @@ class Service {
 	public function prepare() {
 		$_servicePath = KERNEL_PATH . '/Service/';
 		if (file_exists($_servicePath)) {
-			$_serviceFileRaw = scandir(KERNEL_PATH . '/Service/');
+			$_serviceFileRaw = scandir($_servicePath);
 			foreach ($_serviceFileRaw as $_serviceFile) {
 				$_serviceFilePath = $_servicePath . $_serviceFile;
 				$_serviceFileInfo = pathinfo($_serviceFilePath);

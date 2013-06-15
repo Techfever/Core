@@ -1,5 +1,6 @@
 <?php
 namespace Kernel;
+
 class Startup {
 
 	/**
@@ -53,7 +54,7 @@ class Startup {
 		if (!empty($name)) {
 			if (!empty($option)) {
 				return self::$Service[$name][$option];
-			} else {
+			} else if (array_key_exists($name, self::$Service)) {
 				return self::$Service[$name];
 			}
 		}
@@ -81,7 +82,7 @@ class Startup {
 		if (!empty($name)) {
 			if (!empty($key)) {
 				return self::$Config[$name][$key];
-			} else {
+			} else if (array_key_exists($name, self::$Config)) {
 				return self::$Config[$name];
 			}
 		}

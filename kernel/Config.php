@@ -1,5 +1,6 @@
 <?php
 namespace Kernel;
+
 class Config {
 
 	/**
@@ -34,14 +35,16 @@ class Config {
 	 * @return void
 	 */
 	public function prepare() {
-		$_configPath = KERNEL_PATH . '/../Config/';
+		$_configPath = CORE_PATH . '/config/';
 		if (file_exists($_configPath)) {
 			$_configFileRaw = scandir($_configPath);
 			foreach ($_configFileRaw as $_configFile) {
 				$_configFilePath = $_configPath . $_configFile;
 				$_configFileInfo = pathinfo($_configFilePath);
-				if (file_exists($_configFilePath) && $_configFileInfo['extension'] == 'php') {
+				if (file_exists($_configFilePath) && substr($_configFileInfo['basename'], -10) == 'config.php') {
 					$_configFileInfo['path'] = $_configFilePath;
+					$_configFileInfo['extension'] = substr($_configFileInfo['basename'], -10);
+					$_configFileInfo['filename'] = ucfirst(substr($_configFileInfo['basename'], 0, -11));
 					self::$_config[$_configFileInfo['filename']] = $_configFileInfo;
 				}
 			}
