@@ -1,5 +1,5 @@
 <?php
-namespace Kernel;
+namespace Techfever\Kernel;
 
 class Service {
 
@@ -26,7 +26,7 @@ class Service {
 	public function initialize() {
 		require_once KERNEL_PATH . '/Service/ServiceClass.php';
 		foreach (self::$_service as $_serviceKey => $_serviceInfo) {
-			$classname = "Kernel\Service\\" . $_serviceInfo['filename'];
+			$classname = "Techfever\Kernel\Service\\" . $_serviceInfo['filename'];
 			self::$_service[$_serviceKey]['object'] = new $classname();
 			self::$_service[$_serviceKey]['object']->start();
 		}

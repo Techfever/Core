@@ -46,7 +46,7 @@ if ($vendorPath) {
 if (!class_exists('Techfever\Loader\AutoloaderFactory')) {
 	throw new RuntimeException('Unable to load TF1. Run `php composer.phar install` or define a TF1_PATH environment variable.');
 }
-if (!class_exists('Kernel\Startup')) {
+if (!class_exists('Techfever\Kernel\Startup')) {
 	throw new RuntimeException('Unable to load Kernel.');
 }
 ?>

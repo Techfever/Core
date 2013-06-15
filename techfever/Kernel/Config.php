@@ -1,5 +1,5 @@
 <?php
-namespace Kernel;
+namespace Techfever\Kernel;
 class Config {
 
 	/**

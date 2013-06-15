@@ -1,9 +1,9 @@
 <?php
 
 require 'init_autoloader.php';
-use Kernel\Startup;
+use Techfever\Kernel\Startup;
 global $Kernel;
-$Kernel = Kernel\Startup::initialize();
+$Kernel = Techfever\Kernel\Startup::initialize();
 //$Kernel->initialize();
 //print_r($Kernel->Superglobal()->getVariable('Server'));
 //print_r($Kernel->getService('Superglobal', 'object')->getVariable('Global'));
