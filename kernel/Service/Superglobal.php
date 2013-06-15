@@ -1,6 +1,6 @@
 <?php
 namespace Kernel\Service;
-class Superglobal extends ServiceClass {
+class Superglobal implements  ServiceInterface {
 
 	/**
 	 *

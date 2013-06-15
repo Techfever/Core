@@ -123,7 +123,7 @@ class Startup {
 			foreach ($_serviceFileRaw as $_serviceFile) {
 				$_serviceFilePath = $_servicePath . $_serviceFile;
 				$_serviceFileInfo = pathinfo($_serviceFilePath);
-				if (file_exists($_serviceFilePath) && $_serviceFileInfo['extension'] == 'php' && $_serviceFileInfo['filename'] != 'ServiceClass') {
+				if (file_exists($_serviceFilePath) && $_serviceFileInfo['extension'] == 'php' && $_serviceFileInfo['filename'] != 'ServiceInterface') {
 					$classname = __NAMESPACE__ . "\Service\\" . $_serviceFileInfo['filename'];
 					$service = strtolower($_serviceFileInfo['filename']);
 					$_config = (array_key_exists($service, $_config) ? $_config[$service] : null);

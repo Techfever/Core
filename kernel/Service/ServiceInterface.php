@@ -1,60 +1,53 @@
 <?php
 namespace Kernel\Service;
-class ServiceClass {
+interface  ServiceInterface {
 
 	/**
 	 * Start.
 	 *
 	 * @return void
 	 */
-	public function start() {
-	}
+	public function start();
 
 	/**
 	 * Stop.
 	 *
 	 * @return void
 	 */
-	public function stop() {
-	}
+	public function stop();
 
 	/**
 	 * Reset.
 	 *
 	 * @return void
 	 */
-	public function restart() {
-	}
+	public function restart();
 
 	/**
 	 * Check start status.
 	 *
 	 * @return void
 	 */
-	public function isStarted() {
-	}
+	public function isStarted();
 
 	/**
 	 * Check stop status.
 	 *
 	 * @return void
 	 */
-	public function isStopped() {
-	}
+	public function isStopped();
 
 	/**
 	 * Set the variable data
 	 *
 	 * @return void
 	 */
-	public function setVariable($name, $key, $value) {
-	}
+	public function setVariable($name, $key, $value);
 
 	/**
 	 * Get the variable data
 	 *
 	 * @return array $_data
 	 */
-	public function getVariable($name = null, $key = null) {
-	}
+	public function getVariable($name = null, $key = null);
 }

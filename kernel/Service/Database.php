@@ -3,7 +3,7 @@ namespace Kernel\Service;
 
 use Techfever\Database\Driver;
 
-class Database extends ServiceClass {
+class Database implements ServiceInterface {
 
 	/**
 	 *
