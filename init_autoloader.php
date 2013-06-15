@@ -5,6 +5,7 @@
 
 define('CORE_PATH', getcwd());
 define('KERNEL_PATH', CORE_PATH . '/kernel');
+define('CONFIG_PATH', CORE_PATH . '/config');
 
 // use library generated autoloader
 
@@ -20,7 +21,7 @@ if (is_dir('vendor')) {
 $kernelPath = false;
 if (is_dir('kernel')) {
 	$kernelPath = 'kernel';
-	$configuration = include CORE_PATH . '/config/Kernel.Config.php';
+	$configuration = include CONFIG_PATH . '/Kernel.Config.php';
 } else {
 	$configuration = array(
 		"autoloader" => array(

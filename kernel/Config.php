@@ -35,7 +35,7 @@ class Config {
 	 * @return void
 	 */
 	public function prepare() {
-		$_configPath = CORE_PATH . '/config/';
+		$_configPath = CONFIG_PATH . '/';
 		if (file_exists($_configPath)) {
 			$_configFileRaw = scandir($_configPath);
 			foreach ($_configFileRaw as $_configFile) {
