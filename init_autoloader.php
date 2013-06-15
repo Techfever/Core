@@ -33,7 +33,7 @@ if (isset($loader)) {
 	if ($vendorPath) {
 		include $vendorPath . '/Techfever/Loader/AutoloaderFactory.php';
 		Techfever\Loader\AutoloaderFactory::factory(array(
-			'Zend\Loader\StandardAutoloader' => array(
+			'Techfever\Loader\StandardAutoloader' => array(
 				'autoregister_zf' => true
 			)
 		));
