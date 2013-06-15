@@ -1,6 +1,8 @@
 <?php
 namespace Kernel;
 
+use Kernel\Startup;
+
 class Service {
 
 	/**
@@ -8,13 +10,15 @@ class Service {
 	 * @var Service
 	 */
 	private static $_service = array();
+	private static $_config = array();
 
 	/**
 	 * Constructor.
 	 *
 	 * @return void
 	 */
-	public function __construct() {
+	public function __construct($_config) {
+		self::$_config = $_config;
 		self::prepare();
 	}
 
@@ -23,10 +27,12 @@ class Service {
 	 *
 	 * @return void
 	 */
-	public function initialize() {
+	public static function initialize() {
 		foreach (self::$_service as $_serviceKey => $_serviceInfo) {
 			$classname = __NAMESPACE__ . "\Service\\" . $_serviceInfo['filename'];
-			self::$_service[$_serviceKey]['object'] = new $classname();
+			$service = ucfirst($_serviceInfo['filename']);
+			$option = (array_key_exists($service, self::$_config) ? self::$_config[$service] : null);
+			self::$_service[$_serviceKey]['object'] = new $classname($option);
 			self::$_service[$_serviceKey]['object']->start();
 		}
 	}

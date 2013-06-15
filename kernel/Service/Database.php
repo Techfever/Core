@@ -7,9 +7,20 @@ class Database extends ServiceClass {
 
 	/**
 	 *
-	 * @var Superglobal Data
+	 * @var Database Data
 	 */
 	private static $_data = array();
+
+	/**
+	 *
+	 * @var Database Option
+	 */
+	private static $_option = array();
+
+	/**
+	 *
+	 * @var Database Start Status
+	 */
 	private static $_isStarted = False;
 
 	/**
@@ -17,8 +28,9 @@ class Database extends ServiceClass {
 	 *
 	 * @return void
 	 */
-	public function __construct() {
-		print_r(parent::getConfig('Database'));
+	public function __construct($option = null) {
+		self::$_option = $option;
+		print_r($option);
 	}
 
 	/**
@@ -53,7 +65,7 @@ class Database extends ServiceClass {
 	}
 
 	/**
-	 * Check Superglobal start status.
+	 * Check Database start status.
 	 *
 	 * @return void
 	 */
@@ -65,7 +77,7 @@ class Database extends ServiceClass {
 	}
 
 	/**
-	 * Check Superglobal stop status.
+	 * Check Database stop status.
 	 *
 	 * @return void
 	 */

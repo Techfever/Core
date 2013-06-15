@@ -1,6 +1,8 @@
 <?php
 namespace Kernel;
 
+use Kernel\Startup;
+
 class Config {
 
 	/**

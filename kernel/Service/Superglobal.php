@@ -9,6 +9,17 @@ class Superglobal extends ServiceClass {
 	private static $_data = array(
 		'Server', 'Request', 'Post', 'Get', 'Cookie', 'Session'
 	);
+
+	/**
+	 *
+	 * @var Database Option
+	 */
+	private static $_option = array();
+
+	/**
+	 *
+	 * @var Database Start Status
+	 */
 	private static $_isStarted = False;
 
 	/**
@@ -16,7 +27,8 @@ class Superglobal extends ServiceClass {
 	 *
 	 * @return void
 	 */
-	public function __construct() {
+	public function __construct($option = null) {
+		self::$_option = $option;
 	}
 
 	/**

@@ -36,7 +36,7 @@ class Startup {
 		self::$Config->initialize();
 
 		// Initialize Service
-		self::$Service = new Service();
+		self::$Service = new Service(self::$Config->getConfig());
 		self::$Service->initialize();
 	}
 
