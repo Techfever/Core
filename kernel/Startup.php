@@ -7,13 +7,13 @@ class Startup {
 	 *
 	 * @var Config
 	 */
-	private static $Config = array();
+	public static $Config = array();
 
 	/**
 	 *
 	 * @var Service
 	 */
-	private static $Service = array();
+	public static $Service = array();
 
 	public static $Instance = null;
 
@@ -31,17 +31,13 @@ class Startup {
 	 * @return void
 	 */
 	public static function initialize() {
-		self::initConfig();
-		self::initService();
-	}
+		// Initialize Config
+		self::$Config = new Config();
+		self::$Config->initialize();
 
-	/**
-	 * Start Kernel
-	 *
-	 * @return void
-	 */
-	public static function start() {
-
+		// Initialize Service
+		self::$Service = new Service();
+		self::$Service->initialize();
 	}
 
 	/**
@@ -50,16 +46,23 @@ class Startup {
 	 * @return void
 	 */
 	public static function uninitialize() {
-		unset(self::$Config);
-		unset(self::$Service);
+		// UnInitialize Config
+		self::$Config->uninitialize();
+		self::$Config = null;
+
+		// UnInitialize Service
+		self::$Service->uninitialize();
+		self::$Service = null;
+
+		self::$Instance = null;
 	}
 
 	/**
-	 * Verify & Prepare
+	 * Verify & Prepare Kernel
 	 *
-	 * @return void
+	 * @return $Instance
 	 */
-	public function prepare() {
+	public static function prepare() {
 		if (is_null(self::$Instance)) {
 			self::$Instance = new Startup();
 		}
@@ -67,25 +70,11 @@ class Startup {
 	}
 
 	/**
-	 * Initialize Config
+	 * Render Kernel
 	 *
 	 * @return void
 	 */
-	public function initConfig() {
-		self::$Config = new Config();
-		self::$Config->initialize();
+	public static function render() {
 
-		print_r(self::$Config->getConfig('Database'));
-	}
-
-	/**
-	 * Initialize Config
-	 *
-	 * @return void
-	 */
-	public function initService() {
-		self::$Service = new Service();
-		self::$Service->initialize();
-		print_r(self::$Service->getService('Superglobal', 'object')->getVariable('Global'));
 	}
 }

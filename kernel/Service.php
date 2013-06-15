@@ -25,10 +25,19 @@ class Service {
 	 */
 	public function initialize() {
 		foreach (self::$_service as $_serviceKey => $_serviceInfo) {
-			$classname = "Kernel\Service\\" . $_serviceInfo['filename'];
+			$classname = __NAMESPACE__ . "\Service\\" . $_serviceInfo['filename'];
 			self::$_service[$_serviceKey]['object'] = new $classname();
 			self::$_service[$_serviceKey]['object']->start();
 		}
+	}
+
+	/**
+	 * UnInitialize Service
+	 *
+	 * @return void
+	 */
+	public static function uninitialize() {
+		self::$_service = null;
 	}
 
 	/**

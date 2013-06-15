@@ -19,7 +19,7 @@ class Config {
 	}
 
 	/**
-	 * Start Config
+	 * Initialize Config
 	 *
 	 * @return void
 	 */
@@ -27,6 +27,15 @@ class Config {
 		foreach (self::$_config as $_configKey => $_configInfo) {
 			self::$_config[$_configKey]['data'] = require_once $_configInfo['path'];
 		}
+	}
+
+	/**
+	 * UnInitialize Config
+	 *
+	 * @return void
+	 */
+	public static function uninitialize() {
+		self::$_config = null;
 	}
 
 	/**

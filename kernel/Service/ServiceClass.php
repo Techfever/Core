@@ -1,6 +1,9 @@
 <?php
 namespace Kernel\Service;
-class ServiceClass {
+
+use Kernel\Startup;
+
+class ServiceClass extends Startup {
 
 	/**
 	 * Start.
@@ -56,5 +59,14 @@ class ServiceClass {
 	 * @return array $_data
 	 */
 	public function getVariable($name = null, $key = null) {
+	}
+
+	/**
+	 * Get the variable data
+	 *
+	 * @return array $_data
+	 */
+	public function getConfig($name = null, $key = null) {
+		return parent::$Config->getConfig($name, $key);
 	}
 }

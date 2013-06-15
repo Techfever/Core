@@ -2,7 +2,6 @@
 namespace Kernel\Service;
 
 use Techfever\Database\Driver;
-use Kernel\Startup;
 
 class Database extends ServiceClass {
 
@@ -19,6 +18,7 @@ class Database extends ServiceClass {
 	 * @return void
 	 */
 	public function __construct() {
+		print_r(parent::getConfig('Database'));
 	}
 
 	/**
