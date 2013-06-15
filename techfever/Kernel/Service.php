@@ -1,5 +1,5 @@
 <?php
-namespace Techfever\Kernel;
+namespace Kernel;
 
 class Service {
 

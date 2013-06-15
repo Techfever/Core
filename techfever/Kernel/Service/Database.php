@@ -1,5 +1,5 @@
 <?php
-namespace Techfever\Kernel\Service;
+namespace Kernel\Service;
 
 use Techfever\Database\Driver;
 use Kernel\Startup;

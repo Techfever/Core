@@ -1,5 +1,5 @@
 <?php
-namespace Techfever\Kernel;
+namespace Kernel;
 class Config {
 
 	/**
@@ -34,9 +34,9 @@ class Config {
 	 * @return void
 	 */
 	public function prepare() {
-		$_configPath = KERNEL_PATH . '/Config/';
+		$_configPath = KERNEL_PATH . '/../Config/';
 		if (file_exists($_configPath)) {
-			$_configFileRaw = scandir(KERNEL_PATH . '/Config/');
+			$_configFileRaw = scandir($_configPath);
 			foreach ($_configFileRaw as $_configFile) {
 				$_configFilePath = $_configPath . $_configFile;
 				$_configFileInfo = pathinfo($_configFilePath);

@@ -18,31 +18,35 @@ if (is_dir('vendor')) {
 	$vendorPath = 'vendor';
 }
 $kernelPath = false;
-if (is_dir('kernel')) {
+if (is_dir('techfever')) {
 	$kernelPath = 'techfever';
+	$configuration = include $kernelPath . '/Config/Kernel.Config.php';
+} else {
+	$configuration = array(
+		"autoloader" => array(
+			"autoregister_zf" => true,
+		)
+	);
+}
+if ($vendorPath) {
+	if (isset($loader)) {
+		$loader->add('Techfever', $vendorPath);
+		foreach ($configuration['autoloader']['namespaces'] as $name => $path) {
+			$loader->add($name, dirname($path));
+		}
+		$loader->register();
+	} else {
+		include $vendorPath . '/Techfever/Loader/AutoloaderFactory.php';
+		Techfever\Loader\AutoloaderFactory::factory(array(
+			'Techfever\Loader\StandardAutoloader' => $configuration['autoloader'],
+		));
+	}
 }
 
-if (isset($loader)) {
-	if ($vendorPath) {
-		$loader->add('Techfever', $vendorPath);
-	}
-	if ($kernelPath) {
-		$loader->add('Kernel', $kernelPath);
-	}
-} else {
-	if ($vendorPath) {
-		include $vendorPath . '/Techfever/Loader/AutoloaderFactory.php';
-		Techfever\Loader\AutoloaderFactory::factory(
-				array(
-					'Techfever\Loader\StandardAutoloader' => array(
-						'autoregister_tf' => true, 'namespaces' => array(
-							'Techfever' => $vendorPath . '/Techfever', 'Kernel' => $kernelPath . '/techfever/Kernel',
-						)
-					)
-				));
-	}
-}
 if (!class_exists('Techfever\Loader\AutoloaderFactory')) {
 	throw new RuntimeException('Unable to load TF1. Run `php composer.phar install` or define a TF1_PATH environment variable.');
+}
+if (!class_exists('Techfever\Kernel\Startup')) {
+	throw new RuntimeException('Unable to load Kernel.');
 }
 ?>

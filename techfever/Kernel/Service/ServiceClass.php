@@ -1,5 +1,5 @@
 <?php
-namespace Techfever\Kernel\Service;
+namespace Kernel\Service;
 class ServiceClass {
 
 	/**
