@@ -19,7 +19,7 @@ if (is_dir('vendor')) {
 }
 $kernelPath = false;
 if (is_dir('kernel')) {
-	$kernelPath = 'kernel';
+	$kernelPath = 'techfever';
 }
 
 if (isset($loader)) {
@@ -34,7 +34,7 @@ if (isset($loader)) {
 		include $vendorPath . '/Techfever/Loader/AutoloaderFactory.php';
 		Techfever\Loader\AutoloaderFactory::factory(array(
 			'Techfever\Loader\StandardAutoloader' => array(
-				'autoregister_zf' => true
+				'autoregister_tf' => true
 			)
 		));
 	}
