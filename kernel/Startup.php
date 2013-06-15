@@ -30,11 +30,37 @@ class Startup {
 	 *
 	 * @return void
 	 */
-	public static function initialize() {
+	public static function start() {
 		// Initialize Config
-		self::initConfig();
+		$_configPath = CONFIG_PATH . '/';
+		if (file_exists($_configPath)) {
+			$_configFileRaw = scandir($_configPath);
+			foreach ($_configFileRaw as $_configFile) {
+				$_configFilePath = $_configPath . $_configFile;
+				$_configFileInfo = pathinfo($_configFilePath);
+				if (file_exists($_configFilePath) && substr($_configFileInfo['basename'], -10) == 'config.php') {
+					$_configFileInfo['filename'] = substr($_configFileInfo['basename'], 0, -11);
+					self::$Config[strtolower($_configFileInfo['filename'])] = require_once $_configFilePath;
+				}
+			}
+		}
 		// Initialize Service
-		self::initService();
+		$_config = self::getConfig();
+		$_servicePath = KERNEL_PATH . '/Service/';
+		if (file_exists($_servicePath)) {
+			$_serviceFileRaw = scandir($_servicePath);
+			foreach ($_serviceFileRaw as $_serviceFile) {
+				$_serviceFilePath = $_servicePath . $_serviceFile;
+				$_serviceFileInfo = pathinfo($_serviceFilePath);
+				if (file_exists($_serviceFilePath) && $_serviceFileInfo['extension'] == 'php' && $_serviceFileInfo['filename'] != 'ServiceInterface') {
+					$classname = __NAMESPACE__ . "\Service\\" . $_serviceFileInfo['filename'];
+					$service = strtolower($_serviceFileInfo['filename']);
+					$_config = (array_key_exists($service, $_config) ? $_config[$service] : null);
+					self::$Service[$_serviceFileInfo['filename']]['object'] = new $classname($_config);
+					self::$Service[$_serviceFileInfo['filename']]['object']->start();
+				}
+			}
+		}
 	}
 
 	/**
@@ -42,7 +68,7 @@ class Startup {
 	 *
 	 * @return void
 	 */
-	public static function uninitialize() {
+	public static function stop() {
 		// UnInitialize Config
 		self::$Config = null;
 
@@ -74,26 +100,6 @@ class Startup {
 	}
 
 	/**
-	 * Initialize Config
-	 *
-	 * @return void
-	 */
-	public static function initConfig() {
-		$_configPath = CONFIG_PATH . '/';
-		if (file_exists($_configPath)) {
-			$_configFileRaw = scandir($_configPath);
-			foreach ($_configFileRaw as $_configFile) {
-				$_configFilePath = $_configPath . $_configFile;
-				$_configFileInfo = pathinfo($_configFilePath);
-				if (file_exists($_configFilePath) && substr($_configFileInfo['basename'], -10) == 'config.php') {
-					$_configFileInfo['filename'] = substr($_configFileInfo['basename'], 0, -11);
-					self::$Config[strtolower($_configFileInfo['filename'])] = require_once $_configFilePath;
-				}
-			}
-		}
-	}
-
-	/**
 	 * Get Config
 	 *
 	 * @return Array String
@@ -108,30 +114,6 @@ class Startup {
 			}
 		}
 		return self::$Config;
-	}
-
-	/**
-	 * Initialize Service
-	 *
-	 * @return void
-	 */
-	public static function initService() {
-		$_config = self::getConfig();
-		$_servicePath = KERNEL_PATH . '/Service/';
-		if (file_exists($_servicePath)) {
-			$_serviceFileRaw = scandir($_servicePath);
-			foreach ($_serviceFileRaw as $_serviceFile) {
-				$_serviceFilePath = $_servicePath . $_serviceFile;
-				$_serviceFileInfo = pathinfo($_serviceFilePath);
-				if (file_exists($_serviceFilePath) && $_serviceFileInfo['extension'] == 'php' && $_serviceFileInfo['filename'] != 'ServiceInterface') {
-					$classname = __NAMESPACE__ . "\Service\\" . $_serviceFileInfo['filename'];
-					$service = strtolower($_serviceFileInfo['filename']);
-					$_config = (array_key_exists($service, $_config) ? $_config[$service] : null);
-					self::$Service[$_serviceFileInfo['filename']]['object'] = new $classname($_config);
-					self::$Service[$_serviceFileInfo['filename']]['object']->start();
-				}
-			}
-		}
 	}
 
 	/**
