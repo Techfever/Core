@@ -14,8 +14,8 @@ if (file_exists('vendor/autoload.php')) {
 }
 
 $vendorPath = false;
-if (is_dir('vendor/Techfever')) {
-	$vendorPath = 'vendor/Techfever';
+if (is_dir('vendor')) {
+	$vendorPath = 'vendor';
 }
 $kernelPath = false;
 if (is_dir('kernel')) {
@@ -39,8 +39,7 @@ if (isset($loader)) {
 		));
 	}
 }
-
 if (!class_exists('Techfever\Loader\AutoloaderFactory')) {
-	throw new RuntimeException('Unable to load TF2. Run `php composer.phar install` or define a TF2_PATH environment variable.');
+	throw new RuntimeException('Unable to load TF1. Run `php composer.phar install` or define a TF1_PATH environment variable.');
 }
 ?>
