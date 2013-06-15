@@ -5,15 +5,17 @@ class Startup {
 
 	/**
 	 *
+	 * @var Config
+	 */
+	private static $Config = array();
+
+	/**
+	 *
 	 * @var Service
 	 */
 	private static $Service = array();
 
-	/**
-	 *
-	 * @var Config
-	 */
-	private static $Config = array();
+	public static $Instance = null;
 
 	/**
 	 * Constructor.
@@ -28,37 +30,40 @@ class Startup {
 	 *
 	 * @return void
 	 */
-	public function initialize() {
+	public static function initialize() {
 		self::initConfig();
 		self::initService();
 	}
 
 	/**
-	 * Initialize Service
+	 * Start Kernel
 	 *
 	 * @return void
 	 */
-	public function initService() {
-		require_once KERNEL_PATH . '/Service.php';
-		$Service = new Service();
-		$Service->initialize();
-		self::$Service = $Service->getService();
+	public static function start() {
+
 	}
 
 	/**
-	 * Get Service
+	 * UnInitialize Kernel
 	 *
-	 * @return Array String
+	 * @return void
 	 */
-	public function getService($name, $option = null) {
-		if (!empty($name)) {
-			if (!empty($option)) {
-				return self::$Service[$name][$option];
-			} else if (array_key_exists($name, self::$Service)) {
-				return self::$Service[$name];
-			}
+	public static function uninitialize() {
+		unset(self::$Config);
+		unset(self::$Service);
+	}
+
+	/**
+	 * Verify & Prepare
+	 *
+	 * @return void
+	 */
+	public function prepare() {
+		if (is_null(self::$Instance)) {
+			self::$Instance = new Startup();
 		}
-		return self::$Service;
+		return self::$Instance;
 	}
 
 	/**
@@ -67,37 +72,20 @@ class Startup {
 	 * @return void
 	 */
 	public function initConfig() {
-		require_once KERNEL_PATH . '/Config.php';
-		$Config = new Config();
-		$Config->initialize();
-		self::$Config = $Config->getConfig();
+		self::$Config = new Config();
+		self::$Config->initialize();
+
+		print_r(self::$Config->getConfig('Database'));
 	}
 
 	/**
-	 * Get Config
+	 * Initialize Config
 	 *
-	 * @return Array String
+	 * @return void
 	 */
-	public function getConfig($name, $key = null) {
-		if (!empty($name)) {
-			if (!empty($key)) {
-				return self::$Config[$name][$key];
-			} else if (array_key_exists($name, self::$Config)) {
-				return self::$Config[$name];
-			}
-		}
-		return self::$Config;
-	}
-
-	/**
-	 * Magic Call Function
-	 *
-	 * @return Object
-	 */
-	public function __call($function, $variable = null) {
-		if (array_key_exists($function, self::$Service)) {
-			return self::$Service[$function]['object'];
-		}
-		return False;
+	public function initService() {
+		self::$Service = new Service();
+		self::$Service->initialize();
+		print_r(self::$Service->getService('Superglobal', 'object')->getVariable('Global'));
 	}
 }

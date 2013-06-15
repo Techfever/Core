@@ -52,11 +52,18 @@ class Config {
 	}
 
 	/**
-	 * Get Config Info
+	 * Get Config
 	 *
-	 * @return Array $_config
+	 * @return Array String
 	 */
-	public function getConfig() {
+	public function getConfig($name = null, $key = null) {
+		if (!empty($name)) {
+			if (!empty($key)) {
+				return self::$_config[$name][$key];
+			} else if (array_key_exists($name, self::$_config)) {
+				return self::$_config[$name];
+			}
+		}
 		return self::$_config;
 	}
 }

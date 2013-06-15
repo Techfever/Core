@@ -19,7 +19,6 @@ class Database extends ServiceClass {
 	 * @return void
 	 */
 	public function __construct() {
-		print_r(Startup::getConfig('Database'));
 	}
 
 	/**
