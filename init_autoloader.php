@@ -4,7 +4,7 @@
  */
 
 define('CORE_PATH', getcwd());
-define('KERNEL_PATH', CORE_PATH . '/kernel');
+define('KERNEL_PATH', CORE_PATH . '/techfever/Kernel');
 
 // use library generated autoloader
 
@@ -32,11 +32,14 @@ if (isset($loader)) {
 } else {
 	if ($vendorPath) {
 		include $vendorPath . '/Techfever/Loader/AutoloaderFactory.php';
-		Techfever\Loader\AutoloaderFactory::factory(array(
-			'Techfever\Loader\StandardAutoloader' => array(
-				'autoregister_tf' => true
-			)
-		));
+		Techfever\Loader\AutoloaderFactory::factory(
+				array(
+					'Techfever\Loader\StandardAutoloader' => array(
+						'autoregister_tf' => true, 'namespaces' => array(
+							'Techfever' => $vendorPath . '/Techfever', 'Kernel' => $kernelPath . '/techfever/Kernel',
+						)
+					)
+				));
 	}
 }
 if (!class_exists('Techfever\Loader\AutoloaderFactory')) {
