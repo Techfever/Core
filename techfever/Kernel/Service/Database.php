@@ -1,8 +1,8 @@
 <?php
-namespace Techfever\Kernel\Service;
+namespace Kernel\Service;
 
 use Techfever\Database\Driver;
-use Techfever\Kernel\Startup;
+use Kernel\Startup;
 
 class Database extends ServiceClass {
 
