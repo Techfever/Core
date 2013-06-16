@@ -31,6 +31,7 @@ if (is_dir('kernel')) {
 }
 if ($vendorPath) {
 	if (isset($loader)) {
+		$loader->add('Zend', $vendorPath);
 		$loader->add('Techfever', $vendorPath);
 		foreach ($configuration['autoloader']['namespaces'] as $name => $path) {
 			$loader->add($name, dirname($path));
@@ -41,6 +42,8 @@ if ($vendorPath) {
 		Zend\Loader\AutoloaderFactory::factory(array(
 			'Zend\Loader\StandardAutoloader' => $configuration['autoloader'],
 		));
+		require $vendorPath . '/Zend/Stdlib/compatibility/autoload.php';
+		require $vendorPath . '/Zend/Session/compatibility/autoload.php';
 	}
 }
 

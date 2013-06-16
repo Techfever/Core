@@ -16,37 +16,12 @@
 		"MIT"
 	],
 	"require" : {
-		"Techfever/Cache" : "dev-master",
-		"Techfever/Session" : "dev-master",
 		"Techfever/Theme" : "dev-master",
 		"php" : ">=5.3.14",
-		"Techfever/Database" : "dev-master",
-		"Techfever/Javascript" : "dev-master",
-		"Techfever/Log" : "dev-master",
-		"Techfever/Loader" : "dev-master"
+		"Techfever/Javascript" : "dev-master"
 	},
 	"minimum-stability" : "dev",
 	"repositories" : [{
-			"name" : "Techfever/Database",
-			"type" : "git",
-			"url" : "https://github.com/Techfever/Database.git"
-		}, {
-			"name" : "Techfever/Session",
-			"type" : "git",
-			"url" : "https://github.com/Techfever/Session.git"
-		}, {
-			"name" : "Techfever/Cache",
-			"type" : "git",
-			"url" : "https://github.com/Techfever/Cache.git"
-		}, {
-			"name" : "Techfever/Loader",
-			"type" : "git",
-			"url" : "https://github.com/Techfever/Loader.git"
-		}, {
-			"name" : "Techfever/Log",
-			"type" : "git",
-			"url" : "https://github.com/Techfever/Log.git"
-		}, {
 			"name" : "Techfever/Javascript",
 			"type" : "git",
 			"url" : "https://github.com/Techfever/Javascript.git"
