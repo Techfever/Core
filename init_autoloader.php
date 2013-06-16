@@ -37,14 +37,14 @@ if ($vendorPath) {
 		}
 		$loader->register();
 	} else {
-		include $vendorPath . '/Techfever/Loader/AutoloaderFactory.php';
-		Techfever\Loader\AutoloaderFactory::factory(array(
-			'Techfever\Loader\StandardAutoloader' => $configuration['autoloader'],
+		include $vendorPath . '/Zend/Loader/AutoloaderFactory.php';
+		Zend\Loader\AutoloaderFactory::factory(array(
+			'Zend\Loader\StandardAutoloader' => $configuration['autoloader'],
 		));
 	}
 }
 
-if (!class_exists('Techfever\Loader\AutoloaderFactory')) {
+if (!class_exists('Zend\Loader\AutoloaderFactory')) {
 	throw new RuntimeException('Unable to load TF1. Run `php composer.phar install` or define a TF1_PATH environment variable.');
 }
 if (!class_exists('Kernel\Startup')) {
