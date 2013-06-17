@@ -16,21 +16,9 @@
 		"MIT"
 	],
 	"require" : {
-		"Techfever/Theme" : "dev-master",
-		"php" : ">=5.3.14",
-		"Techfever/Javascript" : "dev-master"
+		"php" : ">=5.3.14"
 	},
 	"minimum-stability" : "dev",
-	"repositories" : [{
-			"name" : "Techfever/Javascript",
-			"type" : "git",
-			"url" : "https://github.com/Techfever/Javascript.git"
-		}, {
-			"name" : "Techfever/Theme",
-			"type" : "git",
-			"url" : "https://github.com/Techfever/Theme.git"
-		}
-	],
 	"config" : {
 		"notify-on-install" : false
 	}
