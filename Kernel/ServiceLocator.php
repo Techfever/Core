@@ -30,7 +30,6 @@ class ServiceLocator {
 
 		$session = $serviceManager->get('session');
 		$session->start();
-
 		$container = new Container('initialized');
 		if (!isset($container->init)) {
 			$session->regenerateId(true);
@@ -38,13 +37,13 @@ class ServiceLocator {
 		}
 
 		$eventManager = $serviceManager->get('EventManager');
-		$sharedManager = $eventManager->getSharedManager ();
-		$sharedManager->attach ( 'Zend\Mvc\Application', 'dispatch.error', function ($e) use($serviceManager) {
-			if ($e->getParam ( 'exception' )) {
-				$log = $serviceManager->get ( 'log' );
-				$log->crit ( $e->getParam ( 'exception' ) );
-			}
-		} );
+		$sharedManager = $eventManager->getSharedManager();
+		$sharedManager->attach('Zend\Mvc\Application', 'dispatch.error', function ($e) use ($serviceManager) {
+					if ($e->getParam('exception')) {
+						$log = $serviceManager->get('log');
+						$log->crit($e->getParam('exception'));
+					}
+				});
 	}
 
 	public static function getServiceManager($service = null) {

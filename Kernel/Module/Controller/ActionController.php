@@ -7,15 +7,15 @@
  * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
-namespace ModuleManager\Controller;
+namespace Module\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class ActionController extends AbstractActionController {
 	public function indexAction() {
-		echo "aa";
-		die();
-		return new ViewModel();
+		$viewModel = new ViewModel();
+		$viewModel->setTemplate('index.phtml');
+		return $viewModel;
 	}
 }
