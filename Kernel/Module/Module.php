@@ -9,6 +9,7 @@
  */
 namespace Module;
 
+use Kernel\Template;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
@@ -18,9 +19,12 @@ class Module {
 		$eventManager = $application->getEventManager();
 		$moduleRouteListener = new ModuleRouteListener();
 		$moduleRouteListener->attach($eventManager);
+		$serviceManager = $e->getApplication()->getServiceManager();
+		//print_r($serviceManager->get('Config'));
 	}
 	public function getConfig() {
-		return include __DIR__ . '/Config/module.config.php';
+		Template::prepare(include __DIR__ . '/Config/module.config.php');
+		return Template::getConfig();
 	}
 	public function getAutoloaderConfig() {
 		return array(

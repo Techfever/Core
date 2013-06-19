@@ -3,6 +3,7 @@ namespace Kernel;
 
 use Zend\ServiceManager\ServiceManager;
 use Zend\Session\Container;
+use Zend\Db\Sql\Sql;
 
 class ServiceLocator {
 	protected static $servicefactories = array(
@@ -24,6 +25,22 @@ class ServiceLocator {
 				$serviceManager->setFactory($name, $factoryClass);
 			}
 			self::$serviceManager = $serviceManager;
+		}
+
+		$Database = new Database('select');
+		$Database->columns(array(
+					'key' => 'system_configuration_key', 'value' => 'system_configuration_value'
+				));
+		$Database->from(array(
+					'ss' => 'system_configuration'
+				));
+		$Database->setCacheName('system_configuration');
+		$Database->execute();
+		if ($Database->hasResult()) {
+			while ($Database->valid()) {
+				echo $Database->get('key') . '-' . $Database->get('value') . "\n";
+				$Database->next();
+			}
 		}
 
 		$serviceManager->get('phpsetting');
@@ -60,10 +77,19 @@ class ServiceLocator {
 	public static function getServiceConfig($config = null) {
 		if (self::$serviceManager instanceof ServiceManager) {
 			$configuration = self::getServiceManager('Config');
-			if (!empty($service) && array_key_exists($service, $configuration)) {
+			if (!empty($config) && array_key_exists($config, $configuration)) {
 				return $configuration[$config];
 			} else {
 				return $configuration;
+			}
+		}
+		return false;
+	}
+
+	public static function setServiceConfig($config = null) {
+		if (self::$serviceManager instanceof ServiceManager) {
+			if (is_array($config)) {
+				self::$serviceManager['Config'] = array_merge(self::$serviceManager['Config'], $config);
 			}
 		}
 		return false;

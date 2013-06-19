@@ -13,6 +13,8 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class ActionController extends AbstractActionController {
+	public function __construct() {
+	}
 	public function indexAction() {
 		$viewModel = new ViewModel();
 		$viewModel->setTemplate('index.phtml');

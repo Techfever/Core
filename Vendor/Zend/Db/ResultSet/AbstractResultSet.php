@@ -87,7 +87,6 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
         if ($this->count == null && $this->dataSource instanceof Countable) {
             $this->count = $this->dataSource->count();
         }
-
         return $this;
     }
 

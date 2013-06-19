@@ -16,7 +16,7 @@ return array (
 				'output' => array (
 						'options' => array (
 								'storage' => 'filesystem' ,
-								'cache_output' => false,
+								'cache_output' => true,
 						) 
 				),
 				'capture' => array (

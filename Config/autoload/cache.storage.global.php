@@ -21,7 +21,7 @@ return array (
 						),
 						'plugins' => array (
 								'serializer' => array (
-										'throw_exceptions' => false 
+										'throw_exceptions' => true 
 								) 
 						) 
 				) 
