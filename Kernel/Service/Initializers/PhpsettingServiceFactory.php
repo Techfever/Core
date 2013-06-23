@@ -1,5 +1,5 @@
 <?php
-namespace Kernel\ServiceFactory;
+namespace Kernel\Service\Initializers;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;

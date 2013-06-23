@@ -1,5 +1,5 @@
 <?php
-namespace Kernel\ServiceFactory;
+namespace Kernel\Service\Factories;
 
 use Zend\Log\Logger;
 use Zend\ServiceManager\FactoryInterface;

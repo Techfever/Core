@@ -252,58 +252,58 @@ class Database extends Result {
 	public function __construct($action = null) {
 		$action = strtolower($action);
 		if (empty($action)) {
-			throw new Exception('$action must be declare');
+			throw new Exception\RuntimeException('$action must be declare');
 		}
 		switch ($action) {
 			case 'select':
-				self::select();
+				$this->select();
 				break;
 			case 'insert':
-				self::insert();
+				$this->insert();
 				break;
 			case 'delete':
-				self::delete();
+				$this->delete();
 				break;
 			case 'update':
-				self::update();
+				$this->update();
 				break;
 			default:
-				throw new Exception('$action invalid. select/insert/delete/update');
+				throw new Exception\RuntimeException('$action invalid. select/insert/delete/update');
 				break;
 		}
-		self::prepare();
+		$this->prepare();
 	}
 
 	/**
 	 * Select
 	 * $action = select
 	 */
-	public static function select() {
-		self::$action = 'select';
+	public function select() {
+		$this->action = 'select';
 	}
 
 	/**
 	 * Insert
 	 * $action = insert
 	 */
-	public static function insert() {
-		self::$action = 'insert';
+	public function insert() {
+		$this->action = 'insert';
 	}
 
 	/**
 	 * Delete
 	 * $action = delete
 	 */
-	public static function delete() {
-		self::$action = 'delete';
+	public function delete() {
+		$this->action = 'delete';
 	}
 
 	/**
 	 * Update
 	 * $action = update
 	 */
-	public static function update() {
-		self::$action = 'update';
+	public function update() {
+		$this->action = 'update';
 	}
 
 	/**
@@ -326,15 +326,15 @@ class Database extends Result {
 	 * @param  array $columns
 	 * @param  bool  $prefixColumnsWithTable
 	 */
-	public static function columns(array $columns, $prefixColumnsWithTable = true) {
-		if (self::$action == 'delete' || self::$action == 'update') {
-			throw new Exception('Delete/Insert is not allow to use columns function');
+	public function columns(array $columns, $prefixColumnsWithTable = true) {
+		if ($this->action == 'delete' || $this->action == 'update') {
+			throw new Exception\RuntimeException('Delete/Insert is not allow to use columns function');
 		}
 		if (!is_array($columns)) {
-			throw new Exception('$columns must be a array');
+			throw new Exception\RuntimeException('$columns must be a array');
 		}
-		self::$columns = $columns;
-		self::$prefixColumnsWithTable = (bool) $prefixColumnsWithTable;
+		$this->columns = $columns;
+		$this->prefixColumnsWithTable = (bool) $prefixColumnsWithTable;
 	}
 
 	/**
@@ -345,11 +345,11 @@ class Database extends Result {
 	 * @throws Exception
 	 */
 
-	public static function from($from) {
-		if (!self::$action == 'delete') {
-			throw new Exception('Only "delete" is allow to use group function');
+	public function from($from) {
+		if (!$this->action == 'delete') {
+			throw new Exception\RuntimeException('Only "delete" is allow to use group function');
 		}
-		self::table($from);
+		$this->table($from);
 	}
 
 	/**
@@ -358,11 +358,11 @@ class Database extends Result {
 	 * @param  string|array|TableIdentifier $table
 	 * @throws Exception
 	 */
-	public static function into($into) {
-		if (!self::$action == 'insert') {
-			throw new Exception('Only "insert" is allow to use group function');
+	public function into($into) {
+		if (!$this->action == 'insert') {
+			throw new Exception\RuntimeException('Only "insert" is allow to use group function');
 		}
-		self::table($into);
+		$this->table($into);
 	}
 
 	/**
@@ -381,20 +381,20 @@ class Database extends Result {
 	 * @param  string|array|TableIdentifier $table
 	 * @throws Exception
 	 */
-	public static function table($table) {
-		if (self::$action == 'select') {
+	public function table($table) {
+		if ($this->action == 'select') {
 			if (!is_string($table) && !is_array($table) && !$table instanceof TableIdentifier) {
-				throw new Exception('$table must be a string, array, or an instance of TableIdentifier');
+				throw new Exception\RuntimeException('$table must be a string, array, or an instance of TableIdentifier');
 			}
 			if (is_array($table) && (!is_string(key($table)) || count($table) !== 1)) {
-				throw new Exception('from() expects $table as an array is a single element associative array');
+				throw new Exception\RuntimeException('from() expects $table as an array is a single element associative array');
 			}
-		} elseif (self::$action == 'insert' || self::$action == 'delete' || self::$action == 'update') {
+		} elseif ($this->action == 'insert' || $this->action == 'delete' || $this->action == 'update') {
 			if (!is_string($table) && !$table instanceof TableIdentifier) {
-				throw new Exception('$table must be a string, or an instance of TableIdentifier');
+				throw new Exception\RuntimeException('$table must be a string, or an instance of TableIdentifier');
 			}
 		}
-		self::$table = $table;
+		$this->table = $table;
 	}
 
 	/**
@@ -406,17 +406,17 @@ class Database extends Result {
 	 * @param  string $type one of the JOIN_* constants
 	 * @throws Exception
 	 */
-	public static function join($join, $on, $columns = self::SQL_STAR, $type = self::JOIN_INNER) {
-		if (!self::$action == 'select') {
-			throw new Exception('Only "select" is allow to use group function');
+	public function join($join, $on, $columns = self::SQL_STAR, $type = self::JOIN_INNER) {
+		if (!$this->action == 'select') {
+			throw new Exception\RuntimeException('Only "select" is allow to use group function');
 		}
 		if (is_array($join) && (!is_string(key($join)) || count($join) !== 1)) {
-			throw new Exception(sprintf("join() expects '%s' as an array is a single element associative array", array_shift($join)));
+			throw new Exception\RuntimeException(sprintf("join() expects '%s' as an array is a single element associative array", array_shift($join)));
 		}
-		self::$join = $join;
-		self::$joinon = $on;
-		self::$joincolumns = $columns;
-		self::$jointype = $type;
+		$this->join = $join;
+		$this->joinon = $on;
+		$this->joincolumns = $columns;
+		$this->jointype = $type;
 	}
 
 	/**
@@ -426,23 +426,23 @@ class Database extends Result {
 	 * @param  string $flag One of the VALUES_* constants
 	 * @throws Exception
 	 */
-	public static function set(array $set, $flag = self::VALUES_SET) {
-		if (!self::$action == 'update') {
-			throw new Exception('Only "update" is allow to use group function');
+	public function set(array $set, $flag = self::VALUES_SET) {
+		if (!$this->action == 'update') {
+			throw new Exception\RuntimeException('Only "update" is allow to use group function');
 		}
 		if ($set == null) {
-			throw new Exception('set() expects an array of values');
+			throw new Exception\RuntimeException('set() expects an array of values');
 		}
 		if (!is_array($set)) {
-			throw new Exception('$set must be a array');
+			throw new Exception\RuntimeException('$set must be a array');
 		}
 		foreach ($set as $k => $v) {
 			if (!is_string($k)) {
-				throw new Exception('set() expects a string for the value key');
+				throw new Exception\RuntimeException('set() expects a string for the value key');
 			}
 		}
-		self::$set = $set;
-		self::$setflag = $flag;
+		$this->set = $set;
+		$this->setflag = $flag;
 	}
 
 	/**
@@ -452,18 +452,18 @@ class Database extends Result {
 	 * @param  string $flag one of VALUES_MERGE or VALUES_SET; defaults to VALUES_SET
 	 * @throws Exception
 	 */
-	public static function values(array $values, $flag = self::VALUES_SET) {
-		if (!self::$action == 'insert') {
-			throw new Exception('Only "insert" is allow to use group function');
+	public function values(array $values, $flag = self::VALUES_SET) {
+		if (!$this->action == 'insert') {
+			throw new Exception\RuntimeException('Only "insert" is allow to use group function');
 		}
 		if ($values == null) {
-			throw new Exception('values() expects an array of values');
+			throw new Exception\RuntimeException('values() expects an array of values');
 		}
 		if (!is_array($values)) {
-			throw new Exception('$values must be a array');
+			throw new Exception\RuntimeException('$values must be a array');
 		}
-		self::$values = $values;
-		self::$valuesflag = $flag;
+		$this->values = $values;
+		$this->valuesflag = $flag;
 	}
 
 	/**
@@ -473,23 +473,23 @@ class Database extends Result {
 	 * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
 	 * @throws Exception
 	 */
-	public static function where($where, $combination = Predicate\PredicateSet::OP_AND) {
-		if (self::$action == 'insert') {
-			throw new Exception('"insert" is not allow to use where function');
+	public function where($where, $combination = Predicate\PredicateSet::OP_AND) {
+		if ($this->action == 'insert') {
+			throw new Exception\RuntimeException('"insert" is not allow to use where function');
 		}
 		if (!$where instanceof Where && !$where instanceof \Closure && !$where instanceof Predicate\PredicateInterface && !is_string($where) && !is_array($where)) {
-			throw new Exception('$where must be a string, array, or an instance of Having or Closure or Predicate\PredicateInterface');
+			throw new Exception\RuntimeException('$where must be a string, array, or an instance of Having or Closure or Predicate\PredicateInterface');
 		}
 
-		self::$where = $where;
-		self::$wherecombination = $combination;
+		$this->where = $where;
+		$this->wherecombination = $combination;
 	}
 
-	public static function group($group) {
-		if (!self::$action == 'select') {
-			throw new Exception('Only "select" is allow to use group function');
+	public function group($group) {
+		if (!$this->action == 'select') {
+			throw new Exception\RuntimeException('Only "select" is allow to use group function');
 		}
-		self::$group = $group;
+		$this->group = $group;
 	}
 
 	/**
@@ -498,67 +498,67 @@ class Database extends Result {
 	 * @param  Where|\Closure|string|array $predicate
 	 * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
 	 */
-	public static function having($having, $combination = Predicate\PredicateSet::OP_AND) {
-		if (!self::$action == 'select') {
-			throw new Exception('Only "select" is allow to use having function');
+	public function having($having, $combination = Predicate\PredicateSet::OP_AND) {
+		if (!$this->action == 'select') {
+			throw new Exception\RuntimeException('Only "select" is allow to use having function');
 		}
 		if (!$having instanceof Having && !$having instanceof \Closure && !is_string($having) && !is_array($having)) {
-			throw new Exception('$having must be a string, array, or an instance of Having or Closure');
+			throw new Exception\RuntimeException('$having must be a string, array, or an instance of Having or Closure');
 		}
-		self::$having = $having;
-		self::$havingcombination = $combination;
+		$this->having = $having;
+		$this->havingcombination = $combination;
 	}
 
 	/**
 	 * @param string|array $order
 	 */
-	public static function order($order) {
-		if (!self::$action == 'select') {
-			throw new Exception('Only "select" is allow to use order function');
+	public function order($order) {
+		if (!$this->action == 'select') {
+			throw new Exception\RuntimeException('Only "select" is allow to use order function');
 		}
 		if (!is_string($order) && !is_array($order)) {
-			throw new Exception('$order must be a string, or array');
+			throw new Exception\RuntimeException('$order must be a string, or array');
 		}
-		self::$order = $order;
+		$this->order = $order;
 	}
 
 	/**
 	 * @param int $limit
 	 */
-	public static function limit($limit) {
-		if (!self::$action == 'select') {
-			throw new Exception('Only "select" is allow to use limit function');
+	public function limit($limit) {
+		if (!$this->action == 'select') {
+			throw new Exception\RuntimeException('Only "select" is allow to use limit function');
 		}
 		if (!is_int($limit)) {
-			throw new Exception('$limit must be a int');
+			throw new Exception\RuntimeException('$limit must be a int');
 		}
-		self::$limit = $limit;
+		$this->limit = $limit;
 	}
 
 	/**
 	 * @param int $offset
 	 */
 	public function offset($offset) {
-		if (!self::$action == 'select') {
-			throw new Exception('Only "select" is allow to use offset function');
+		if (!$this->action == 'select') {
+			throw new Exception\RuntimeException('Only "select" is allow to use offset function');
 		}
 		if (!is_int($offset)) {
-			throw new Exception('$offset must be a int');
+			throw new Exception\RuntimeException('$offset must be a int');
 		}
-		self::$offset = $offset;
+		$this->offset = $offset;
 	}
 
-	public static function execute() {
-		self::prepareSQL();
-		self::prepare();
-		if (is_object(self::$sql) && is_object(self::$adapter)) {
-			$statement = self::$adapter->createStatement();
-			self::$sql->prepareStatement(self::$adapter, $statement);
+	public function execute() {
+		$this->prepareSQL();
+		$this->prepare();
+		if (is_object($this->sql) && is_object($this->adapter)) {
+			$statement = $this->adapter->createStatement();
+			$this->sql->prepareStatement($this->adapter, $statement);
 			$resultdata = $statement->execute();
-			if (self::$action == 'select') {
+			if ($this->action == 'select') {
 				$hasdata = false;
-				if (self::hasCacheName() && self::$cache->hasItem(self::$cachename)) {
-					$resultdata = self::$cache->getItem(self::$cachename);
+				if ($this->hasCacheName() && $this->cache->hasItem($this->cachename)) {
+					$resultdata = $this->cache->getItem($this->cachename);
 					$hasdata = true;
 				} elseif ($resultdata instanceof ResultInterface && $resultdata->isQueryResult()) {
 					$result = new ResultSet;
@@ -567,141 +567,131 @@ class Database extends Result {
 					$hasdata = true;
 				}
 				if ($hasdata) {
-					self::setResult($resultdata);
+					$this->setResult($resultdata);
 
-					if (self::hasCacheName() && !self::$cache->hasItem(self::$cachename)) {
-						self::setCache($resultdata);
+					if ($this->hasCacheName() && !$this->cache->hasItem($this->cachename)) {
+						$this->setCache($resultdata);
 					}
 				}
-			} elseif (self::$action == 'delete' || self::$action == 'update' || self::$action == 'insert') {
-				self::$affectedrows = $resultdata->getAffectedRows();
+			} elseif ($this->action == 'delete' || $this->action == 'update' || $this->action == 'insert') {
+				$this->affectedrows = $resultdata->getAffectedRows();
 
-				self::$cache->clearByPrefix(self::$cachename);
+				$this->cache->clearByPrefix($this->cachename);
 			}
 		}
 		return null;
 	}
 
-	public static function affectedRows() {
-		if (self::$affectedrows > 0) {
+	public function affectedRows() {
+		if ($this->affectedrows > 0) {
 			return true;
 		}
 		return false;
 	}
 
-	public static function prepareSQL() {
+	public function prepareSQL() {
 		$sql = null;
-		if (self::$action == 'select') {
+		if ($this->action == 'select') {
 			$sql = new \Zend\Db\Sql\Select;
-			if (!empty(self::$columns)) {
-				$sql->columns(self::$columns, self::$prefixColumnsWithTable);
+			if (!empty($this->columns)) {
+				$sql->columns($this->columns, $this->prefixColumnsWithTable);
 			}
-			if (!empty(self::$table)) {
-				$sql->from(self::$table);
+			if (!empty($this->table)) {
+				$sql->from($this->table);
 			}
-			if (!empty(self::$join)) {
-				$sql->join(self::$join, self::$joinon, self::$joincolumns, self::$jointype);
+			if (!empty($this->join)) {
+				$sql->join($this->join, $this->joinon, $this->joincolumns, $this->jointype);
 			}
-			if (!empty(self::$where)) {
-				$sql->where(self::$where, self::$wherecombination);
+			if (!empty($this->where)) {
+				$sql->where($this->where, $this->wherecombination);
 			}
-			if (!empty(self::$group)) {
-				$sql->group(self::$group);
+			if (!empty($this->group)) {
+				$sql->group($this->group);
 			}
-			if (!empty(self::$having)) {
-				$sql->having(self::$having, self::$havingcombination);
+			if (!empty($this->having)) {
+				$sql->having($this->having, $this->havingcombination);
 			}
-			if (!empty(self::$order)) {
-				$sql->order(self::$order);
+			if (!empty($this->order)) {
+				$sql->order($this->order);
 			}
-			if (!empty(self::$limit)) {
-				$sql->limit(self::$limit);
+			if (!empty($this->limit)) {
+				$sql->limit($this->limit);
 			}
-			if (!empty(self::$offset)) {
-				$sql->offset(self::$offset);
+			if (!empty($this->offset)) {
+				$sql->offset($this->offset);
 			}
-		} elseif (self::$action == 'insert') {
+		} elseif ($this->action == 'insert') {
 			$sql = new \Zend\Db\Sql\Insert;
-			if (!empty(self::$into)) {
-				$sql->into(self::$into);
+			if (!empty($this->into)) {
+				$sql->into($this->into);
 			}
-			if (!empty(self::$columns)) {
-				$sql->columns(self::$columns);
+			if (!empty($this->columns)) {
+				$sql->columns($this->columns);
 			}
-			if (!empty(self::$values)) {
-				$sql->values(self::$values, self::$valuesflag);
+			if (!empty($this->values)) {
+				$sql->values($this->values, $this->valuesflag);
 			}
-		} elseif (self::$action == 'delete') {
+		} elseif ($this->action == 'delete') {
 			$sql = new \Zend\Db\Sql\Delete;
-			if (!empty(self::$table)) {
-				$sql->from(self::$table);
+			if (!empty($this->table)) {
+				$sql->from($this->table);
 			}
-			if (!empty(self::$where)) {
-				$sql->where(self::$where, self::$wherecombination);
+			if (!empty($this->where)) {
+				$sql->where($this->where, $this->wherecombination);
 			}
-		} elseif (self::$action == 'update') {
+		} elseif ($this->action == 'update') {
 			$sql = new \Zend\Db\Sql\Update;
-			if (!empty(self::$table)) {
-				$sql->table(self::$table);
+			if (!empty($this->table)) {
+				$sql->table($this->table);
 			}
-			if (!empty(self::$set)) {
-				$sql->set(self::$set, self::$setflag);
+			if (!empty($this->set)) {
+				$sql->set($this->set, $this->setflag);
 			}
-			if (!empty(self::$where)) {
-				$sql->where(self::$where, self::$wherecombination);
+			if (!empty($this->where)) {
+				$sql->where($this->where, $this->wherecombination);
 			}
 		}
-		self::$sql = $sql;
-		if (!is_object(self::$sql)) {
-			throw new Exception('Zend\Db\Sql\\' . self::$action . ' object not found');
+		$this->sql = $sql;
+		if (!is_object($this->sql)) {
+			throw new Exception\RuntimeException('Zend\Db\Sql\\' . $this->action . ' object not found');
 		}
-		return self::$sql;
+		return $this->sql;
 	}
 
-	public static function getSqlString() {
-		self::prepareSQL();
-		if (is_object(self::$sql)) {
-			return self::$sql->getSqlString(self::$adapter->getPlatform());
+	public function getSqlString() {
+		$this->prepareSQL();
+		if (is_object($this->sql)) {
+			return $this->sql->getSqlString($this->adapter->getPlatform());
 		}
 		return null;
 	}
 
-	public static function prepare() {
-		self::prepareAdapter();
-		self::prepareCache();
+	public function prepare() {
+		$this->prepareAdapter();
+		$this->prepareCache();
 	}
 
-	public static function prepareAdapter() {
-		if (!is_object(self::$adapter)) {
-			self::$adapter = ServiceLocator::getServiceManager('db');
+	public function prepareAdapter() {
+		$this->adapter = ServiceLocator::getServiceManager('db');
+		if (!is_object($this->adapter)) {
+			throw new Exception\RuntimeException('Zend\Db\Adapter object not found');
 		}
-		if (!is_object(self::$adapter)) {
-			throw new Exception('Zend\Db\Adapter object not found');
-		}
-		return self::$adapter;
+		return $this->adapter;
 	}
 
-	public static function prepareCache() {
-		if (!is_object(self::$cache)) {
-			self::$cache = ServiceLocator::getServiceManager('cache\filesystem');
-			$config = ServiceLocator::getServiceConfig('cachestorage');
-			$cacheoption = $config['filesystem']['options'];
-			$cacheoption['namespace'] = 'database';
-			self::$cache->setOptions($cacheoption);
+	public function prepareCache() {
+		$this->cache = ServiceLocator::getServiceManager('cache\filesystem');
+		$config = ServiceLocator::getServiceConfig('cachestorage', 'filesystem');
+		$cacheoption = $config['options'];
+		$cacheoption['cache_dir'] = 'Data/Cache/Database';
+		$cacheoption['namespace'] = '';
+		$cacheoption['dir_level'] = 0;
+		$cacheoption['namespace_separator'] = '_';
+		$this->cache->setOptions($cacheoption);
+		if (!is_object($this->cache)) {
+			throw new Exception\RuntimeException('Zend\Cache object not found');
 		}
-		if (!is_object(self::$cache)) {
-			throw new Exception('Zend\Cache object not found');
-		}
-		return self::$cache;
-	}
-
-	/**
-	 * Set namespace.
-	 *
-	 * @param  string $namespace
-	 */
-	public static function setCacheName($cachename = null) {
-		self::$cachename = $cachename;
+		return $this->cache;
 	}
 
 	/**
@@ -709,8 +699,17 @@ class Database extends Result {
 	 *
 	 * @param  string $namespace
 	 */
-	public static function hasCacheName() {
-		if (empty(self::$cachename)) {
+	public function setCacheName($cachename = null) {
+		$this->cachename = $cachename;
+	}
+
+	/**
+	 * Set namespace.
+	 *
+	 * @param  string $namespace
+	 */
+	public function hasCacheName() {
+		if (empty($this->cachename)) {
 			return false;
 		}
 		return true;
@@ -724,19 +723,19 @@ class Database extends Result {
 	 * @return bool
 	 */
 	public function setCache($result) {
-		if (empty(self::$cachename)) {
-			throw new Exception('Zend\Cache namespace no defined');
+		if (empty($this->cachename)) {
+			throw new Exception\RuntimeException('Zend\Cache namespace no defined');
 		}
-		if (!is_object(self::$cache)) {
-			throw new Exception('Zend\Cache object not found');
+		if (!is_object($this->cache)) {
+			throw new Exception\RuntimeException('Zend\Cache object not found');
 		}
-		self::$cache->setItem(self::$cachename, $result);
+		$this->cache->setItem($this->cachename, $result);
 	}
 
-	public static function clearCache($cachename = null) {
-		self::prepareCache();
-		if (self::hasCacheName()) {
-			self::$cache->clearByPrefix($cachename);
+	public function clearCache($cachename = null) {
+		$this->prepareCache();
+		if ($this->hasCacheName()) {
+			$this->cache->clearByPrefix($cachename);
 		}
 	}
 }

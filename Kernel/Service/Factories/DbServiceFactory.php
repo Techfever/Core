@@ -1,5 +1,5 @@
 <?php
-namespace Kernel\ServiceFactory;
+namespace Kernel\Service\Factories;
 
 use Zend\Db\Adapter\Adapter;
 use Zend\ServiceManager\FactoryInterface;

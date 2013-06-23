@@ -9,9 +9,10 @@
  */
 namespace Module;
 
-use Kernel\Template;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Kernel\ServiceLocator;
+use Kernel\Template;
 
 class Module {
 	public function onBootstrap(MvcEvent $e) {
@@ -19,12 +20,9 @@ class Module {
 		$eventManager = $application->getEventManager();
 		$moduleRouteListener = new ModuleRouteListener();
 		$moduleRouteListener->attach($eventManager);
-		$serviceManager = $e->getApplication()->getServiceManager();
-		//print_r($serviceManager->get('Config'));
 	}
 	public function getConfig() {
-		Template::prepare(include __DIR__ . '/Config/module.config.php');
-		return Template::getConfig();
+		return include __DIR__ . '/Config/module.config.php';
 	}
 	public function getAutoloaderConfig() {
 		return array(

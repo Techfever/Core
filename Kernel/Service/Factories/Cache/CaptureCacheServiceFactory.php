@@ -1,5 +1,5 @@
 <?php
-namespace Kernel\ServiceFactory\Cache;
+namespace Kernel\Service\Factories\Cache;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;

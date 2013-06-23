@@ -17,7 +17,7 @@ return array (
 						'options' => array (
 								'cache_dir' => 'Data/Cache',
 								'readable' => false,
-								'writable' => false 
+								'writable' => false,
 						),
 						'plugins' => array (
 								'serializer' => array (

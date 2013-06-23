@@ -17,28 +17,28 @@ class Result {
 	 */
 	private static $result = null;
 
-	public static function setResult($resultdata) {
+	public function setResult($resultdata) {
 		$result = new ResultSet;
 		$result->initialize($resultdata);
 		if (!$result instanceof ResultSet && !$result instanceof ArrayIterator) {
 			throw new Exception('$result must be an instance of ResultSet / ArrayIterator');
 		}
-		self::$result = $result;
+		$this->result = $result;
 	}
 
-	public static function getResult() {
-		if (!self::$result instanceof ResultSet && !self::$result instanceof ArrayIterator) {
+	public function getResult() {
+		if (!$this->result instanceof ResultSet && !$this->result instanceof ArrayIterator) {
 			throw new Exception('$result must be an instance of ResultSet / ArrayIterator');
 		}
-		return self::$result;
+		return $this->result;
 	}
 
-	public static function buffer() {
-		return self::$result->buffer();
+	public function buffer() {
+		return $this->result->buffer();
 	}
 
-	public static function isBuffered() {
-		return self::$result->isBuffered();
+	public function isBuffered() {
+		return $this->result->isBuffered();
 	}
 
 	/**
@@ -46,8 +46,8 @@ class Result {
 	 *
 	 * @return null|Iterator
 	 */
-	public static function getDataSource() {
-		return self::$result->getDataSource();
+	public function getDataSource() {
+		return $this->result->getDataSource();
 	}
 
 	/**
@@ -55,8 +55,8 @@ class Result {
 	 *
 	 * @return int
 	 */
-	public static function getFieldCount() {
-		return self::$result->getFieldCount();
+	public function getFieldCount() {
+		return $this->result->getFieldCount();
 	}
 
 	/**
@@ -64,8 +64,8 @@ class Result {
 	 *
 	 * @return void
 	 */
-	public static function next() {
-		self::$result->next();
+	public function next() {
+		$this->result->next();
 	}
 
 	/**
@@ -73,8 +73,8 @@ class Result {
 	 *
 	 * @return mixed
 	 */
-	public static function key() {
-		return self::$result->key();
+	public function key() {
+		return $this->result->key();
 	}
 
 	/**
@@ -82,8 +82,8 @@ class Result {
 	 *
 	 * @return array
 	 */
-	public static function current() {
-		$row = self::$result->current();
+	public function current() {
+		$row = $this->result->current();
 		if (is_array($row)) {
 			$return[] = $row;
 		} elseif (method_exists($row, 'toArray')) {
@@ -101,8 +101,8 @@ class Result {
 	 *
 	 * @return array
 	 */
-	public static function get($key = null) {
-		$return = self::current();
+	public function get($key = null) {
+		$return = $this->current();
 		if (!empty($key) && array_key_exists(0, $return)) {
 			if (!array_key_exists($key, $return[0])) {
 				return null;
@@ -117,8 +117,8 @@ class Result {
 	 *
 	 * @return bool
 	 */
-	public static function valid() {
-		return self::$result->valid();
+	public function valid() {
+		return $this->result->valid();
 
 	}
 
@@ -127,8 +127,8 @@ class Result {
 	 *
 	 * @return void
 	 */
-	public static function rewind() {
-		self::$result->rewind();
+	public function rewind() {
+		$this->result->rewind();
 	}
 
 	/**
@@ -136,8 +136,8 @@ class Result {
 	 *
 	 * @return int
 	 */
-	public static function count() {
-		return self::$result->count();
+	public function count() {
+		return $this->result->count();
 	}
 
 	/**
@@ -145,8 +145,8 @@ class Result {
 	 *
 	 * @return int
 	 */
-	public static function hasResult() {
-		return (self::$result->count() > 0 ? true : false);
+	public function hasResult() {
+		return ($this->result->count() > 0 ? true : false);
 	}
 
 	/**
@@ -155,7 +155,7 @@ class Result {
 	 * @return array
 	 * @throws Exception\RuntimeException if any row is not castable to an array
 	 */
-	public static function toArray() {
-		return self::$result->toArray();
+	public function toArray() {
+		return $this->result->toArray();
 	}
 }

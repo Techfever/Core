@@ -1,5 +1,5 @@
 <?php
-namespace Kernel\ServiceFactory;
+namespace Kernel\Service\Initializers;
 
 use Zend\I18n\Translator\Translator;
 use Zend\ServiceManager\FactoryInterface;

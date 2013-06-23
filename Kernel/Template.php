@@ -1,8 +1,6 @@
 <?php
 namespace Kernel;
 
-use Zend\ServiceManager\ServiceManager;
-
 class Template {
 
 	/**
@@ -19,7 +17,7 @@ class Template {
 	 * @var View Manager - Template Path
 	 */
 	private static $_templatemap = array(
-		'layout/layout' => 'Default/main.phtml', 'error/404' => 'Default/Error/404.phtml', 'error/index' => 'Default/Error/index.phtml'
+		'frontend/layout' => 'Default/main.phtml', 'error/404' => 'Default/Error/404.phtml', 'error/index' => 'Default/Error/index.phtml'
 	);
 
 	/**
@@ -37,7 +35,7 @@ class Template {
 	/**
 	 * @var View Manager - Layout
 	 */
-	private static $_layout = 'Techfever/Theme';
+	private static $_layout = 'frontend/layout';
 
 	/**
 	 * @var View Manager - Display Exceptions
@@ -106,14 +104,23 @@ class Template {
 	);
 
 	public static function prepare($config = null) {
-
 		self::$_modulemanager = $config;
-		self::$_templatePath = CORE_PATH . '/Vendor/' . self::$_templatePath;
-		self::$_templatePath = self::$_templatePath . self::$_templatedefault;
 
-		self::$_templatemap = array(
-			'layout/layout' => self::$_templatePath . '/layout.phtml', 'error/404' => self::$_templatePath . '/Error/404.phtml', 'error/index' => self::$_templatePath . '/Error/index.phtml'
-		);
+		$systemconfig = ServiceLocator::getServiceConfig('system');
+		if (is_array($systemconfig) && array_key_exists('system_theme', $systemconfig)) {
+			self::$_templatedefault = $systemconfig['system_theme'];
+		}
+
+		$themelocation = CORE_PATH . '/Vendor/';
+		if (file_exists($themelocation . self::$_templatePath . self::$_templatedefault . '/layout.phtml')) {
+			self::$_templatemap['frontend/layout'] = $themelocation . self::$_templatePath . self::$_templatedefault . '/layout.phtml';
+			if (file_exists($themelocation . self::$_templatePath . self::$_templatedefault . '/Error/404.phtml')) {
+				self::$_templatemap['error/404'] = $themelocation . self::$_templatePath . self::$_templatedefault . '/Error/404.phtml';
+			}
+			if (file_exists($themelocation . self::$_templatePath . self::$_templatedefault . '/Error/index.phtml')) {
+				self::$_templatemap['error/index'] = $themelocation . self::$_templatePath . self::$_templatedefault . '/Error/index.phtml';
+			}
+		}
 
 		self::$_templatepathstack = array(
 			CORE_PATH . '/Kernel/Module/View'
@@ -158,11 +165,12 @@ class Template {
 	public static function getViewManager() {
 		self::$_viewmanager = array(
 				'view_manager' => array(
-						'display_not_found_reason' => self::$_displaynotfoundreason,
-						'display_exceptions' => self::$_displayexceptions,
-						'doctype' => self::$_doctype,
 						'not_found_template' => self::$_notfoundtemplate,
+						'display_not_found_reason' => self::$_displaynotfoundreason,
 						'exception_template' => self::$_exceptiontemplate,
+						'display_exceptions' => self::$_displayexceptions,
+						'layout' => self::$_layout,
+						'doctype' => self::$_doctype,
 						'template_map' => self::$_templatemap,
 						'template_path_stack' => self::$_templatepathstack
 				)
