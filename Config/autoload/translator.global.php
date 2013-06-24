@@ -17,15 +17,9 @@ return array (
 						array (
 								'type' => 'phparray',
 								'text_domain' => 'default',
-								'base_dir' => __DIR__ . '/../../module/Application/language',
+								'base_dir' => CORE_PATH . '/Module/Index/Language',
 								'pattern' => '%s.php' 
 						) 
-				),
-				'default' => array (
-						'type' => 'phparray',
-						'text_domain' => 'default',
-						'base_dir' => __DIR__ . '/../../module/%s/language',
-						'pattern' => '%s.php' 
 				) 
 		) 
 );

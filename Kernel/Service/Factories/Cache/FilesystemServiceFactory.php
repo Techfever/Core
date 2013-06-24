@@ -13,42 +13,42 @@ class FilesystemServiceFactory implements FactoryInterface {
 	 * @return Adapter
 	 */
 	public function createService(ServiceLocatorInterface $serviceLocator) {
-		$config = $serviceLocator->get ( 'Config' );
-		$options = $config ['cachestorage'] ['filesystem'];
-		
-		$cache = StorageFactory::adapterFactory ( 'filesystem' );
-		$cache->setOptions ( $options ['options'] );
-		
-		$pluginConfig = $options ['plugins'];
+		$config = $serviceLocator->get('Config');
+		$options = $config['cachestorage']['filesystem'];
+
+		$cache = StorageFactory::adapterFactory('filesystem');
+		$cache->setOptions($options['options']);
+
+		$pluginConfig = $options['plugins'];
 		$plugin = false;
 		$pluginName = null;
 		$pluginOption = null;
-		if (isset ( $pluginConfig ['clearexpiredbyfactor'] )) {
+		if (isset($pluginConfig['clearexpiredbyfactor'])) {
 			$pluginName = 'clearexpiredbyfactor';
-			$pluginOption = $pluginConfig ['clearexpiredbyfactor'];
+			$pluginOption = $pluginConfig['clearexpiredbyfactor'];
 			$plugin = true;
-		} elseif (isset ( $pluginConfig ['exceptionhandler'] )) {
+		} elseif (isset($pluginConfig['exceptionhandler'])) {
 			$pluginName = 'exceptionhandler';
-			$pluginOption = $pluginConfig ['exceptionhandler'];
+			$pluginOption = $pluginConfig['exceptionhandler'];
 			$plugin = true;
-		} elseif (isset ( $pluginConfig ['ignoreuserabort'] )) {
+		} elseif (isset($pluginConfig['ignoreuserabort'])) {
 			$pluginName = 'ignoreuserabort';
-			$pluginOption = $pluginConfig ['ignoreuserabort'];
+			$pluginOption = $pluginConfig['ignoreuserabort'];
 			$plugin = true;
-		} elseif (isset ( $pluginConfig ['optimizebyfactor'] )) {
+		} elseif (isset($pluginConfig['optimizebyfactor'])) {
 			$pluginName = 'optimizebyfactor';
-			$pluginOption = $pluginConfig ['optimizebyfactor'];
+			$pluginOption = $pluginConfig['optimizebyfactor'];
 			$plugin = true;
-		} elseif (isset ( $pluginConfig ['serializer'] )) {
+		} elseif (isset($pluginConfig['serializer'])) {
 			$pluginName = 'serializer';
-			$pluginOption = $pluginConfig ['serializer'];
+			$pluginOption = $pluginConfig['serializer'];
 			$plugin = true;
 		}
 		if ($plugin) {
-			$plugin = StorageFactory::pluginFactory ( $pluginName, $pluginOption );
-			$cache->addPlugin ( $plugin );
+			$plugin = StorageFactory::pluginFactory($pluginName, $pluginOption);
+			$cache->addPlugin($plugin);
 		}
-		
+
 		return $cache;
 	}
 }

@@ -18,7 +18,7 @@ class Manager {
 		$this->serviceFactories = $this->getService();
 		if ($this->hasService()) {
 			foreach ($this->serviceFactories as $factoryClass => $name) {
-				ServiceLocator::setFactory($name, $factoryClass);
+				ServiceLocator::setServiceClass('factories', $name, $factoryClass);
 			}
 		}
 	}
@@ -43,6 +43,12 @@ class Manager {
 				));
 		$Database->from(array(
 					'ss' => 'system_service'
+				));
+		$Database->where(array(
+					'ss.system_service_status = 1',
+				));
+		$Database->order(array(
+					'system_service_priority ASC', 'system_service_alias ASC'
 				));
 		$Database->setCacheName('system_service');
 		$Database->execute();

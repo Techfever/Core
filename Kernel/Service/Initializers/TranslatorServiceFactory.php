@@ -19,10 +19,14 @@ class TranslatorServiceFactory implements FactoryInterface {
 		$cache = $serviceLocator->get('cache\filesystem');
 		$cacheoption = $config['cachestorage']['filesystem']['options'];
 		$cacheoption['namespace'] = 'translator';
+
 		$cache->setOptions($cacheoption);
 
+		$locale = $config['system']['system_language'];
+		$httpacceptlanguage = Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+
 		$translator->setCache($cache);
-		$translator->setLocale(Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']))->setFallbackLocale('en_US');
+		$translator->setLocale($httpacceptlanguage)->setFallbackLocale($locale);
 
 		return $translator;
 	}

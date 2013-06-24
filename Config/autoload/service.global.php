@@ -7,6 +7,7 @@ return array(
 						'cache\output' => 'Kernel\Service\Factories\Cache\OutputCacheServiceFactory',
 						'cache\capture' => 'Kernel\Service\Factories\Cache\CaptureCacheServiceFactory',
 						'db' => 'Kernel\Service\Factories\DbServiceFactory',
+						'Navigator' => 'Kernel\Service\Initializers\NavigatorServiceFactory'
 				)
 		)
 );

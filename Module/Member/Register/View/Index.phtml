@@ -1,0 +1,40 @@
+<div class="header"><div><?php echo $this->escapeHtml($this->translate($this->title)); ?></div></div>
+<div class="content">
+	<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url(null, array(
+					'Index'
+				)));
+$form->prepare();
+$formLabel = $this->plugin('formLabel');
+
+echo $this->form()->openTag($form);
+	?>
+<div class="form_element">
+<?php
+$profile_designation = $form->get('profile_designation');
+echo $this->formLabel($profile_designation) . ':';
+echo $this->formSelect($profile_designation);
+echo $this->formElementErrors($profile_designation);
+?>
+</div>
+<?php
+echo $this->formRow($form->get('profile_fullname'));
+echo $this->formRow($form->get('profile_firstname'));
+echo $this->formRow($form->get('profile_lastname'));
+echo $this->formRow($form->get('profile_nric_passport'));
+echo $this->formRow($form->get('profile_gender'));
+echo $this->formRow($form->get('profile_dob'));
+echo $this->formRow($form->get('profile_nationality'));
+echo $this->formRow($form->get('profile_email_address'));
+echo $this->formRow($form->get('profile_mobile_no'));
+echo $this->formRow($form->get('profile_telephone_no'));
+echo $this->formRow($form->get('profile_office_no'));
+echo $this->formRow($form->get('profile_fax_no'));
+echo $this->formRow($form->get('register_captcha'));
+echo $this->formHidden($form->get('subaction'));
+echo $this->formSubmit($form->get('action'));
+echo $this->form()->closeTag();
+?>
+	<div class="line2"></div>
+</div>

@@ -11,6 +11,7 @@ class Startup {
 	 * @return void
 	 */
 	public static function prepare() {
+
 		// Run the application!
 		//Mvc\Application::init(require CORE_PATH . '/config/application.config.php')->run();
 		$configuration = require CORE_PATH . '/config/application.config.php';
@@ -19,7 +20,7 @@ class Startup {
 		$serviceManager->setService('ApplicationConfig', $configuration);
 		$serviceManager->get('ModuleManager')->loadModules();
 
-		ServiceLocator::configureServiceManager($serviceManager);
+		ServiceLocator::setServiceManager($serviceManager);
 	}
 
 	/**

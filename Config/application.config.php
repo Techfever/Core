@@ -2,7 +2,7 @@
 return array(
     // This should be an array of module namespaces used in the application.
     'modules' => array(
-    		'Module'
+    		'Index'
     ),
 
     // These are various options for the listeners attached to the Module
@@ -12,7 +12,7 @@ return array(
         // namespace, the value of that key the specific path to that module's
         // Module class.
         'module_paths' => array(
-            './Kernel',
+            './Module',
             './Vendor',
         ),
 
@@ -26,7 +26,7 @@ return array(
         // Whether or not to enable a configuration cache.
         // If enabled, the merged configuration will be cached and used in
         // subsequent requests.
-        'config_cache_enabled' => false,
+        'config_cache_enabled' => CACHE_ENABLE,
 
         // The key used to create the configuration cache file name.
         //'config_cache_key' => $stringKey,

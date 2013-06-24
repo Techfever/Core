@@ -6,6 +6,7 @@
 define('CORE_PATH', getcwd());
 define('KERNEL_PATH', CORE_PATH . '/Kernel');
 define('CONFIG_PATH', CORE_PATH . '/Config');
+define('CACHE_ENABLE', False);
 
 // use library generated autoloader
 

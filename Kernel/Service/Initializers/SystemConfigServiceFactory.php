@@ -9,10 +9,8 @@ use Kernel\ServiceLocator;
 /**
  * Phpsetting.
  */
-class SystemConfigServiceFactory implements FactoryInterface
-{
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
+class SystemConfigServiceFactory implements FactoryInterface {
+	public function createService(ServiceLocatorInterface $serviceLocator) {
 		$configuration = array();
 		$Database = new Database('select');
 		$Database->columns(array(
@@ -32,10 +30,11 @@ class SystemConfigServiceFactory implements FactoryInterface
 
 		if (is_array($configuration)) {
 			$configuration = array(
-				'system' => $configuration
+				'system' => $configuration,
+				'theme' => array('default'=>$configuration['system_theme'])
 			);
 			ServiceLocator::setServiceConfig($configuration);
 		}
-        return true;
-    }
+		return true;
+	}
 }

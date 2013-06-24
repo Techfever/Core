@@ -1,205 +1,163 @@
 <?php
 namespace Kernel;
 
-class Template {
+use Kernel\ServiceLocator;
+use Kernel\Template\TemplateInterface;
+use Kernel\Template\Module\Router;
+use Kernel\Template\Module\Controllers;
+use Kernel\Template\Module\ViewManager;
+
+class Template extends TemplateInterface {
 
 	/**
-	 * @var View Manager - Template Path
-	 */
-	private static $_templatePath = 'Techfever/Theme/';
+	 * @var Theme Developer
+	 **/
+	private $_developer = 'Techfever';
 
 	/**
-	 * @var View Manager - Template Default
-	 */
-	private static $_templatedefault = 'Default';
+	 * @var Theme Developer
+	 **/
+	private $_theme = 'Default';
 
 	/**
-	 * @var View Manager - Template Path
-	 */
-	private static $_templatemap = array(
-		'frontend/layout' => 'Default/main.phtml', 'error/404' => 'Default/Error/404.phtml', 'error/index' => 'Default/Error/index.phtml'
+	 * @var Module Manager
+	 **/
+	private $_modulemanager = array(
+		'router' => array(), 'view_manager' => array(), 'controllers' => array(),
 	);
 
 	/**
-	 * @var View Manager - Template Path Stack
-	 */
-	private static $_templatepathstack = array(
-		'../View',
-	);
+	 * @var Template Configuration
+	 **/
+	private $_configuration = array();
 
 	/**
-	 * @var View Manager - Default Templates Suffix
-	 */
-	private static $_defaulttemplatesuffix = 'phtml';
+	 * @var Router Configuration
+	 **/
+	private $router = null;
 
 	/**
-	 * @var View Manager - Layout
-	 */
-	private static $_layout = 'frontend/layout';
+	 * @var View Manager Configuration
+	 **/
+	private $viewmanager = null;
 
 	/**
-	 * @var View Manager - Display Exceptions
-	 */
-	private static $_displayexceptions = True;
+	 * @var Controllers Configuration
+	 **/
+	private $controllers = null;
 
 	/**
-	 * @var View Manager - Exception Template
-	 */
-	private static $_exceptiontemplate = 'error/index';
+	 * Constructor
+	 *
+	 * @param  null|array $config
+	 **/
+	public function __construct() {
+	}
 
 	/**
-	 * @var View Manager - Display Not Found Reason
-	 */
-	private static $_displaynotfoundreason = True;
+	 * Prepare Template Config
+	 * 
+	 * @return void
+	 **/
+	public function prepare() {
+		$dbconfig = array(
+			'theme' => array()
+		);
 
-	/**
-	 * @var View Manager - Not Found template
-	 */
-	private static $_notfoundtemplate = 'error/404';
-
-	/**
-	 * @var View Manager - Doctype
-	 */
-	private static $_doctype = 'HTML5';
-
-	/**
-	 * @var View Manager
-	 */
-	private static $_viewmanager = array(
-		'view_manager' => array(
-			'display_not_found_reason', 'display_exceptions', 'doctype', 'not_found_template', 'exception_template', 'template_map', 'template_path_stack', 'default_template_suffix'
-		)
-	);
-
-	/**
-	 * @var Controller - Class
-	 */
-	private static $_invokables = array(
-		'Module\Controller\Action' => 'Module\Controller\ActionController'
-	);
-
-	/**
-	 * @var Controller
-	 */
-	private static $_controllers = array(
-		'controllers' => array(
-			'invokables' => array()
-		)
-	);
-
-	/**
-	 * @var View Manager
-	 */
-	private static $_router = array(
-		'router' => array(
-			'routes' => array()
-		)
-	);
-
-	/**
-	 * @var View Manager
-	 */
-	private static $_modulemanager = array(
-		'controllers' => array(), 'router' => array(), 'view_manager' => array()
-	);
-
-	public static function prepare($config = null) {
-		self::$_modulemanager = $config;
-
-		$systemconfig = ServiceLocator::getServiceConfig('system');
-		if (is_array($systemconfig) && array_key_exists('system_theme', $systemconfig)) {
-			self::$_templatedefault = $systemconfig['system_theme'];
+		/* Get Db theme */
+		$DbTheme = new Database('select');
+		$DbTheme->columns(array(
+					'name' => 'theme_name', 'developer' => 'theme_developer', 'key' => 'theme_key', 'doctype' => 'theme_doctype'
+				));
+		$DbTheme->from(array(
+					't' => 'theme'
+				));
+		$DbTheme->join(array(
+					'ss' => 'system_configuration'
+				), 't.theme_key = ss.system_configuration_value', array(
+					'system_key' => 'system_configuration_key'
+				));
+		$DbTheme->where(array(
+					'ss.system_configuration_key' => 'system_theme',
+				));
+		$DbTheme->limit(1);
+		$DbTheme->setCacheName('theme_configuration');
+		$DbTheme->execute();
+		if ($DbTheme->hasResult()) {
+			$result = $DbTheme->toArray();
+			$dbconfig['theme'] = $result[0];
+		}
+		if (is_array($dbconfig)) {
+			$this->_configuration = $dbconfig;
+			$this->_templatedefault = $dbconfig['theme']['key'];
+			$this->_theme = $dbconfig['theme']['name'];
+			$this->_developer = $dbconfig['theme']['developer'];
 		}
 
-		$themelocation = CORE_PATH . '/Vendor/';
-		if (file_exists($themelocation . self::$_templatePath . self::$_templatedefault . '/layout.phtml')) {
-			self::$_templatemap['frontend/layout'] = $themelocation . self::$_templatePath . self::$_templatedefault . '/layout.phtml';
-			if (file_exists($themelocation . self::$_templatePath . self::$_templatedefault . '/Error/404.phtml')) {
-				self::$_templatemap['error/404'] = $themelocation . self::$_templatePath . self::$_templatedefault . '/Error/404.phtml';
-			}
-			if (file_exists($themelocation . self::$_templatePath . self::$_templatedefault . '/Error/index.phtml')) {
-				self::$_templatemap['error/index'] = $themelocation . self::$_templatePath . self::$_templatedefault . '/Error/index.phtml';
-			}
-		}
+		$configuration = array_merge($this->_modulemanager, $this->_configuration);
+		$this->router = new Router($configuration);
+		$this->controllers = new Controllers($configuration);
+		$this->viewmanager = new ViewManager($configuration, $this->controllers->getMethod());
+	}
 
-		self::$_templatepathstack = array(
-			CORE_PATH . '/Kernel/Module/View'
+	/**
+	 * Get Theme Default
+	 * 
+	 * @return string
+	 **/
+	public function getTheme() {
+		return $this->_templatedefault;
+	}
+
+	/**
+	 * Get Theme Name
+	 * 
+	 * @return string
+	 **/
+	public function getThemeName() {
+		return $this->_theme;
+	}
+
+	/**
+	 * Get Theme Developer
+	 * 
+	 * @return string
+	 **/
+	public function getDeveloper() {
+		return $this->_developer;
+	}
+
+	/**
+	 * Get Module Manager Config
+	 * 
+	 * @return array module.config
+	 **/
+	public function getConfig() {
+
+		$router = array(
+			'router' => $this->router->getConfig()
 		);
-	}
+		$this->_modulemanager = array_merge($this->_modulemanager, $router);
 
-	public static function getConfig() {
-		return self::getModuleManager();
-	}
-
-	public static function getModuleManager() {
-		$viewmanager = self::getViewManager();
-		self::$_modulemanager = array_merge(self::$_modulemanager, $viewmanager);
-
-		$controllers = self::getControllers();
-		self::$_modulemanager = array_merge(self::$_modulemanager, $controllers);
-
-		//$router = self::getRouter();
-		//self::$_modulemanager = array_merge(self::$_modulemanager, $router);
-
-		return self::$_modulemanager;
-	}
-
-	public static function getRouter() {
-		self::$_router = array(
-			'router' => array(
-				'routes' => array()
-			)
+		$controllers = array(
+			'controllers' => $this->controllers->getConfig()
 		);
-		return self::$_router;
-	}
+		$this->_modulemanager = array_merge($this->_modulemanager, $controllers);
 
-	public static function getControllers() {
-		self::$_controllers = array(
-			'controllers' => array(
-				'invokables' => self::$_invokables
-			)
+		$viewmanager = array(
+			'view_manager' => $this->viewmanager->getConfig()
 		);
-		return self::$_controllers;
+		$this->_modulemanager = array_merge($this->_modulemanager, $viewmanager);
+		//print_r($this->_modulemanager);
+		return $this->_modulemanager;
 	}
 
-	public static function getViewManager() {
-		self::$_viewmanager = array(
-				'view_manager' => array(
-						'not_found_template' => self::$_notfoundtemplate,
-						'display_not_found_reason' => self::$_displaynotfoundreason,
-						'exception_template' => self::$_exceptiontemplate,
-						'display_exceptions' => self::$_displayexceptions,
-						'layout' => self::$_layout,
-						'doctype' => self::$_doctype,
-						'template_map' => self::$_templatemap,
-						'template_path_stack' => self::$_templatepathstack
-				)
-		);
-		return self::$_viewmanager;
-	}
-
-	public static function getDoctype() {
-		if (!self::checkDoctype(self::$_doctype)) {
-			self::$_doctype = 'HTML5';
-		}
-		return self::$_doctype;
-	}
-
-	public static function setDoctype($value) {
-		if (!self::checkDoctype($value)) {
-			self::$_doctype = 'HTML5';
-		} else {
-			self::$_doctype = strtoupper($value);
-		}
-	}
-
-	public static function checkDoctype($value) {
-		$doctype_array = array(
-			'XHTML1_STRICT', 'XHTML1_TRANSITIONAL', 'XHTML1_FRAMESET', 'XHTML1_RDFA', 'XHTML1_RDFA11', 'XHTML_BASIC1', 'XHTML5', 'HTML4_STRICT', 'HTML4_LOOSE', 'HTML4_FRAMESET', 'HTML5', 'CUSTOM_XHTML', 'CUSTOM'
-		);
-		if (in_array(strtoupper($value), $doctype_array)) {
-			return true;
-		}
-		return false;
+	/**
+	 * Reseet
+	 * 
+	 * @void
+	 **/
+	public function reset() {
+		ServiceLocator::setServiceConfig($this->getConfig());
 	}
 }

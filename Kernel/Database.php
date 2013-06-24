@@ -3,6 +3,8 @@
 namespace Kernel;
 
 use Kernel\Database\Result;
+use Kernel\Exception;
+use Zend\Db\Adapter\Adapter;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
@@ -10,11 +12,12 @@ use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Update;
 use Zend\Db\Sql\Delete;
-use Zend\Db\Sql\Predicate\PredicateSet;
+use Zend\Db\Sql\Predicate;
 use Zend\Db\Sql\TableIdentifier;
 use Zend\Db\Sql\Having;
 use Zend\Db\Sql\Where;
-use Zend\Db\ResultSet\Exception;
+use Zend\Cache\Storage\Adapter\Filesystem;
+use Zend\Cache\StorageFactory;
 
 class Database extends Result {
 	/**#@+
@@ -55,7 +58,7 @@ class Database extends Result {
 	 * @var adapter
 	 *
 	 */
-	private static $adapter = null;
+	private $adapter = null;
 
 	/**
 	 * Cache Adapter
@@ -63,7 +66,7 @@ class Database extends Result {
 	 * @var adapter
 	 *
 	 */
-	private static $cache = null;
+	private $cache = null;
 
 	/**
 	 * Cache Name
@@ -71,168 +74,168 @@ class Database extends Result {
 	 * @var cachename
 	 *
 	 */
-	private static $cachename = null;
+	private $cachename = null;
 
 	/** 
 	 * Query Action
 	 * 
 	 * @var action 
 	 */ 
-	private static $action = null;
+	private $action = null;
 
 	/** 
 	 * Query Columns
 	 * 
 	 * @var columns 
 	 */ 
-	private static $columns = null;
+	private $columns = null;
 
 	/** 
 	 * Query Prefix Columns
 	 * 
 	 * @var prefixColumnsWithTable 
 	 */ 
-	private static $prefixColumnsWithTable = null;
+	private $prefixColumnsWithTable = null;
 
 	/** 
 	 * Query From
 	 * 
 	 * @var from 
 	 */ 
-	private static $from = null;
+	private $from = null;
 
 	/** 
 	 * Query Table
 	 * 
 	 * @var table 
 	 */ 
-	private static $table = null;
+	private $table = null;
 
 	/** 
 	 * Query Join
 	 * 
 	 * @var join 
 	 */ 
-	private static $join = null;
+	private $join = array();
 
 	/** 
 	 * Query Join On
 	 * 
 	 * @var joinon 
 	 */ 
-	private static $joinon = null;
+	private $joinon = array();
 
 	/** 
 	 * Query Join Column
 	 * 
 	 * @var joincolumns 
 	 */ 
-	private static $joincolumns = null;
+	private $joincolumns = array();
 
 	/** 
 	 * Query Join Type
 	 * 
 	 * @var jointype 
 	 */ 
-	private static $jointype = null;
+	private $jointype = array();
 
 	/** 
 	 * Query Set
 	 * 
 	 * @var set 
 	 */ 
-	private static $set = null;
+	private $set = null;
 
 	/** 
 	 * Query Set Flag
 	 * 
 	 * @var setflag
 	 */ 
-	private static $setflag = null;
+	private $setflag = null;
 
 	/** 
 	 * Query Into
 	 * 
 	 * @var into 
 	 */ 
-	private static $into = null;
+	private $into = null;
 
 	/** 
 	 * Query Values
 	 * 
 	 * @var values 
 	 */ 
-	private static $values = null;
+	private $values = null;
 
 	/** 
 	 * Query Values Flag
 	 * 
 	 * @var valuesflag 
 	 */ 
-	private static $valuesflag = null;
+	private $valuesflag = null;
 
 	/** 
 	 * Query Where
 	 * 
 	 * @var where 
 	 */ 
-	private static $where = null;
+	private $where = null;
 
 	/** 
 	 * Query Where Combination
 	 * 
 	 * @var combination 
 	 */ 
-	private static $wherecombination = null;
+	private $wherecombination = null;
 
 	/** 
 	 * Query Group
 	 * 
 	 * @var group 
 	 */ 
-	private static $group = null;
+	private $group = null;
 
 	/** 
 	 * Query Having
 	 * 
 	 * @var having 
 	 */ 
-	private static $having = null;
+	private $having = null;
 
 	/** 
 	 * Query Having Combination
 	 * 
 	 * @var havingcombination 
 	 */ 
-	private static $havingcombination = null;
+	private $havingcombination = null;
 
 	/** 
 	 * Query Order
 	 * 
 	 * @var order 
 	 */ 
-	private static $order = null;
+	private $order = null;
 
 	/** 
 	 * Query Limit
 	 * 
 	 * @var limit 
 	 */ 
-	private static $limit = null;
+	private $limit = null;
 
 	/** 
 	 * Query Offset
 	 * 
 	 * @var offset 
 	 */ 
-	private static $offset = null;
+	private $offset = null;
 
 	/** 
 	 * Query Affected Rows
 	 * 
 	 * @var affectedrows 
 	 */ 
-	private static $affectedrows = null;
+	private $affectedrows = null;
 
 	/**
 	 * SQL Statement
@@ -240,7 +243,7 @@ class Database extends Result {
 	 * @var sql
 	 *
 	 */
-	private static $sql = null;
+	private $sql = null;
 
 	/**
 	 * Constructor
@@ -413,10 +416,10 @@ class Database extends Result {
 		if (is_array($join) && (!is_string(key($join)) || count($join) !== 1)) {
 			throw new Exception\RuntimeException(sprintf("join() expects '%s' as an array is a single element associative array", array_shift($join)));
 		}
-		$this->join = $join;
-		$this->joinon = $on;
-		$this->joincolumns = $columns;
-		$this->jointype = $type;
+		$this->join[] = $join;
+		$this->joinon[] = $on;
+		$this->joincolumns[] = $columns;
+		$this->jointype[] = $type;
 	}
 
 	/**
@@ -532,7 +535,7 @@ class Database extends Result {
 		if (!is_int($limit)) {
 			throw new Exception\RuntimeException('$limit must be a int');
 		}
-		$this->limit = $limit;
+		$this->limit = (int) $limit;
 	}
 
 	/**
@@ -576,7 +579,9 @@ class Database extends Result {
 			} elseif ($this->action == 'delete' || $this->action == 'update' || $this->action == 'insert') {
 				$this->affectedrows = $resultdata->getAffectedRows();
 
-				$this->cache->clearByPrefix($this->cachename);
+				if ($this->hasCacheName()) {
+					$this->cache->clearByPrefix($this->cachename);
+				}
 			}
 		}
 		return null;
@@ -599,8 +604,11 @@ class Database extends Result {
 			if (!empty($this->table)) {
 				$sql->from($this->table);
 			}
-			if (!empty($this->join)) {
-				$sql->join($this->join, $this->joinon, $this->joincolumns, $this->jointype);
+			if (!empty($this->join) && is_array($this->join)) {
+				$countjoin = count($this->join);
+				for ($i = 0; $i < $countjoin; $i++) {
+					$sql->join($this->join[$i], $this->joinon[$i], $this->joincolumns[$i], $this->jointype[$i]);
+				}
 			}
 			if (!empty($this->where)) {
 				$sql->where($this->where, $this->wherecombination);
@@ -622,8 +630,8 @@ class Database extends Result {
 			}
 		} elseif ($this->action == 'insert') {
 			$sql = new \Zend\Db\Sql\Insert;
-			if (!empty($this->into)) {
-				$sql->into($this->into);
+			if (!empty($this->table)) {
+				$sql->into($this->table);
 			}
 			if (!empty($this->columns)) {
 				$sql->columns($this->columns);
@@ -672,23 +680,70 @@ class Database extends Result {
 	}
 
 	public function prepareAdapter() {
-		$this->adapter = ServiceLocator::getServiceManager('db');
-		if (!is_object($this->adapter)) {
+		$configfile = CORE_PATH . '/Config/autoload/db.global.php';
+		if (!file_exists($configfile)) {
+			throw new Exception\RuntimeException(sprintf('Db "%s" file not exist', $configfile));
+		}
+		$config = include $configfile;
+		if (!is_array($config)) {
+			throw new Exception\RuntimeException(sprintf('Db "%s" file configuration invalid', $configfile));
+		}
+		$options = $config['db'];
+		$this->adapter = new Adapter($options);
+		if (!$this->adapter instanceof Adapter) {
 			throw new Exception\RuntimeException('Zend\Db\Adapter object not found');
 		}
 		return $this->adapter;
 	}
 
 	public function prepareCache() {
-		$this->cache = ServiceLocator::getServiceManager('cache\filesystem');
-		$config = ServiceLocator::getServiceConfig('cachestorage', 'filesystem');
-		$cacheoption = $config['options'];
-		$cacheoption['cache_dir'] = 'Data/Cache/Database';
-		$cacheoption['namespace'] = '';
-		$cacheoption['dir_level'] = 0;
-		$cacheoption['namespace_separator'] = '_';
-		$this->cache->setOptions($cacheoption);
-		if (!is_object($this->cache)) {
+		$configfile = CORE_PATH . '/Config/autoload/cache.storage.global.php';
+		if (!file_exists($configfile)) {
+			throw new Exception\RuntimeException(sprintf('Cache "%s" file not exist', $configfile));
+		}
+		$config = include $configfile;
+		if (!is_array($config)) {
+			throw new Exception\RuntimeException(sprintf('Cache "%s" file configuration invalid', $configfile));
+		}
+
+		$options = $config['cachestorage']['filesystem'];
+		$options['options']['namespace'] = 'database';
+		$options['options']['namespace_separator'] = '_';
+
+		$cache = StorageFactory::adapterFactory('filesystem');
+		$cache->setOptions($options['options']);
+
+		$pluginConfig = $options['plugins'];
+		$plugin = false;
+		$pluginName = null;
+		$pluginOption = null;
+		if (isset($pluginConfig['clearexpiredbyfactor'])) {
+			$pluginName = 'clearexpiredbyfactor';
+			$pluginOption = $pluginConfig['clearexpiredbyfactor'];
+			$plugin = true;
+		} elseif (isset($pluginConfig['exceptionhandler'])) {
+			$pluginName = 'exceptionhandler';
+			$pluginOption = $pluginConfig['exceptionhandler'];
+			$plugin = true;
+		} elseif (isset($pluginConfig['ignoreuserabort'])) {
+			$pluginName = 'ignoreuserabort';
+			$pluginOption = $pluginConfig['ignoreuserabort'];
+			$plugin = true;
+		} elseif (isset($pluginConfig['optimizebyfactor'])) {
+			$pluginName = 'optimizebyfactor';
+			$pluginOption = $pluginConfig['optimizebyfactor'];
+			$plugin = true;
+		} elseif (isset($pluginConfig['serializer'])) {
+			$pluginName = 'serializer';
+			$pluginOption = $pluginConfig['serializer'];
+			$plugin = true;
+		}
+		if ($plugin) {
+			$plugin = StorageFactory::pluginFactory($pluginName, $pluginOption);
+			$cache->addPlugin($plugin);
+		}
+		$this->cache = $cache;
+		if (!$this->cache instanceof Filesystem) {
 			throw new Exception\RuntimeException('Zend\Cache object not found');
 		}
 		return $this->cache;

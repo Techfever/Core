@@ -13,11 +13,11 @@ class CaptureCacheServiceFactory implements FactoryInterface {
 	 * @return Adapter
 	 */
 	public function createService(ServiceLocatorInterface $serviceLocator) {
-		$config = $serviceLocator->get ( 'Config' );
-		$options = $config ['cachepattern'] ['capture'];
-		
-		$pattern = PatternFactory::factory ( 'capture', $options ['options'] );
-		
+		$config = $serviceLocator->get('Config');
+		$options = $config['cachepattern']['capture'];
+
+		$pattern = PatternFactory::factory('capture', $options['options']);
+
 		return $pattern;
 	}
 }

@@ -66,6 +66,7 @@ class HelperPluginManager extends AbstractPluginManager
         'htmllink'            => 'Zend\View\Helper\HtmlLink',
         'htmlimage'           => 'Zend\View\Helper\HtmlImage',
         'htmltags'            => 'Zend\View\Helper\HtmlTags',
+        'contenttitle'        => 'Zend\View\Helper\ContentTitle',
         'inlinescript'        => 'Zend\View\Helper\InlineScript',
         'json'                => 'Zend\View\Helper\Json',
         'layout'              => 'Zend\View\Helper\Layout',

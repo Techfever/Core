@@ -3,4 +3,5 @@
 /.project
 /.buildpath
 /composer.lock
-/vendor
+
+/.gitignore

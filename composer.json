@@ -17,6 +17,7 @@
 	],
 	"require" : {
 		"Techfever/Theme" : "dev-master",
+		"Techfever/Javascript" : "dev-master",
 		"php" : ">=5.3.14"
 	},
 	"minimum-stability" : "dev",
@@ -24,6 +25,10 @@
 			"name" : "Techfever/Theme",
 			"type" : "git",
 			"url" : "https://github.com/Techfever/Theme.git"
+		},{
+			"name" : "Techfever/Javascript",
+			"type" : "git",
+			"url" : "https://github.com/Techfever/Javascript.git"
 		}
 	],
 	"config" : {

@@ -11,18 +11,24 @@
  * file.
  */
 
-return array (
-		'cachepattern' => array (
-				'output' => array (
-						'options' => array (
-								'storage' => 'filesystem' ,
+return array(
+		'cachepattern' => array(
+				'output' => array(
+						'options' => array(
+								'storage' => array(
+									'adapter' => array(
+										'name' => 'filesystem', 'options' => array(
+											'namespace' => 'output', 'namespace_separator' => '_', 'cache_dir' => 'Data/Cache', 'readable' => CACHE_ENABLE, 'writable' => CACHE_ENABLE,
+										)
+									)
+								),
 								'cache_output' => true,
-						) 
+						)
 				),
-				'capture' => array (
-						'options' => array (
-								'public_dir' => __DIR__ 
-						) 
-				) 
-		) 
+				'capture' => array(
+					'options' => array(
+						'public_dir' => __DIR__
+					)
+				)
+		)
 );

@@ -8,10 +8,8 @@ use Kernel\Service\Manager;
 /**
  * Phpsetting.
  */
-class KernelServiceFactory implements FactoryInterface
-{
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        return new Manager();
-    }
+class KernelServiceFactory implements FactoryInterface {
+	public function createService(ServiceLocatorInterface $serviceLocator) {
+		return new Manager( $serviceLocator);
+	}
 }
