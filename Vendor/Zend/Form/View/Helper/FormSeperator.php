@@ -12,14 +12,13 @@ namespace Zend\Form\View\Helper;
 use Zend\Form\ElementInterface;
 use Zend\Form\Exception;
 
-class FormDisplay extends AbstractHelper {
+class FormSeperator extends AbstractHelper {
 	/**
 	 * Attributes valid for the input tag
 	 *
 	 * @var array
 	 */
 	protected $validTagAttributes = array (
-			'form' => true,
 			'name' => true,
 			'id' => true,
 			'class' => true 
@@ -43,7 +42,7 @@ class FormDisplay extends AbstractHelper {
 		$content = ( string ) $element->getValue ();
 		$escapeHtml = $this->getEscapeHtmlHelper ();
 		
-		return sprintf ( '<span %s>%s</span>', $this->createAttributesString ( $attributes ), $escapeHtml ( $content ) );
+		return sprintf ( '<div %s>%s</div>', $this->createAttributesString ( $attributes ), $escapeHtml ( $content ) );
 	}
 	
 	/**

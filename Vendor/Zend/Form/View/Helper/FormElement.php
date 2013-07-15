@@ -194,8 +194,8 @@ class FormElement extends BaseAbstractHelper
             return $helper($element);
         }
 
-        if ('display' == $type) {
-            $helper = $renderer->plugin('form_display');
+        if ('seperator' == $type) {
+            $helper = $renderer->plugin('form_seperator');
             return $helper($element);
         }
 

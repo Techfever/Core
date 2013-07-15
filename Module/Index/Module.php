@@ -57,7 +57,9 @@ class Module {
 				'Vendor/Techfever/Theme/' . $theme['default'] . '/CSS/navigator.css',
 				'Vendor/Techfever/Theme/' . $theme['default'] . '/CSS/right.css',
 				'Vendor/Techfever/Theme/' . $theme['default'] . '/CSS/boxes.css',
-				'Vendor/Techfever/Theme/' . $theme['default'] . '/CSS/breadcrumb.css'
+				'Vendor/Techfever/Theme/' . $theme['default'] . '/CSS/breadcrumb.css',
+				'Vendor/Techfever/Theme/' . $theme['default'] . '/CSS/form.css',
+				'Vendor/Techfever/Theme/' . $theme['default'] . '/CSS/datatable.css'
 		);
 		$javascript = array(
 			'Vendor/Techfever/Javascript/jquery/html5.js', 'Vendor/Techfever/Javascript/jquery/bootstrap.min.js', 'Vendor/Techfever/Javascript/jquery/jquery-1.9.1.js'

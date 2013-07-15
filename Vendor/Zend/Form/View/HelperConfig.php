@@ -71,7 +71,7 @@ class HelperConfig implements ConfigInterface
         'formtime'                => 'Zend\Form\View\Helper\FormTime',
         'formurl'                 => 'Zend\Form\View\Helper\FormUrl',
         'formweek'                => 'Zend\Form\View\Helper\FormWeek',
-   		'formdisplay'             => 'Zend\Form\View\Helper\FormDisplay',
+   		'formseperator'           => 'Zend\Form\View\Helper\FormSeperator',
          );
 
     /**

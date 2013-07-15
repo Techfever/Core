@@ -123,6 +123,13 @@ class Input extends Form {
 					)
 			) ); 
 		$this->add ( array (
+					'name' => 'profileseperator',
+					'type' => 'Seperator',
+					'attributes' => array (
+							'class' => 'line2'
+					)
+			) ); 
+		$this->add ( array (
 					'name' => 'register_captcha',
 					'type' => 'Captcha',
 				     'options' => array(
@@ -137,6 +144,13 @@ class Input extends Form {
 				             	'ImgUrl' => $_SERVER['HTTP_REFERER'] . 'Image/Captcha'
 							)),
 				     ),
+			) ); 
+		$this->add ( array (
+					'name' => 'buttonseperator',
+					'type' => 'Seperator',
+					'attributes' => array (
+							'class' => 'line2'
+					)
 			) ); 
 		$this->add ( array (
 				'name' => 'subaction',
