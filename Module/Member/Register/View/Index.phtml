@@ -1,205 +1,72 @@
-<?php
-use Zend\Captcha;
-?><div class="header"><div><?php echo $this->escapeHtml($this->translate($this->title)); ?></div></div>
+<div class="header"><div><?php echo $this->escapeHtml($this->translate($this->title)); ?></div></div>
 <div class="content">
-	<?php
+<?php
 $form = $this->form;
-$form->setAttribute('action', $this->url(null, array(
-					'Index'
-				)));
-$form->prepare();
-echo $this->form()->openTag($form);
-	?>	
-<table border="0" cellspacing="0" cellpadding="0" class="form" style="width: 100%;">
+echo $form->openTag();
+?><table class="form">
 <?php
-	$formLabel = $this->plugin('formLabel');
-	$jsscript = false;
-	foreach ($form->getElements() as $elements_key => $elements) {
-		$field = $form->get($elements_key);
-		if (is_object($field)) {
-			$elements = get_class($elements);
-			$label = false;
-			$seperate = false;
-			$captcha = false;
-			$attributes = null;
-			$view = null;
-			switch ($elements) {
-				case 'Zend\Form\Element\Button':
-					$label = true;
-					$view = 'formButton';
-					break;
-				case 'Zend\Form\Element\Captcha':
-					$label = true;
-					$view = 'formCaptcha';
-					$field
-							->setCaptcha(
-									new Captcha\Image(
-											array(
-												'wordLen' => 6, 'font' => KERNEL_PATH . '/Font/arial.ttf', 'width' => 140, 'height' => 50, 'dotNoiseLevel' => 30, 'lineNoiseLevel' => 3, 'ImgDir' => CORE_PATH . '/Data/Captcha', 'ImgUrl' => $this->serverUrl($this->baseHref()) . '/Image/Captcha'
-											)));
-					$captcha = true;
-					break;
-				case 'Zend\Form\Element\Checkbox':
-					$label = true;
-					$view = 'formCheckbox';
-					break;
-				case 'Zend\Form\Element\Collection':
-					$label = true;
-					$view = 'formCollection';
-					break;
-				case 'Zend\Form\Element\Color':
-					$label = true;
-					$view = 'formColor';
-					break;
-				case 'Zend\Form\Element\Csrf':
-					$label = true;
-					$view = 'formCsrf';
-					break;
-				case 'Zend\Form\Element\Date':
-					$label = true;
-					$view = 'formDate';
-					$attributes = $field->getAttributes();
-					$jsscript .= '<script>
-								$(function() {
-								$( "#' . $attributes['id'] . '" ).datepicker();
-								});
-								</script>';
-					break;
-				case 'Zend\Form\Element\DateSelect':
-					$label = true;
-					$view = 'formDateSelect';
-					break;
-				case 'Zend\Form\Element\MonthSelect':
-					$label = true;
-					$view = 'formMonthSelect';
-					break;
-				case 'Zend\Form\Element\DateTime':
-					$label = true;
-					$view = 'formDateTime';
-					break;
-				case 'Zend\Form\Element\DateTimeLocal':
-					$label = true;
-					$view = 'formDateTimeLocal';
-					break;
-				case 'Zend\Form\Element\DateTimeSelect':
-					$label = true;
-					$view = 'formDateTimeSelect';
-					break;
-				case 'Zend\Form\Element\Email':
-					$label = true;
-					$view = 'formEmail';
-					break;
-				case 'Zend\Form\Element\File':
-					$label = true;
-					$view = 'formFile';
-					break;
-				case 'Zend\Form\Element\Hidden':
-					$view = 'formHidden';
-					break;
-				case 'Zend\Form\Element\Image':
-					$label = true;
-					$view = 'formImage';
-					break;
-				case 'Zend\Form\Element\Month':
-					$label = true;
-					$view = 'formMonth';
-					break;
-				case 'Zend\Form\Element\MonthSelect':
-					$label = true;
-					$view = 'formMonthSelect';
-					break;
-				case 'Zend\Form\Element\MultiCheckbox':
-					$label = true;
-					$view = 'formMultiCheckbox';
-					break;
-				case 'Zend\Form\Element\Number':
-					$label = true;
-					$view = 'formNumber';
-					break;
-				case 'Zend\Form\Element\Password':
-					$label = true;
-					$view = 'formPassword';
-					break;
-				case 'Zend\Form\Element\Radio':
-					$label = true;
-					$view = 'formRadio';
-					break;
-				case 'Zend\Form\Element\Range':
-					$label = true;
-					$view = 'formRange';
-					break;
-				case 'Zend\Form\Element\Select':
-					$label = true;
-					$view = 'formSelect';
-					break;
-				case 'Zend\Form\Element\Submit':
-					$view = 'formSubmit';
-					break;
-				case 'Zend\Form\Element\Text':
-					$label = true;
-					$view = 'formText';
-					$attributes = $field->getAttributes();
-					if(array_key_exists('type', $attributes) && strtolower($attributes['type']) == "date"){
-					$jsscript .= '<script>
-								$(function() {
-								$( "#' . $attributes['id'] . '" ).datepicker();
-								});
-								</script>';
-					}
-					break;
-				case 'Zend\Form\Element\Textarea':
-					$label = true;
-					$view = 'formTextarea';
-					break;
-				case 'Zend\Form\Element\Time':
-					$label = true;
-					$view = 'formTime';
-					break;
-				case 'Zend\Form\Element\Url':
-					$label = true;
-					$view = 'formUrl';
-					break;
-				case 'Zend\Form\Element\Week':
-					$label = true;
-					$view = 'formWeek';
-					break;
-				case 'Zend\Form\Element\Seperator':
-					$view = 'formSeperator';
-					$seperate = true;
-					break;
-			}
-?>
-<tr><?php if (!$seperate) { ?><td class="label"><?php
-			if ($label) {
-				echo $this->formLabel($field) . ':';
-			}
-												?></td><?php } ?><td class="field"<?php echo ($seperate ? ' colspan="2"' : null) ?>><?php
-														if ($captcha) {
-																																	?><div class="captcha"><?php
-																																			}
-																																			if (!empty($view)) {
-																																				echo call_user_func_array(array(
-																																							$this, $view
-																																						), array(
-																																							$field
-																																						));
-																																			}
-																																			if ($captcha) {
-																																						   ?></div><?php
-																																								   }
-																																								   ?></td>
-	</tr><?php
-																																										   echo $this->formElementErrors()->setMessageOpenFormat('<tr><div class="help-inline">')
-																																												   ->setMessageSeparatorString('</div><div class="help-inline">')->setMessageCloseString('</div></tr>')->render($field);
-																																									   }
-																																								   }
-		 ?>
-
-</table>
+$formLabel = $this->plugin('formLabel');
+foreach ($form->getElements() as $elements_key => $elements) {
+	$field = $form->get($elements_key);
+	if (is_object($field)) {
+		$attributes = $field->getAttributes();
+		$options = $field->getOptions();
+?><tr<?php echo ($attributes['is_hidden'] ? ' style="display: none;"' : null) ?> <?php echo (isset($attributes['id']) ? 'id="tr_' . $attributes['id'] . '"' : null); ?>>
 <?php
-echo $this->form()->closeTag();
-if ($jsscript !== false) {
-	echo $jsscript;
+		if (!$attributes['is_seperator']) {
+?><td class="label">
+<?php
+			if (!$attributes['not_show_label']) {
+				echo $this->formLabel($field) . ':' . ($attributes['is_require'] ? '<span class="Required">*</span>' : null);
+			}
+?></td>
+<?php
+		}
+?><td class="field"<?php echo ($attributes['is_seperator'] ? ' colspan="3"' : ($attributes['is_button'] ? ' colspan="2"' : null)) ?>>
+<?php
+		$messageTemplates = $form->getMessageTemplates($elements_key);
+		if (($attributes['is_comment'] && count($attributes['require_comment']) > 0) || count($messageTemplates) > 0) {
+?><div class="tooltip"<?php echo 'title="' . (count($attributes['require_comment']) > 0 ? '* ' . implode("<br>* ", $attributes['require_comment']) : null) . (count($messageTemplates) > 0 ? '* ' . implode("<br>* ", $messageTemplates) : null) . '"';
+					  ?>>
+<?php
+							  }
+							  if ($attributes['is_captcha']) {
+?><div class="captcha">
+<?php
+		}
+		echo call_user_func_array(array(
+				$this,
+				'form' . ucfirst($attributes['element'])
+		), array(
+				$field
+		));
+		if ($attributes['is_captcha']) {
+?></div>
+<?php
+		}
+		if ($attributes['is_comment']) {
+?></div>
+<?php
+		}
+?></td>
+<?php
+		if (!$attributes['is_seperator'] && !$attributes['is_button']) {
+?><td class="help">
+<div class="ui-widget"><div class="ui-state-active">
+<?php
+			if (count($field->getMessages()) > 0) {
+				echo $this->formElementErrors()->setMessageOpenFormat('<span class="ui-icon ui-icon-closethick"></span>')->render($field);
+			} elseif (!$attributes['is_seperator'] && count($this->messages) > 0 && !isset($this->messages[$elements_key])) {
+				echo '<span class="ui-icon ui-icon-check"></span>';
+			}
+?></div></div></td>
+<?php
+		}
+?></tr>
+<?php
+	}
 }
-?>
-</div>
+?></table>
+	 <?php
+echo $form->closeTag();
+	 ?></div>

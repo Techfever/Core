@@ -35,11 +35,23 @@ class Log {
 			$currenturistatus = false;
 		}
 		$location = array(
-			'id' => '', 'name' => '', 'ip' => '', 'session' => '', 'uri' => '', 'refer' => '', 'date' => ''
+				'id' => '',
+				'name' => '',
+				'ip' => '',
+				'session' => '',
+				'uri' => '',
+				'refer' => '',
+				'date' => ''
 		);
 		if ($currenturistatus) {
 			$location = array(
-				'id' => $id, 'name' => $name, 'ip' => $ipaddress, 'session' => $session, 'uri' => $currenturi, 'refer' => $referuri, 'date' => $date
+					'id' => $id,
+					'name' => $name,
+					'ip' => $ipaddress,
+					'session' => $session,
+					'uri' => $currenturi,
+					'refer' => $referuri,
+					'date' => $date
 			);
 			$this->_valid = true;
 		}
@@ -101,7 +113,13 @@ class Log {
 			$DbInsert = new Database('insert');
 			$DbInsert->into('user_access_log');
 			$DbInsert->columns(array(
-						'user_access_id', 'user_access_name', 'user_access_log_session', 'user_access_log_ip', 'user_access_log_uri', 'user_access_log_referrel', 'user_access_log_created_date'
+							'user_access_id',
+							'user_access_name',
+							'user_access_log_session',
+							'user_access_log_ip',
+							'user_access_log_uri',
+							'user_access_log_referrel',
+							'user_access_log_created_date'
 					));
 			$DbInsert
 					->values(

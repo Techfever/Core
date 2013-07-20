@@ -51,7 +51,8 @@ class SessionServiceFactory implements FactoryInterface {
 			foreach ($session['validator'] as $validator) {
 				$validator = new $validator();
 				$chain->attach('session.validate', array(
-							$validator, 'isValid'
+								$validator,
+								'isValid'
 						));
 			}
 		}

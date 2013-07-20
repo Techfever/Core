@@ -10,7 +10,7 @@ class Router implements ModuleInterface {
 	 * @var Structure
 	 **/
 	private $_structure = array(
-		'routes' => array()
+			'routes' => array()
 	);
 
 	/**
@@ -41,17 +41,27 @@ class Router implements ModuleInterface {
 	public function __construct($config = null) {
 		$this->_defaultconfig = $config['router'];
 		$DBRoutes = new Database('select');
-		$DBRoutes->columns(array(
-					'root' => 'system_routes_id', 'uri' => 'system_routes_uri', 'route' => 'system_routes_route', 'type' => 'system_routes_type', 'controller' => 'system_routes_controller', 'action' => 'system_routes_action', 'parent' => 'system_routes_parent'
-				));
+		$DBRoutes
+				->columns(
+						array(
+								'root' => 'system_routes_id',
+								'uri' => 'system_routes_uri',
+								'route' => 'system_routes_route',
+								'type' => 'system_routes_type',
+								'controller' => 'system_routes_controller',
+								'action' => 'system_routes_action',
+								'parent' => 'system_routes_parent'
+						));
 		$DBRoutes->from(array(
-					'sr' => 'system_routes'
+						'sr' => 'system_routes'
 				));
 		$DBRoutes->where(array(
-					'sr.system_routes_status = 1',
+						'sr.system_routes_status = 1',
 				));
 		$DBRoutes->order(array(
-					'system_routes_parent ASC', 'system_routes_order ASC', 'system_routes_uri ASC'
+						'system_routes_parent ASC',
+						'system_routes_order ASC',
+						'system_routes_uri ASC'
 				));
 		$DBRoutes->setCacheName('system_routes');
 		$DBRoutes->execute();
@@ -60,13 +70,15 @@ class Router implements ModuleInterface {
 		}
 		$DbConstraints = new Database('select');
 		$DbConstraints->columns(array(
-					'id' => 'system_routes_id', 'name' => 'system_routes_constraints_name', 'regex' => 'system_routes_constraints_regex'
+						'id' => 'system_routes_id',
+						'name' => 'system_routes_constraints_name',
+						'regex' => 'system_routes_constraints_regex'
 				));
 		$DbConstraints->from(array(
-					'src' => 'system_routes_constraints'
+						'src' => 'system_routes_constraints'
 				));
 		$DBRoutes->order(array(
-					'system_routes_constraints_order ASC'
+						'system_routes_constraints_order ASC'
 				));
 		$DbConstraints->setCacheName('system_routes_constraints');
 		$DbConstraints->execute();
@@ -76,7 +88,7 @@ class Router implements ModuleInterface {
 		$data = $this->getTree();
 		//print_r($data);
 		$this->_config = array(
-			'routes' => $data
+				'routes' => $data
 		);
 	}
 
@@ -122,16 +134,18 @@ class Router implements ModuleInterface {
 						$structure['child_routes'] = $dbdata['child_routes'];
 					}
 					$data[$dbdata['uri']] = array(
-						'type' => $structure['type'], 'options' => array()
+							'type' => $structure['type'],
+							'options' => array()
 					);
 					$data[$dbdata['uri']]['options'] = array(
-						'route' => $structure['route']
+							'route' => $structure['route']
 					);
 					if (array_key_exists('constraints', $structure) && is_array($structure['constraints'])) {
 						$data[$dbdata['uri']]['options']['constraints'] = $structure['constraints'];
 					}
 					$data[$dbdata['uri']]['options']['defaults'] = array(
-						'controller' => $structure['controller'], 'action' => $structure['action']
+							'controller' => $structure['controller'],
+							'action' => $structure['action']
 					);
 					if (array_key_exists('child_routes', $structure) && is_array($structure['child_routes'])) {
 						$data[$dbdata['uri']]['may_terminate'] = true;

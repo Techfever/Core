@@ -11,17 +11,17 @@
  * file.
  */
 
-return array (
-		'db' => array (
+return array(
+		'db' => array(
 				'driver' => 'Mysqli',
-				'driver_options' => array (),
+				'driver_options' => array(),
 				'username' => 'root',
 				'password' => 't3chn4t10n',
 				'hostname' => 'localhost',
 				'port' => '3306',
 				'database' => 'cc_techfever',
-				'options' => array (
-						'buffer_results' => true 
-				) 
-		) 
+				'options' => array(
+						'buffer_results' => true
+				)
+		)
 );

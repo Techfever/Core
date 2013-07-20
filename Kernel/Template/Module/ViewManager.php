@@ -64,7 +64,14 @@ class ViewManager implements ModuleInterface {
 	 * @var Structure
 	 **/
 	private $_structure = array(
-		'display_not_found_reason', 'display_exceptions', 'doctype', 'not_found_template', 'exception_template', 'template_map' => array(), 'template_path_stack' => array(), 'default_template_suffix'
+			'display_not_found_reason',
+			'display_exceptions',
+			'doctype',
+			'not_found_template',
+			'exception_template',
+			'template_map' => array(),
+			'template_path_stack' => array(),
+			'default_template_suffix'
 	);
 
 	/**
@@ -99,7 +106,7 @@ class ViewManager implements ModuleInterface {
 		$this->setDoctype($themeconfig['doctype']);
 
 		$this->_templatepathstack = array(
-			'Index' => CORE_PATH . '/Module/Index/View'
+				'Index' => CORE_PATH . '/Module/Index/View'
 		);
 
 		$this->generateTemplateMap();
@@ -178,7 +185,19 @@ class ViewManager implements ModuleInterface {
 	 **/
 	public function checkDoctype($value) {
 		$doctype_array = array(
-			'XHTML1_STRICT', 'XHTML1_TRANSITIONAL', 'XHTML1_FRAMESET', 'XHTML1_RDFA', 'XHTML1_RDFA11', 'XHTML_BASIC1', 'XHTML5', 'HTML4_STRICT', 'HTML4_LOOSE', 'HTML4_FRAMESET', 'HTML5', 'CUSTOM_XHTML', 'CUSTOM'
+				'XHTML1_STRICT',
+				'XHTML1_TRANSITIONAL',
+				'XHTML1_FRAMESET',
+				'XHTML1_RDFA',
+				'XHTML1_RDFA11',
+				'XHTML_BASIC1',
+				'XHTML5',
+				'HTML4_STRICT',
+				'HTML4_LOOSE',
+				'HTML4_FRAMESET',
+				'HTML5',
+				'CUSTOM_XHTML',
+				'CUSTOM'
 		);
 		if (in_array(strtoupper($value), $doctype_array)) {
 			return true;
@@ -275,12 +294,14 @@ class ViewManager implements ModuleInterface {
 			}
 			$class = strtolower($class);
 			$dir = CORE_PATH . '/' . $classvalue['path'] . '/View/';
-			$dh = opendir($dir);
-			while (false !== ($filename = readdir($dh))) {
-				$fileinfo = pathinfo($dir . $filename);
-				if ($fileinfo['extension'] == 'phtml') {
-					$method = $fileinfo['filename'];
-					$map[strtolower($module . '/' . $class . '/' . $method)] = CORE_PATH . '/' . $classvalue['path'] . '/View/' . $fileinfo['basename'];
+			if (file_exists($dir)) {
+				$dh = opendir($dir);
+				while (false !== ($filename = readdir($dh))) {
+					$fileinfo = pathinfo($dir . $filename);
+					if ($fileinfo['extension'] == 'phtml') {
+						$method = $fileinfo['filename'];
+						$map[strtolower($module . '/' . $class . '/' . $method)] = CORE_PATH . '/' . $classvalue['path'] . '/View/' . $fileinfo['basename'];
+					}
 				}
 			}
 		}

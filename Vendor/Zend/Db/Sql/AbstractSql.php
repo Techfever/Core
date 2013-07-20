@@ -10,9 +10,9 @@
 namespace Zend\Db\Sql;
 
 use Zend\Db\Adapter\Driver\DriverInterface;
-use Zend\Db\Adapter\StatementContainer;
 use Zend\Db\Adapter\ParameterContainer;
 use Zend\Db\Adapter\Platform\PlatformInterface;
+use Zend\Db\Adapter\StatementContainer;
 
 abstract class AbstractSql
 {
@@ -47,7 +47,7 @@ abstract class AbstractSql
         // initialize variables
         $parts = $expression->getExpressionData();
 
-        if(!isset($this->instanceParameterIndex[$namedParameterPrefix])) {
+        if (!isset($this->instanceParameterIndex[$namedParameterPrefix])) {
             $this->instanceParameterIndex[$namedParameterPrefix] = 1;
         }
 

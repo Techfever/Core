@@ -11,15 +11,15 @@
  * file.
  */
 
-return array (
-		'translator' => array (
-				'translation_file_patterns' => array (
-						array (
+return array(
+		'translator' => array(
+				'translation_file_patterns' => array(
+						array(
 								'type' => 'phparray',
 								'text_domain' => 'default',
 								'base_dir' => CORE_PATH . '/Module/Index/Language',
-								'pattern' => '%s.php' 
-						) 
-				) 
-		) 
+								'pattern' => '%s.php'
+						)
+				)
+		)
 );

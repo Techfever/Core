@@ -11,8 +11,8 @@
  * file.
  */
 
-return array (
-		'phpSettings' => array (
-				'date.timezone' => 'Asia/Kuala_Lumpur' 
-		) 
+return array(
+		'phpSettings' => array(
+				'date.timezone' => 'Asia/Kuala_Lumpur'
+		)
 );

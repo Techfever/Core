@@ -17,11 +17,13 @@ return array(
 						array(
 								'name' => 'stream',
 								'options' => array(
-									'stream' => 'Data/Log/error-%s.log', 'formatter' => array(
-										'name' => 'simple', 'options' => array(
-											'dateTimeFormat' => 'Y-m-d H:i:s'
+										'stream' => 'Data/Log/error-%s.log',
+										'formatter' => array(
+												'name' => 'simple',
+												'options' => array(
+														'dateTimeFormat' => 'Y-m-d H:i:s'
+												)
 										)
-									)
 								)
 						)
 				),

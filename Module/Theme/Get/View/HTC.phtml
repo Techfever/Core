@@ -11,13 +11,19 @@ header('Expires: ' . $this->expire);
 header('Content-Type: text/x-component');
 $options = array(
 		'options' => array(
-			'storage' => array(
-				'adapter' => array(
-					'name' => 'filesystem', 'options' => array(
-						'namespace' => 'css', 'namespace_separator' => '_', 'cache_dir' => 'Data/Cache', 'readable' => CACHE_ENABLE, 'writable' => CACHE_ENABLE,
-					)
-				)
-			), 'cache_output' => true,
+				'storage' => array(
+						'adapter' => array(
+								'name' => 'filesystem',
+								'options' => array(
+										'namespace' => 'css',
+										'namespace_separator' => '_',
+										'cache_dir' => 'Data/Cache',
+										'readable' => CACHE_ENABLE,
+										'writable' => CACHE_ENABLE,
+								)
+						)
+				),
+				'cache_output' => true,
 		)
 );
 $cache = PatternFactory::factory('output', $options['options']);

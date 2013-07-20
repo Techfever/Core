@@ -24,7 +24,9 @@ class Template extends TemplateInterface {
 	 * @var Module Manager
 	 **/
 	private $_modulemanager = array(
-		'router' => array(), 'view_manager' => array(), 'controllers' => array(),
+			'router' => array(),
+			'view_manager' => array(),
+			'controllers' => array(),
 	);
 
 	/**
@@ -68,24 +70,27 @@ class Template extends TemplateInterface {
 	 **/
 	public function prepare() {
 		$dbconfig = array(
-			'theme' => array()
+				'theme' => array()
 		);
 
 		/* Get Db theme */
 		$DbTheme = new Database('select');
 		$DbTheme->columns(array(
-					'name' => 'theme_name', 'developer' => 'theme_developer', 'key' => 'theme_key', 'doctype' => 'theme_doctype'
+						'name' => 'theme_name',
+						'developer' => 'theme_developer',
+						'key' => 'theme_key',
+						'doctype' => 'theme_doctype'
 				));
 		$DbTheme->from(array(
-					't' => 'theme'
+						't' => 'theme'
 				));
 		$DbTheme->join(array(
-					'ss' => 'system_configuration'
+						'ss' => 'system_configuration'
 				), 't.theme_key = ss.system_configuration_value', array(
-					'system_key' => 'system_configuration_key'
+						'system_key' => 'system_configuration_key'
 				));
 		$DbTheme->where(array(
-					'ss.system_configuration_key' => 'system_theme',
+						'ss.system_configuration_key' => 'system_theme',
 				));
 		$DbTheme->limit(1);
 		$DbTheme->setCacheName('theme_configuration');
@@ -142,21 +147,83 @@ class Template extends TemplateInterface {
 	public function getConfig() {
 
 		$router = array(
-			'router' => $this->router->getConfig()
+				'router' => $this->router->getConfig()
 		);
 		$this->_modulemanager = array_merge($this->_modulemanager, $router);
 
 		$controllers = array(
-			'controllers' => $this->controllers->getConfig()
+				'controllers' => $this->controllers->getConfig()
 		);
 		$this->_modulemanager = array_merge($this->_modulemanager, $controllers);
 
 		$viewmanager = array(
-			'view_manager' => $this->viewmanager->getConfig()
+				'view_manager' => $this->viewmanager->getConfig()
 		);
 		$this->_modulemanager = array_merge($this->_modulemanager, $viewmanager);
 		//print_r($this->_modulemanager);
 		return $this->_modulemanager;
+	}
+
+	private function getClassmap($path) {
+		$dir = KERNEL_PATH . '/' . $path . '/';
+		$data = array();
+		if (file_exists($dir)) {
+			$dh = opendir($dir);
+			while (false !== ($filename = readdir($dh))) {
+				$fileinfo = pathinfo($dir . $filename);
+				if ($fileinfo['basename'] != '.' && $fileinfo['basename'] != '..' && is_dir($dir . $fileinfo['basename'])) {
+					$datachild = $this->getClassmap($path . '/' . $fileinfo['basename']);
+					$data = array_merge($data, $datachild);
+				} elseif ($fileinfo['extension'] == 'php') {
+					$data[strtolower($fileinfo['filename'])] = 'Kernel\\' . str_replace('/', '\\', $path) . '\\' . $fileinfo['filename'];
+				}
+			}
+		}
+		return $data;
+	}
+
+	/**
+	 * Get View Helper Config
+	 * 
+	 * @return array module.config
+	 **/
+	public function getViewHelperConfig() {
+		return array(
+				'invokables' => $this->getClassmap('ViewHelper')
+		);
+	}
+
+	/**
+	 * Get Validator Config 
+	 * 
+	 * @return array module.config
+	 **/
+	public function getValidatorConfig() {
+		return array(
+				'invokables' => $this->getClassmap('Validator')
+		);
+	}
+
+	/**
+	 * Get Filter Config
+	 * 
+	 * @return array module.config
+	 **/
+	public function getFilterConfig() {
+		return array(
+				'invokables' => $this->getClassmap('Filter')
+		);
+	}
+
+	/**
+	 * Get Filter Config
+	 * 
+	 * @return array module.config
+	 **/
+	public function getFormElementConfig() {
+		return array(
+				'invokables' => $this->getClassmap('Form/Element')
+		);
 	}
 
 	/**
@@ -166,6 +233,18 @@ class Template extends TemplateInterface {
 	 **/
 	public function reset() {
 		ServiceLocator::setServiceConfig($this->getConfig());
+	}
+
+	/**
+	 * Reset CSS
+	 * 
+	 * @void
+	 **/
+	public function resetCSS() {
+		$this->_container = new SessionContainer('Template');
+		if ($this->_container->offsetExists('CSS')) {
+			$this->_container->offsetUnset('CSS');
+		}
 	}
 
 	/**
@@ -181,7 +260,7 @@ class Template extends TemplateInterface {
 		}
 		if (is_string($data)) {
 			$data = array(
-				$data
+					$data
 			);
 		}
 		if (is_array($data) && count($data) > 0) {
@@ -201,6 +280,18 @@ class Template extends TemplateInterface {
 	}
 
 	/**
+	 * Reset Javascript
+	 * 
+	 * @void
+	 **/
+	public function resetJavascript() {
+		$this->_container = new SessionContainer('Template');
+		if ($this->_container->offsetExists('Javascript')) {
+			$this->_container->offsetUnset('Javascript');
+		}
+	}
+
+	/**
 	 * Add Javascript
 	 * 
 	 * @void
@@ -213,7 +304,7 @@ class Template extends TemplateInterface {
 		}
 		if (is_string($data)) {
 			$data = array(
-				$data
+					$data
 			);
 		}
 		if (is_array($data) && count($data) > 0) {

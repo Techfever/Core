@@ -12,7 +12,13 @@ class ServiceLocator {
 	 * @var array
 	 */
 	protected $config = array(
-		'factories' => array(), 'abstract_factories' => array(), 'invokables' => array(), 'services' => array(), 'aliases' => array(), 'initializers' => array(), 'shared' => array()
+			'factories' => array(),
+			'abstract_factories' => array(),
+			'invokables' => array(),
+			'services' => array(),
+			'aliases' => array(),
+			'initializers' => array(),
+			'shared' => array()
 	);
 
 	/**

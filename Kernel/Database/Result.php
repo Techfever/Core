@@ -85,11 +85,11 @@ class Result {
 	public function current() {
 		$row = $this->result->current();
 		if (is_array($row)) {
-			$return[] = $row;
+			$return = $row;
 		} elseif (method_exists($row, 'toArray')) {
-			$return[] = $row->toArray();
+			$return = $row->toArray();
 		} elseif ($row instanceof ArrayObject) {
-			$return[] = $row->getArrayCopy();
+			$return = $row->getArrayCopy();
 		} else {
 			throw new Exception\RuntimeException('Rows as part of this DataSource, with type ' . gettype($row) . ' cannot be cast to an array');
 		}
@@ -103,11 +103,11 @@ class Result {
 	 */
 	public function get($key = null) {
 		$return = $this->current();
-		if (!empty($key) && array_key_exists(0, $return)) {
-			if (!array_key_exists($key, $return[0])) {
+		if (!empty($key) && is_array($return)) {
+			if (!array_key_exists($key, $return)) {
 				return null;
 			}
-			return $return[0][$key];
+			return $return[$key];
 		}
 		return $return;
 	}

@@ -18,7 +18,9 @@ use Zend\ServiceManager\ServiceManager;
 class HelperConfig implements ConfigInterface
 {
     /**
-     * @var array Pre-aliased view helpers
+     * Pre-aliased view helpers
+     *
+     * @var array
      */
     protected $invokables = array(
         'form'                    => 'Zend\Form\View\Helper\Form',
@@ -71,8 +73,7 @@ class HelperConfig implements ConfigInterface
         'formtime'                => 'Zend\Form\View\Helper\FormTime',
         'formurl'                 => 'Zend\Form\View\Helper\FormUrl',
         'formweek'                => 'Zend\Form\View\Helper\FormWeek',
-   		'formseperator'             => 'Zend\Form\View\Helper\FormSeperator',
-         );
+    );
 
     /**
      * Configure the provided service manager instance with the configuration

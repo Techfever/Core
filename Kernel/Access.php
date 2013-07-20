@@ -199,33 +199,39 @@ class Access {
 									'security_update' => 'user_security_update_status'
 							));
 			$DBUser->from(array(
-						'ua' => 'user_access'
+							'ua' => 'user_access'
 					));
 			$DBUser
 					->join(array(
-								'up' => 'user_profile'
-							), 'up.user_profile_id = ua.user_profile_id', array(
-								'firstname' => 'user_profile_firstname', 'lastname' => 'user_profile_lastname', 'gender' => 'user_profile_gender', 'address_id' => 'user_address_id', 'bank_id' => 'user_bank_id',
+									'up' => 'user_profile'
+							), 'up.user_profile_id = ua.user_profile_id',
+							array(
+									'firstname' => 'user_profile_firstname',
+									'lastname' => 'user_profile_lastname',
+									'gender' => 'user_profile_gender',
+									'address_id' => 'user_address_id',
+									'bank_id' => 'user_bank_id',
 							), Database::JOIN_RIGHT);
 			$DBUser->join(array(
-						'ur' => 'user_rank'
+							'ur' => 'user_rank'
 					), 'ur.user_rank_id = ua.user_rank_id', array(
-						'rank_key' => 'user_rank_key',
+							'rank_key' => 'user_rank_key',
 					), Database::JOIN_RIGHT);
 			$DBUser->join(array(
-						'urg' => 'user_rank_group'
+							'urg' => 'user_rank_group'
 					), 'urg.user_rank_group_id = ur.user_rank_group_id', array(
-						'rank_group_key' => 'user_rank_group_key', 'rank_group_id' => 'user_rank_group_id',
+							'rank_group_key' => 'user_rank_group_key',
+							'rank_group_id' => 'user_rank_group_id',
 					), Database::JOIN_RIGHT);
 			$DBUser->where(array(
-						'ua.user_access_id = ' . $id, 'ua.user_access_status = 1',
+							'ua.user_access_id = ' . $id,
+							'ua.user_access_status = 1',
 					));
 			$DBUser->limit(1);
 			$DBUser->setCacheName('user_access_data');
 			$DBUser->execute();
 			if ($DBUser->hasResult()) {
 				$data = $DBUser->current();
-				$data = $data[0];
 				$data['fullname'] = $data['firstname'] . (!empty($data['lastname']) ? ' ' . $data['lastname'] : null);
 				$data['rank_key'] = 'text_rank_' . $data['rank_key'];
 				$data['rank_group_key'] = 'text_rank_group_' . $data['rank_group_key'];

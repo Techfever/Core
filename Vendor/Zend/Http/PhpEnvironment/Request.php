@@ -14,6 +14,7 @@ use Zend\Http\Request as HttpRequest;
 use Zend\Stdlib\Parameters;
 use Zend\Stdlib\ParametersInterface;
 use Zend\Uri\Http as HttpUri;
+use Zend\Validator\Hostname as HostnameValidator;
 
 /**
  * HTTP Request for current PHP environment
@@ -33,7 +34,7 @@ class Request extends HttpRequest
      * @var string
      */
     protected $basePath;
-
+    
     /**
      * Base Href of the application.
      *
@@ -193,14 +194,14 @@ class Request extends HttpRequest
         }
 
         return $this->basePath;
-    }
-
+    }    
+    
     /**
-     * Set the base href.
-     *
-     * @param  string $baseHref
-     * @return self
-     */
+	* Set the base href.
+	*
+	* @param string $baseHref
+	* @return self
+	*/
     public function setBaseHref($baseHref)
     {
         $this->baseHref = rtrim($baseHref, '/');
@@ -208,10 +209,10 @@ class Request extends HttpRequest
     }
 
     /**
-     * Get the base href.
-     *
-     * @return string
-     */
+	* Get the base href.
+	*
+	* @return string
+	*/
     public function getBaseHref()
     {
         if ($this->baseHref === null) {
@@ -290,7 +291,31 @@ class Request extends HttpRequest
         // URI host & port
         $host = null;
         $port = null;
-        if (isset($this->serverParams['SERVER_NAME'])) {
+
+        // Set the host
+        if ($this->getHeaders()->get('host')) {
+            $host = $this->getHeaders()->get('host')->getFieldValue();
+
+            // works for regname, IPv4 & IPv6
+            if (preg_match('|\:(\d+)$|', $host, $matches)) {
+                $host = substr($host, 0, -1 * (strlen($matches[1]) + 1));
+                $port = (int) $matches[1];
+            }
+
+            // set up a validator that check if the hostname is legal (not spoofed)
+            $hostnameValidator = new HostnameValidator(array(
+                'allow'       => HostnameValidator::ALLOW_ALL,
+                'useIdnCheck' => false,
+                'useTldCheck' => false,
+            ));
+            // If invalid. Reset the host & port
+            if (!$hostnameValidator->isValid($host)) {
+                $host = null;
+                $port = null;
+            }
+        }
+
+        if (!$host && isset($this->serverParams['SERVER_NAME'])) {
             $host = $this->serverParams['SERVER_NAME'];
             if (isset($this->serverParams['SERVER_PORT'])) {
                 $port = (int) $this->serverParams['SERVER_PORT'];
@@ -304,13 +329,6 @@ class Request extends HttpRequest
                     // Unset the port so the default port can be used
                     $port = null;
                 }
-            }
-        } elseif ($this->getHeaders()->get('host')) {
-            $host = $this->getHeaders()->get('host')->getFieldValue();
-            // works for regname, IPv4 & IPv6
-            if (preg_match('|\:(\d+)$|', $host, $matches)) {
-                $host = substr($host, 0, -1 * (strlen($matches[1]) + 1));
-                $port = (int) $matches[1];
             }
         }
         $uri->setHost($host);
@@ -492,7 +510,6 @@ class Request extends HttpRequest
      * Uses a variety of criteria in order to detect the base URL of the request
      * (i.e., anything additional to the document root).
      *
-     * The base URL includes the schema, host, and port, in addition to the path.
      *
      * @return string
      */
@@ -597,20 +614,20 @@ class Request extends HttpRequest
      */
     protected function detectBaseHref()
     {
-        $filename = basename($this->getServer()->get('SCRIPT_FILENAME', ''));
-        $baseUrl  = $this->getBaseUrl();
-
-        // Empty base url detected
-        if ($baseUrl === '') {
-            return '';
-        }
-
-        // basename() matches the script filename; return the directory
-        if (basename($baseUrl) === $filename) {
-            return str_replace('\\', '/', dirname($baseUrl));
-        }
-
-        // Base href is identical to base URL
-        return $baseUrl;
+    	$filename = basename($this->getServer()->get('SCRIPT_FILENAME', ''));
+    	$baseUrl = $this->getBaseUrl();
+    
+    	// Empty base url detected
+    	if ($baseUrl === '') {
+    		return '';
+    	}
+    
+    	// basename() matches the script filename; return the directory
+    	if (basename($baseUrl) === $filename) {
+    		return str_replace('\\', '/', dirname($baseUrl));
+    	}
+    
+    	// Base href is identical to base URL
+    	return $baseUrl;
     }
 }

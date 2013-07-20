@@ -14,7 +14,7 @@ class ManageActionController extends AbstractActionController {
 		$this->id = (int) $this->params()->fromRoute('id', null);
 		if (!$this->id) {
 			return $this->redirect()->toRoute($this->GetRoute(), array(
-						'action' => 'New'
+							'action' => 'New'
 					));
 		}
 	}
@@ -22,7 +22,7 @@ class ManageActionController extends AbstractActionController {
 		$this->id = (int) $this->params()->fromRoute('id', null);
 		if (!$this->id) {
 			return $this->redirect()->toRoute($this->GetRoute(), array(
-						'action' => 'New'
+							'action' => 'New'
 					));
 		}
 	}
@@ -32,7 +32,7 @@ class ManageActionController extends AbstractActionController {
 		$this->id = (int) $this->params()->fromRoute('id', null);
 		if (!$this->id) {
 			return $this->redirect()->toRoute($this->GetRoute(), array(
-						'action' => 'New'
+							'action' => 'New'
 					));
 		}
 	}

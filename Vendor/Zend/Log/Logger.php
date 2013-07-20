@@ -132,25 +132,26 @@ class Logger implements LoggerInterface
         }
 
         if (is_array($options)) {
+            if (isset($options['writers']) && is_array($options['writers'])) {
+                foreach ($options['writers'] as $writer) {
 
-            if(isset($options['writers']) && is_array($options['writers'])) {
-                foreach($options['writers'] as $writer) {
-                    if(!isset($writer['name'])) {
+                    if (!isset($writer['name'])) {
                         throw new Exception\InvalidArgumentException('Options must contain a name for the writer');
                     }
 
                     $priority      = (isset($writer['priority'])) ? $writer['priority'] : null;
                     $writerOptions = (isset($writer['options'])) ? $writer['options'] : null;
+
                     $this->addWriter($writer['name'], $priority, $writerOptions);
                 }
             }
 
-            if(isset($options['exceptionhandler']) && $options['exceptionhandler'] === true) {
-                self::registerExceptionHandler($this);
+            if (isset($options['exceptionhandler']) && $options['exceptionhandler'] === true) {
+                static::registerExceptionHandler($this);
             }
 
-            if(isset($options['errorhandler']) && $options['errorhandler'] === true) {
-                self::registerErrorHandler($this);
+            if (isset($options['errorhandler']) && $options['errorhandler'] === true) {
+                static::registerErrorHandler($this);
             }
 
         }
@@ -236,7 +237,8 @@ class Logger implements LoggerInterface
             $writer = $this->writerPlugin($writer, $options);
         } elseif (!$writer instanceof Writer\WriterInterface) {
             throw new Exception\InvalidArgumentException(sprintf(
-                'Writer must implement Zend\Log\Writer; received "%s"',
+                'Writer must implement %s\Writer\WriterInterface; received "%s"',
+                __NAMESPACE__,
                 is_object($writer) ? get_class($writer) : gettype($writer)
             ));
         }
@@ -408,7 +410,7 @@ class Logger implements LoggerInterface
             'extra'        => $extra
         );
 
-        foreach($this->processors->toArray() as $processor) {
+        foreach ($this->processors->toArray() as $processor) {
             $event = $processor->process($event);
         }
 
@@ -515,16 +517,16 @@ class Logger implements LoggerInterface
             return false;
         }
 
-        $errorHandlerMap = static::$errorPriorityMap;
+        $errorPriorityMap = static::$errorPriorityMap;
 
-        $previous = set_error_handler(function ($level, $message, $file, $line, $context)
-            use ($logger, $errorHandlerMap, $continueNativeHandler)
+        $previous = set_error_handler(function ($level, $message, $file, $line)
+            use ($logger, $errorPriorityMap, $continueNativeHandler)
         {
             $iniLevel = error_reporting();
 
             if ($iniLevel & $level) {
-                if (isset(Logger::$errorPriorityMap[$level])) {
-                    $priority = $errorHandlerMap[$level];
+                if (isset($errorPriorityMap[$level])) {
+                    $priority = $errorPriorityMap[$level];
                 } else {
                     $priority = Logger::INFO;
                 }
@@ -532,7 +534,6 @@ class Logger implements LoggerInterface
                     'errno'   => $level,
                     'file'    => $file,
                     'line'    => $line,
-                    'context' => $context,
                 ));
             }
 

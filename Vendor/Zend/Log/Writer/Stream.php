@@ -41,10 +41,11 @@ class Stream extends AbstractWriter
      * @throws Exception\RuntimeException
      */
     public function __construct($streamOrUrl, $mode = null, $logSeparator = null)
-    {    	
+    {
         if ($streamOrUrl instanceof Traversable) {
             $streamOrUrl = iterator_to_array($streamOrUrl);
         }
+
         if (is_array($streamOrUrl)) {
             parent::__construct($streamOrUrl);
             $mode         = isset($streamOrUrl['mode'])          ? $streamOrUrl['mode']          : null;
@@ -90,7 +91,7 @@ class Stream extends AbstractWriter
             $this->setLogSeparator($logSeparator);
         }
 
-        if($this->formatter === null) {
+        if ($this->formatter === null) {
             $this->formatter = new SimpleFormatter();
         }
     }

@@ -12,11 +12,16 @@ header('Content-Type: application/x-javascript');
 $options = array(
 		'options' => array(
 				'storage' => array(
-					'adapter' => array(
-						'name' => 'filesystem', 'options' => array(
-							'namespace' => 'javascript', 'namespace_separator' => '_', 'cache_dir' => 'Data/Cache', 'readable' => CACHE_ENABLE, 'writable' => CACHE_ENABLE,
+						'adapter' => array(
+								'name' => 'filesystem',
+								'options' => array(
+										'namespace' => 'javascript',
+										'namespace_separator' => '_',
+										'cache_dir' => 'Data/Cache',
+										'readable' => CACHE_ENABLE,
+										'writable' => CACHE_ENABLE,
+								)
 						)
-					)
 				),
 				'cache_output' => true,
 		)

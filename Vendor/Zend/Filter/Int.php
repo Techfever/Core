@@ -17,10 +17,18 @@ class Int extends AbstractFilter
      * Returns (int) $value
      *
      * @param  string $value
-     * @return integer
+     * @return int
      */
     public function filter($value)
     {
+        if(!is_scalar($value)){
+            throw new Exception\InvalidArgumentException(sprintf(
+                '%s expects parameter to be scalar, "%s" given',
+                __METHOD__,
+                (is_object($value) ? get_class($value) : gettype($value))
+            ));
+        }
+
         return (int) ((string) $value);
     }
 }

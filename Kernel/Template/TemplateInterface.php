@@ -2,5 +2,5 @@
 namespace Kernel\Template;
 
 class TemplateInterface {
-	
+
 }

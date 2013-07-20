@@ -35,7 +35,8 @@ class GetActionController extends AbstractActionController {
 			$css = $this->_container->offsetGet('CSS');
 		}
 		return array(
-			'css' => $css, 'expire' => $this->_expirddate
+				'css' => $css,
+				'expire' => $this->_expirddate
 		);
 	}
 	public function ImageAction() {
@@ -48,11 +49,21 @@ class GetActionController extends AbstractActionController {
 		$contenttype = null;
 		$filepath = null;
 		if (!empty($this->path)) {
-			$filepath = 'Vendor/Techfever/Theme/' . SYSTEM_THEME . '/Image/' . $this->path;
+			if (strpos($this->path, '/') !== false) {
+				$pathraw = explode('/', $this->path);
+				if (is_array($pathraw) && count($pathraw) > 2 && $pathraw[0] == 'Jquery') {
+					$pathraw = array_splice($pathraw, 1, count($pathraw));
+					$filepath = 'Vendor/Techfever/Javascript/jquery/themes/' . $pathraw[0] . '/images/' . $pathraw[1];
+				}
+			}
+			if (empty($filepath)) {
+				$filepath = 'Vendor/Techfever/Theme/' . SYSTEM_THEME . '/Image/' . $this->path;
+			}
 		}
 
 		return array(
-			'image' => $filepath, 'expire' => $this->_expirddate
+				'image' => $filepath,
+				'expire' => $this->_expirddate
 		);
 	}
 	public function JavascriptAction() {
@@ -66,7 +77,8 @@ class GetActionController extends AbstractActionController {
 			$javascript = $this->_container->offsetGet('Javascript');
 		}
 		return array(
-			'javascript' => $javascript, 'expire' => $this->_expirddate
+				'javascript' => $javascript,
+				'expire' => $this->_expirddate
 		);
 	}
 	public function HTCAction() {
@@ -81,7 +93,8 @@ class GetActionController extends AbstractActionController {
 		}
 
 		return array(
-			'htc' => $filepath, 'expire' => $this->_expirddate
+				'htc' => $filepath,
+				'expire' => $this->_expirddate
 		);
 	}
 }

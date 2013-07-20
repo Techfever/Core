@@ -12,7 +12,7 @@ namespace Zend\Config\Reader;
 use Zend\Config\Exception;
 
 /**
- * XML config reader.
+ * INI config reader.
  */
 class Ini implements ReaderInterface
 {
@@ -148,7 +148,7 @@ class Ini implements ReaderInterface
      */
     private function buildNestedSection($sections, $value)
     {
-        if(count($sections) == 0) {
+        if (count($sections) == 0) {
             return $this->processSection($value);
         }
 

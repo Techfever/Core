@@ -16,6 +16,23 @@ use Zend\View\Helper\AbstractHelper as BaseAbstractHelper;
 class FormElement extends BaseAbstractHelper
 {
     /**
+     * Invoke helper as function
+     *
+     * Proxies to {@link render()}.
+     *
+     * @param  ElementInterface|null $element
+     * @return string|FormElement
+     */
+    public function __invoke(ElementInterface $element = null)
+    {
+        if (!$element) {
+            return $this;
+        }
+
+        return $this->render($element);
+    }
+
+    /**
      * Render an element
      *
      * Introspects the element type and attributes to determine which
@@ -194,29 +211,7 @@ class FormElement extends BaseAbstractHelper
             return $helper($element);
         }
 
-        if ('seperator' == $type) {
-            $helper = $renderer->plugin('form_seperator');
-            return $helper($element);
-        }
-
         $helper = $renderer->plugin('form_input');
         return $helper($element);
-    }
-
-    /**
-     * Invoke helper as function
-     *
-     * Proxies to {@link render()}.
-     *
-     * @param  ElementInterface|null $element
-     * @return string|FormElement
-     */
-    public function __invoke(ElementInterface $element = null)
-    {
-        if (!$element) {
-            return $this;
-        }
-
-        return $this->render($element);
     }
 }

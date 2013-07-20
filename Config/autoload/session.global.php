@@ -11,25 +11,25 @@
  * file.
  */
 
-return array (
-		'session' => array (
-				'config' => array (
+return array(
+		'session' => array(
+				'config' => array(
 						'class' => 'Zend\Session\Config\SessionConfig',
-						'options' => array (
-								'name' => 'TnM' ,
+						'options' => array(
+								'name' => 'TnM',
 								'gc_maxlifetime' => 1800
-						) 
+						)
 				),
 				'storage' => 'Zend\Session\Storage\SessionArrayStorage',
-				'validators' => array (
-						array (
+				'validators' => array(
+						array(
 								'Zend\Session\Validator\RemoteAddr',
-								'Zend\Session\Validator\HttpUserAgent' 
-						) 
+								'Zend\Session\Validator\HttpUserAgent'
+						)
 				),
-				'save_handler' => array (
+				'save_handler' => array(
 						'name' => 'db',
-						'adapter' => 'db' 
-				) 
-		) 
-);	
+						'adapter' => 'db'
+				)
+		)
+);

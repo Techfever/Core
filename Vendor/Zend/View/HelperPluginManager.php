@@ -28,7 +28,8 @@ class HelperPluginManager extends AbstractPluginManager
      * @var array
      */
     protected $factories = array(
-        'flashmessenger'      => 'Zend\View\Helper\Service\FlashMessengerFactory',
+        'flashmessenger' => 'Zend\View\Helper\Service\FlashMessengerFactory',
+        'identity'       => 'Zend\View\Helper\Service\IdentityFactory',
     );
 
     /**
@@ -43,7 +44,6 @@ class HelperPluginManager extends AbstractPluginManager
         // config value from the merged config.
         'doctype'             => 'Zend\View\Helper\Doctype', // overridden by a factory in ViewHelperManagerFactory
         'basepath'            => 'Zend\View\Helper\BasePath',
-    	'basehref'            => 'Zend\View\Helper\BaseHref',
         'url'                 => 'Zend\View\Helper\Url',
         'cycle'               => 'Zend\View\Helper\Cycle',
         'declarevars'         => 'Zend\View\Helper\DeclareVars',
@@ -63,10 +63,6 @@ class HelperPluginManager extends AbstractPluginManager
         'htmlobject'          => 'Zend\View\Helper\HtmlObject',
         'htmlpage'            => 'Zend\View\Helper\HtmlPage',
         'htmlquicktime'       => 'Zend\View\Helper\HtmlQuicktime',
-        'htmllink'            => 'Zend\View\Helper\HtmlLink',
-        'htmlimage'           => 'Zend\View\Helper\HtmlImage',
-        'htmltags'            => 'Zend\View\Helper\HtmlTags',
-        'contenttitle'        => 'Zend\View\Helper\ContentTitle',
         'inlinescript'        => 'Zend\View\Helper\InlineScript',
         'json'                => 'Zend\View\Helper\Json',
         'layout'              => 'Zend\View\Helper\Layout',
@@ -96,16 +92,6 @@ class HelperPluginManager extends AbstractPluginManager
     public function __construct(ConfigInterface $configuration = null)
     {
         parent::__construct($configuration);
-
-        $this->setFactory('identity', function ($helpers) {
-            $services = $helpers->getServiceLocator();
-            $helper   = new Helper\Identity();
-            if (!$services->has('Zend\Authentication\AuthenticationService')) {
-                return $helper;
-            }
-            $helper->setAuthenticationService($services->get('Zend\Authentication\AuthenticationService'));
-            return $helper;
-        });
 
         $this->addInitializer(array($this, 'injectRenderer'))
              ->addInitializer(array($this, 'injectTranslator'));

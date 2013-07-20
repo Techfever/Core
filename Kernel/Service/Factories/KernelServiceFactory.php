@@ -10,6 +10,6 @@ use Kernel\Service\Manager;
  */
 class KernelServiceFactory implements FactoryInterface {
 	public function createService(ServiceLocatorInterface $serviceLocator) {
-		return new Manager( $serviceLocator);
+		return new Manager($serviceLocator);
 	}
 }

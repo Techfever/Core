@@ -36,10 +36,12 @@ class Navigator {
 								'parent' => 'system_navigator_parent'
 						));
 		$DBNavigator->from(array(
-					'sn' => 'system_navigator'
+						'sn' => 'system_navigator'
 				));
 		$DBNavigator->order(array(
-					'system_navigator_parent ASC', 'system_navigator_order ASC', 'system_navigator_label ASC'
+						'system_navigator_parent ASC',
+						'system_navigator_order ASC',
+						'system_navigator_label ASC'
 				));
 		$DBNavigator->setCacheName('system_navigator');
 		$DBNavigator->execute();

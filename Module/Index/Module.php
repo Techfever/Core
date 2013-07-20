@@ -12,15 +12,18 @@ namespace Index;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Kernel\ServiceLocator;
+use Kernel\Template;
 
 class Module {
+	private static $_template = null;
 	public function onBootstrap(MvcEvent $e) {
 		$application = $e->getApplication();
 		$eventManager = $application->getEventManager();
 		$moduleRouteListener = new ModuleRouteListener();
 		$moduleRouteListener->attach($eventManager);
 		$application->getEventManager()->attach('render', array(
-					$this, 'setLayoutTitle'
+						$this,
+						'setLayoutTitle'
 				));
 		$this->initTheme($e);
 		//print_r($e->getApplication ()->getServiceManager ()->get('translator')->getLocale());
@@ -32,22 +35,86 @@ class Module {
 		$viewModel->setVariable('before', null);
 		$viewModel->setVariable('after', null);
 	}
-	public function getConfig() {
-		return include __DIR__ . '/Config/module.config.php';
+	public function getTemplate() {
+		self::$_template = ServiceLocator::getServiceManager('Template');
+		if (!isset($this->_template)) {
+			$Template = new Template();
+			$Template->prepare();
+			self::$_template = $Template;
+		}
+		return self::$_template;
 	}
+	/**
+	 * Expected to return \Zend\ServiceManager\Config object or array to
+	 * seed such an object.
+	 *
+	 * @return array|\Zend\ServiceManager\Config
+	 */
 	public function getAutoloaderConfig() {
 		return array(
-			'Zend\Loader\ClassMapAutoloader' => array(
-				__DIR__ . '/autoload_classmap.php'
-			), 'Zend\Loader\StandardAutoloader' => array(
-				'namespaces' => array(
-					__NAMESPACE__ => __DIR__ . '/'
+				'Zend\Loader\ClassMapAutoloader' => array(
+						__DIR__ . '/autoload_classmap.php'
+				),
+				'Zend\Loader\StandardAutoloader' => array(
+						'namespaces' => array(
+								__NAMESPACE__ => __DIR__ . '/'
+						)
 				)
-			)
 		);
 	}
+	/**
+	 * Expected to return \Zend\ServiceManager\Config object or array to
+	 * seed such an object.
+	 *
+	 * @return array|\Zend\ServiceManager\Config
+	 */
+	public function getConfig() {
+		return self::getTemplate()->getConfig();
+	}
+
+	/**
+	 * Expected to return \Zend\ServiceManager\Config object or array to
+	 * seed such an object.
+	 *
+	 * @return array|\Zend\ServiceManager\Config
+	 */
+	public function getViewHelperConfig() {
+		return self::getTemplate()->getViewHelperConfig();
+	}
+
+	/**
+	 * Expected to return \Zend\ServiceManager\Config object or array to
+	 * seed such an object.
+	 *
+	 * @return array|\Zend\ServiceManager\Config
+	 */
+	public function getValidatorConfig() {
+		return self::getTemplate()->getValidatorConfig();
+	}
+
+	/**
+	 * Expected to return \Zend\ServiceManager\Config object or array to
+	 * seed such an object.
+	 *
+	 * @return array|\Zend\ServiceManager\Config
+	 */
+	public function getFilterConfig() {
+		return self::getTemplate()->getFilterConfig();
+	}
+
+	/**
+	 * Expected to return \Zend\ServiceManager\Config object or array to
+	 * seed such an object.
+	 *
+	 * @return array|\Zend\ServiceManager\Config
+	 */
+	public function getFormElementConfig() {
+		return self::getTemplate()->getFormElementConfig();
+	}
+
 	public function initTheme($e) {
 		$Template = $e->getApplication()->getServiceManager()->get('Template');
+		//$Template->resetCSS();
 		$css = array(
 				'Vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/content.css',
 				'Vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/footer.css',
@@ -62,11 +129,11 @@ class Module {
 				'Vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/datatable.css',
 		);
 		$Template->addCSS($css);
+		//$Template->resetJavascript();
 		$javascript = array(
-			'Vendor/Techfever/Javascript/jquery/jquery.js', 
-			'Vendor/Techfever/Javascript/jquery/jquery-ui.js', 
-			'Vendor/Techfever/Javascript/bootstrap.min.js', 
-			'Vendor/Techfever/Theme/' . SYSTEM_THEME . '/Js/main.js'
+				'Vendor/Techfever/Javascript/jquery/jquery.js',
+				'Vendor/Techfever/Javascript/jquery/ui/jquery-ui.js',
+				'Vendor/Techfever/Theme/' . SYSTEM_THEME . '/Js/main.js'
 		);
 		$Template->addJavascript($javascript);
 	}
@@ -101,7 +168,7 @@ class Module {
 		}
 
 		// Getting the contentTitle helper from the view helper manager
-		$contentTitleHelper = $viewHelperManager->get('contentTitle');
+		$contentTitleHelper = $viewHelperManager->get('contenttitle');
 		// Setting
 		$contentTitleHelper->set($controller);
 	}

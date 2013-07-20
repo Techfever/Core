@@ -14,10 +14,11 @@ class SystemConfigServiceFactory implements FactoryInterface {
 		$configuration = array();
 		$Database = new Database('select');
 		$Database->columns(array(
-					'key' => 'system_configuration_key', 'value' => 'system_configuration_value'
+						'key' => 'system_configuration_key',
+						'value' => 'system_configuration_value'
 				));
 		$Database->from(array(
-					'ss' => 'system_configuration'
+						'ss' => 'system_configuration'
 				));
 		$Database->setCacheName('system_configuration');
 		$Database->execute();
@@ -31,8 +32,10 @@ class SystemConfigServiceFactory implements FactoryInterface {
 
 		if (is_array($configuration)) {
 			$configuration = array(
-				'system' => $configuration,
-				'theme' => array('default'=>$configuration['system_theme'])
+					'system' => $configuration,
+					'theme' => array(
+							'default' => $configuration['system_theme']
+					)
 			);
 			ServiceLocator::setServiceConfig($configuration);
 		}

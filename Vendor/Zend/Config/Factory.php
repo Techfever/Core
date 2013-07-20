@@ -127,7 +127,7 @@ class Factory
      *
      * @param string $filename
      * @param array|Config $config
-     * @return boolean TRUE on success | FALSE on failure
+     * @return bool TRUE on success | FALSE on failure
      * @throws Exception\RuntimeException
      * @throws Exception\InvalidArgumentException
      */
@@ -157,7 +157,7 @@ class Factory
             );
         }
 
-        if(!isset(self::$writerExtensions[$extension])) {
+        if (!isset(self::$writerExtensions[$extension])) {
             throw new Exception\RuntimeException(
                 "Unsupported config file extension: '.{$extension}' for writing."
             );
@@ -256,7 +256,7 @@ class Factory
      *
      * @param string $extension
      * @param string|Writer\AbstractWriter $writer
-     * @throw Exception\InvalidArgumentException
+     * @throws Exception\InvalidArgumentException
      * @return void
      */
     public static function registerWriter($extension, $writer)
