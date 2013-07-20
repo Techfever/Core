@@ -58,7 +58,7 @@ class FormElementManager extends AbstractPluginManager
         'time'          => 'Zend\Form\Element\Time',
         'url'           => 'Zend\Form\Element\Url',
         'week'          => 'Zend\Form\Element\Week',
-        'seperator'     => 'Zend\Form\Element\Seperator',
+        'seperator'       => 'Zend\Form\Element\Seperator',
     );
 
     /**

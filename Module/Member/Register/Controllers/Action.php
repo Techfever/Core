@@ -5,13 +5,15 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Module\Member\Register\Form\Input as InputForm;
 use Module\Member\Register\Form\Verify as InputVerify;
+use Kernel\Template;
 
 class RegisterActionController extends AbstractActionController {
 	public function __construct() {
+		Template::addCSS("ui-lightness/jquery-ui.css", "jquery");
 	}
 	public function IndexAction() {
 		$form = new InputForm();
-
+		
 		$request = $this->getRequest();
 		if ($request->isPost()) {
 			$content = new InputVerify();

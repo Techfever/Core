@@ -2,8 +2,8 @@
 namespace Module\Member\Register\Form;
 
 use Zend\Form\Form;
-use Zend\Captcha;
 use Kernel\Exception;
+use Zend\View\Helper;
 
 class Input extends Form {
 	public function __construct() {
@@ -65,14 +65,16 @@ class Input extends Form {
 			) ); 
 		$this->add ( array (
 					'name' => 'profile_dob',
-					'type' => 'Date',
-					'options' => array (
-							'label' => 'text_dob'
-					),
+					'type' => 'Text',
+		            'options' => array(
+		                     'label' => 'text_dob'
+				     ),
 				     'attributes' => array(
-				             'min' => '2012-01-01',
-				             'max' => '2020-01-01',
-				             'step' => '1', // days; default step interval is 1 day
+				     		 'id' => 'profile_dob',
+							 'readonly' => true,
+							'size' => '11',
+							'maxlength' => '10',
+				     		'type' => 'date'
 				     )
 			) ); 
 		$this->add ( array (
@@ -132,18 +134,13 @@ class Input extends Form {
 		$this->add ( array (
 					'name' => 'register_captcha',
 					'type' => 'Captcha',
-				     'options' => array(
-				             'label' => 'text_captcha',
-				             'captcha' => new Captcha\Image(array(
-				                'font' => KERNEL_PATH . '/Font/arial.ttf',
-				                'width' => 180,
-				                'height' => 70,
-				                'dotNoiseLevel' => 40,
-				                'lineNoiseLevel' => 3,
-				             	'ImgDir' => CORE_PATH . '/Data/Captcha',
-				             	'ImgUrl' => $_SERVER['HTTP_REFERER'] . 'Image/Captcha'
-							)),
-				     ),
+				    'options' => array(
+				            'label' => 'text_captcha',
+				    ),
+					'attributes' => array (
+							'size' => '7',
+							'maxlength' => '6'
+					),
 			) ); 
 		$this->add ( array (
 					'name' => 'buttonseperator',
@@ -163,7 +160,8 @@ class Input extends Form {
 				'name' => 'action',
 				'type' => 'Submit',
 				'attributes' => array (
-						'value' => 'Register'
+						'value' => 'Register',
+						'class' => 'button green'
 				)
 		) );
 	}

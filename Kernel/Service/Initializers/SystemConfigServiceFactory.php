@@ -24,6 +24,7 @@ class SystemConfigServiceFactory implements FactoryInterface {
 		if ($Database->hasResult()) {
 			while ($Database->valid()) {
 				$configuration[$Database->get('key')] = $Database->get('value');
+				define(strtoupper($Database->get('key')), $Database->get('value'));
 				$Database->next();
 			}
 		}

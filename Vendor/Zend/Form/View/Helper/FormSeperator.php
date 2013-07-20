@@ -19,6 +19,7 @@ class FormSeperator extends AbstractHelper {
 	 * @var array
 	 */
 	protected $validTagAttributes = array (
+			'form' => true,
 			'name' => true,
 			'id' => true,
 			'class' => true 

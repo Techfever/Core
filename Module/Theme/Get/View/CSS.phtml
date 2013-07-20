@@ -22,8 +22,8 @@ $options = array(
 );
 $cache = PatternFactory::factory('output', $options['options']);
 if (!$cache->start($key)) {
-	foreach ($this->css as $css) {
-		if (file_exists(CORE_PATH . '/' . $css)) {
+	foreach ($this->css as $css => $status) {
+		if (file_exists(CORE_PATH . '/' . $css) && $status) {
 			include(CORE_PATH . '/' . $css);
 			echo "\n";
 			echo "\n";

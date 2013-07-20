@@ -6,6 +6,7 @@ use Kernel\Template\TemplateInterface;
 use Kernel\Template\Module\Router;
 use Kernel\Template\Module\Controllers;
 use Kernel\Template\Module\ViewManager;
+use Zend\Session\Container as SessionContainer;
 
 class Template extends TemplateInterface {
 
@@ -47,11 +48,17 @@ class Template extends TemplateInterface {
 	private $controllers = null;
 
 	/**
+	 * @var Container
+	 **/
+	private $_container = null;
+
+	/**
 	 * Constructor
 	 *
 	 * @param  null|array $config
 	 **/
 	public function __construct() {
+		$this->_container = new SessionContainer('Template');
 	}
 
 	/**
@@ -159,5 +166,63 @@ class Template extends TemplateInterface {
 	 **/
 	public function reset() {
 		ServiceLocator::setServiceConfig($this->getConfig());
+	}
+
+	/**
+	 * Add CSS
+	 * 
+	 * @void
+	 **/
+	public function addCSS($data, $for = null) {
+		$this->_container = new SessionContainer('Template');
+		$css = array();
+		if ($this->_container->offsetExists('CSS')) {
+			$css = $this->_container->offsetGet('CSS');
+		}
+		if (is_string($data)) {
+			$data = array(
+				$data
+			);
+		}
+		if (is_array($data) && count($data) > 0) {
+			foreach ($data as $path) {
+				if (!empty($for)) {
+					switch ($for) {
+						case 'jquery':
+							$css['Vendor/Techfever/Javascript/jquery/themes/' . $path] = True;
+							break;
+					}
+				} else if (!empty($path)) {
+					$css[$path] = True;
+				}
+			}
+		}
+		$this->_container->offsetSet('CSS', (is_array($css) && count($css) > 0 ? $css : null));
+	}
+
+	/**
+	 * Add Javascript
+	 * 
+	 * @void
+	 **/
+	public function addJavascript($data) {
+		$this->_container = new SessionContainer('Template');
+		$javascript = array();
+		if ($this->_container->offsetExists('Javascript')) {
+			$javascript = $this->_container->offsetGet('Javascript');
+		}
+		if (is_string($data)) {
+			$data = array(
+				$data
+			);
+		}
+		if (is_array($data) && count($data) > 0) {
+			foreach ($data as $path) {
+				if (!empty($path)) {
+					$javascript[$path] = True;
+				}
+			}
+		}
+		$this->_container->offsetSet('Javascript', (is_array($javascript) && count($javascript) > 0 ? $javascript : null));
 	}
 }

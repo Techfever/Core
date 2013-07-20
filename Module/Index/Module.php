@@ -22,7 +22,7 @@ class Module {
 		$application->getEventManager()->attach('render', array(
 					$this, 'setLayoutTitle'
 				));
-		$this->initTheme();
+		$this->initTheme($e);
 		//print_r($e->getApplication ()->getServiceManager ()->get('translator')->getLocale());
 		//die();
 
@@ -46,30 +46,29 @@ class Module {
 			)
 		);
 	}
-	public function initTheme() {
-		$theme = ServiceLocator::getServiceConfig('theme');
+	public function initTheme($e) {
+		$Template = $e->getApplication()->getServiceManager()->get('Template');
 		$css = array(
-				'Vendor/Techfever/Theme/' . $theme['default'] . '/CSS/content.css',
-				'Vendor/Techfever/Theme/' . $theme['default'] . '/CSS/footer.css',
-				'Vendor/Techfever/Theme/' . $theme['default'] . '/CSS/header.css',
-				'Vendor/Techfever/Theme/' . $theme['default'] . '/CSS/layout.css',
-				'Vendor/Techfever/Theme/' . $theme['default'] . '/CSS/left.css',
-				'Vendor/Techfever/Theme/' . $theme['default'] . '/CSS/navigator.css',
-				'Vendor/Techfever/Theme/' . $theme['default'] . '/CSS/right.css',
-				'Vendor/Techfever/Theme/' . $theme['default'] . '/CSS/boxes.css',
-				'Vendor/Techfever/Theme/' . $theme['default'] . '/CSS/breadcrumb.css',
-				'Vendor/Techfever/Theme/' . $theme['default'] . '/CSS/form.css',
-				'Vendor/Techfever/Theme/' . $theme['default'] . '/CSS/datatable.css'
+				'Vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/content.css',
+				'Vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/footer.css',
+				'Vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/header.css',
+				'Vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/layout.css',
+				'Vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/left.css',
+				'Vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/navigator.css',
+				'Vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/right.css',
+				'Vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/boxes.css',
+				'Vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/breadcrumb.css',
+				'Vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/form.css',
+				'Vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/datatable.css',
 		);
+		$Template->addCSS($css);
 		$javascript = array(
-			'Vendor/Techfever/Javascript/jquery/html5.js', 'Vendor/Techfever/Javascript/jquery/bootstrap.min.js', 'Vendor/Techfever/Javascript/jquery/jquery-1.9.1.js'
+			'Vendor/Techfever/Javascript/jquery/jquery.js', 
+			'Vendor/Techfever/Javascript/jquery/jquery-ui.js', 
+			'Vendor/Techfever/Javascript/bootstrap.min.js', 
+			'Vendor/Techfever/Theme/' . SYSTEM_THEME . '/Js/main.js'
 		);
-		$newtheme = array(
-			'theme' => array_merge($theme, array(
-				'css' => $css, 'javascript' => $javascript
-			))
-		);
-		ServiceLocator::setServiceConfig($newtheme);
+		$Template->addJavascript($javascript);
 	}
 
 	/**

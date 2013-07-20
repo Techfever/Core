@@ -2,7 +2,7 @@
 use Kernel\ServiceLocator;
 use Zend\Cache\PatternFactory;
 
-$currenturi = str_replace('http://', '', (array_key_exists('HTTP_REFERER', $_SERVER) ? $_SERVER['HTTP_REFERER'] : 'css'));
+$currenturi = str_replace('http://', '', (array_key_exists('HTTP_REFERER', $_SERVER) ? $_SERVER['HTTP_REFERER'] : 'javascript'));
 $currenturi = str_replace('https://', '', $currenturi);
 $key = strtolower(str_replace('/', '_', $currenturi));
 
@@ -23,8 +23,8 @@ $options = array(
 );
 $cache = PatternFactory::factory('output', $options['options']);
 if (!$cache->start($key)) {
-	foreach ($this->javascript as $javascript) {
-		if (file_exists(CORE_PATH . '/' . $javascript)) {
+	foreach ($this->javascript as $javascript => $status) {
+		if (file_exists(CORE_PATH . '/' . $javascript) && $status) {
 			include(CORE_PATH . '/' . $javascript);
 			echo "\n";
 			echo "\n";
