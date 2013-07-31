@@ -26,9 +26,15 @@ $options = array(
 				'cache_output' => true,
 		)
 );
+$parameter = null;
 $cache = PatternFactory::factory('output', $options['options']);
 if (!$cache->start($key)) {
 	foreach ($this->javascript as $javascript => $status) {
+		$parameter = null;
+		if (!is_bool($status) && is_array($status)) {
+			$parameter = $status['parameter'];
+			$status = $status['status'];
+		}
 		if (file_exists(CORE_PATH . '/' . $javascript) && $status) {
 			include(CORE_PATH . '/' . $javascript);
 			echo "\n";

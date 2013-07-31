@@ -9,9 +9,9 @@
 
 namespace Kernel\ViewHelper;
 
-use Zend\View\Exception;
 use Zend\View\Helper\AbstractHelper;
 use Kernel\ServiceLocator;
+use Kernel\Exception;
 
 /**
  * Helper for retrieving the base href.

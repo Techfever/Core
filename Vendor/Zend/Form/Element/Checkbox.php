@@ -46,6 +46,11 @@ class Checkbox extends Element implements InputProviderInterface
     protected $checkedValue = '1';
 
     /**
+     * @var bool
+     */
+    protected $disableInArrayValidator = false;
+
+    /**
      * Accepted options for MultiCheckbox:
      * - use_hidden_element: do we render hidden element?
      * - unchecked_value: value for checkbox when unchecked
@@ -70,7 +75,33 @@ class Checkbox extends Element implements InputProviderInterface
             $this->setCheckedValue($options['checked_value']);
         }
 
+        if (isset($this->options['disable_inarray_validator'])) {
+            $this->setDisableInArrayValidator($this->options['disable_inarray_validator']);
+        }
+
         return $this;
+    }
+
+    /**
+     * Set the flag to allow for disabling the automatic addition of an InArray validator.
+     *
+     * @param bool $disableOption
+     * @return Select
+     */
+    public function setDisableInArrayValidator($disableOption)
+    {
+        $this->disableInArrayValidator = (bool) $disableOption;
+        return $this;
+    }
+
+    /**
+     * Get the disable in array validator flag.
+     *
+     * @return bool
+     */
+    public function disableInArrayValidator()
+    {
+        return $this->disableInArrayValidator;
     }
 
     /**
@@ -146,7 +177,7 @@ class Checkbox extends Element implements InputProviderInterface
      */
     protected function getValidator()
     {
-        if (null === $this->validator) {
+        if (null === $this->validator && !$this->disableInArrayValidator()) {
             $this->validator = new InArrayValidator(array(
                 'haystack' => array($this->checkedValue, $this->uncheckedValue),
                 'strict'   => false
@@ -167,10 +198,13 @@ class Checkbox extends Element implements InputProviderInterface
         $spec = array(
             'name' => $this->getName(),
             'required' => true,
-            'validators' => array(
-                $this->getValidator()
-            )
         );
+
+        if ($validator = $this->getValidator()) {
+            $spec['validators'] = array(
+                $validator,
+            );
+        }
 
         return $spec;
     }

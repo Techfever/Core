@@ -1,7 +1,7 @@
 <?php
 namespace Kernel\Template\Module;
 
-use Kernel\Database;
+use Kernel\Database\Database;
 use Kernel\Exception;
 
 class Controllers implements ModuleInterface {

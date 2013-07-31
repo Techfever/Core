@@ -1,7 +1,7 @@
 <?php
 namespace Kernel\Form;
 
-use Kernel\Database;
+use Kernel\Database\Database;
 use Kernel\Exception;
 
 class Parameter {

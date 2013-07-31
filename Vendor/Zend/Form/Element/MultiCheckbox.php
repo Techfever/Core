@@ -57,12 +57,14 @@ class MultiCheckbox extends Checkbox
     {
         $this->valueOptions = $options;
 
-        // Update Explode validator haystack
-        if ($this->validator instanceof ExplodeValidator) {
-            $validator = $this->validator->getValidator();
-            $validator->setHaystack($this->getValueOptionsValues());
+        // Update InArrayValidator validator haystack
+        if (null !== $this->validator) {
+	        // Update Explode validator haystack
+	        if ($this->validator instanceof ExplodeValidator) {
+	            $validator = $this->validator->getValidator();
+	            $validator->setHaystack($this->getValueOptionsValues());
+	        }
         }
-
         return $this;
     }
 
@@ -86,6 +88,10 @@ class MultiCheckbox extends Checkbox
         // Alias for 'value_options'
         if (isset($this->options['options'])) {
             $this->setValueOptions($this->options['options']);
+        }
+
+        if (isset($this->options['disable_inarray_validator'])) {
+            $this->setDisableInArrayValidator($this->options['disable_inarray_validator']);
         }
 
         return $this;
@@ -116,7 +122,7 @@ class MultiCheckbox extends Checkbox
      */
     protected function getValidator()
     {
-        if (null === $this->validator) {
+        if (null === $this->validator && !$this->disableInArrayValidator()) {
             $inArrayValidator = new InArrayValidator(array(
                 'haystack'  => $this->getValueOptionsValues(),
                 'strict'    => false,

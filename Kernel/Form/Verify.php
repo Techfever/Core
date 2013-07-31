@@ -9,9 +9,10 @@ use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\Filter\FilterChain;
 use Zend\Validator\ValidatorChain;
-use Kernel\Database;
+use Kernel\Database\Database;
 use Kernel\Exception;
 use Kernel\ServiceLocator;
+use DateTimeZone;
 
 class Verify implements InputFilterAwareInterface {
 
@@ -31,26 +32,6 @@ class Verify implements InputFilterAwareInterface {
 	private $_field = null;
 
 	/**
-	 * @var Created By
-	 **/
-	public $_created_by;
-
-	/**
-	 * @var Created Date
-	 **/
-	public $_created_date;
-
-	/**
-	 * @var Modified By
-	 **/
-	public $_modified_by;
-
-	/**
-	 * @var Modified Date
-	 **/
-	public $_modified_date;
-
-	/**
 	 * Constructor
 	 *
 	 * @return	void
@@ -64,25 +45,25 @@ class Verify implements InputFilterAwareInterface {
 	}
 
 	public function exchangeArray($data) {
-		if (isset($data['subaction'])) {
-			$datetime = new DateTime();
-			if ($data['subaction'] == 'new') {
-				$this->created_by = null;
-				$this->created_date = $datetime->format('H:i:s d-m-Y');
-			}
-			$this->modified_by = null;
-			$this->modified_date = $datetime->format('H:i:s d-m-Y');
-			if (!empty($this->_field) && count($this->_field) > 0) {
-				foreach ($this->_field as $field_key => $field_value) {
-					if (isset($field_value['table']) && isset($field_value['table']['name']) && isset($field_value['table']['column'])) {
-						if (!is_array($this->_data) || !array_key_exists($field_value['table']['name'], $this->_data)) {
-							$this->_data[$field_value['table']['name']] = array();
-						}
-						$this->_data[$field_value['table']['name']][$field_value['table']['column']] = $data[$field_key];
+		$UserAccess = ServiceLocator::getServiceManager('Access');
+		$datetime = new \DateTime();
+		$this->_data['log']['created_by'] = $UserAccess->getUsername();
+		$this->_data['log']['created_date'] = $datetime->format('Y-m-d H:i:s');
+		$this->_data['log']['modified_by'] = $UserAccess->getUsername();
+		$this->_data['log']['modified_date'] = $datetime->format('Y-m-d H:i:s');
+		if (!empty($this->_field) && count($this->_field) > 0) {
+			foreach ($this->_field as $field_key => $field_value) {
+				if (isset($field_value['table']) && isset($field_value['table']['name']) && isset($field_value['table']['column'])) {
+					if (!is_array($this->_data) || !array_key_exists($field_value['table']['name'], $this->_data)) {
+						$this->_data[$field_value['table']['name']] = array();
 					}
+					$this->_data[$field_value['table']['name']][$field_value['table']['column']] = $data[$field_key];
 				}
 			}
 		}
+	}
+	public function getData() {
+		return $this->_data;
 	}
 	public function getArrayCopy() {
 		return get_object_vars($this);
@@ -90,15 +71,17 @@ class Verify implements InputFilterAwareInterface {
 
 	// Add content to these methods:
 	public function setInputFilter(InputFilterInterface $inputFilter) {
-		throw new Exception('Not used');
+		throw new Exception\InvalidArgumentException('Not used');
 	}
 
 	public function getInputFilter() {
 		if (!$this->_inputFilter) {
 
+			$Translator = ServiceLocator::getServiceManager('Translator');
+
 			$validatorManager = ServiceLocator::getServiceManager('ValidatorManager');
 			$filterManager = ServiceLocator::getServiceManager('FilterManager');
-			
+
 			$validatorChain = new ValidatorChain();
 			$validatorChain->setPluginManager($validatorManager);
 
@@ -111,13 +94,13 @@ class Verify implements InputFilterAwareInterface {
 
 			$inputFilter = new InputFilter();
 
-			$Language = ServiceLocator::getServiceManager('Language');
 			if (!empty($this->_field) && count($this->_field) > 0) {
 				foreach ($this->_field as $field_key => $field_value) {
 					$required = false;
 					if (isset($field_value['attributes']) && isset($field_value['attributes']['require']) && $field_value['attributes']['require']) {
 						$required = true;
 					}
+					$fieldLabel = $Translator->translate(strtolower('text_' . $field_key));
 					$filter = array(
 							array(
 									'name' => 'StringTrim'
@@ -137,6 +120,12 @@ class Verify implements InputFilterAwareInterface {
 						$validator_data[] = array(
 								'name' => 'NotEmpty',
 								'break_chain_on_failure' => true,
+								'options' => array(
+										'messages' => array(
+												'isEmpty' => "text_error_required",
+												'notEmptyInvalid' => "text_error_invalid"
+										)
+								)
 						);
 					}
 					if (isset($field_value['validators'])) {
@@ -150,8 +139,17 @@ class Verify implements InputFilterAwareInterface {
 							if (!isset($validator_value['break_chain_on_failure'])) {
 								$validator_value['break_chain_on_failure'] = true;
 							}
-							if (!isset($validator_value['options']) || !isset($validator_value['options']['messages'])) {
-								//$validator_value['options']['messages'] = $Language->validatorMessages($validator_value['name'], $field_key);
+							if (!isset($validator_value['options'])) {
+								$validator_value['options'] = array();
+							}
+							if (!isset($validator_value['options']['field'])) {
+								$validator_value['options']['field'] = $fieldLabel;
+							}
+							if (!isset($validator_value['options']['fieldmatch'])) {
+								$validator_value['options']['fieldmatch'] = $fieldLabel;
+								if (isset($validator_value['options']['chain'])) {
+									$validator_value['options']['fieldmatch'] = $Translator->translate(strtolower('text_' . $validator_value['options']['chain']));
+								}
 							}
 							$validator[] = $validator_value;
 						}

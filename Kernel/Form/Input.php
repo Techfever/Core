@@ -1,15 +1,15 @@
 <?php
 namespace Kernel\Form;
 
-use Zend\Form\Form;
+use Zend\Form\Form as BaseForm;
 use Zend\Captcha;
 use Zend\Form\Factory;
-use Kernel\Database;
+use Kernel\Database\Database;
 use Kernel\Exception;
 use Kernel\ServiceLocator;
 use Kernel\Form\Parameter;
 
-class Input extends Form {
+class Input extends BaseForm {
 
 	/**
 	 * @var Name
@@ -103,7 +103,6 @@ class Input extends Form {
 			$is_comment = false;
 			$is_require = false;
 			$is_button = false;
-			$title = null;
 			if (is_array($field_value)) {
 				$field = $field_value;
 				$field['name'] = $field_key;
@@ -114,12 +113,14 @@ class Input extends Form {
 				if (isset($field['type'])) {
 					if ($type != 'seperator' && $type != 'hidden' && $type != 'submit') {
 						$not_show_label = false;
-						$field['options']['label'] = $Translator->translate(strtolower('text_' . $field['name']));
+						if (!isset($field['options']['label'])) {
+							$field['options']['label'] = $Translator->translate(strtolower('text_' . $field['name']));
+						}
 						if (!isset($field['options']['disable_inarray_validator'])) {
 							$field['options']['disable_inarray_validator'] = true;
 						}
 						if ($type == 'captcha') {
-							$comment_msg = $Translator->translate('text_error_input_not_match');
+							$comment_msg = $Translator->translate('text_error_not_match');
 							$field['options']['captcha'] = new Captcha\Image(
 									array(
 											'wordLen' => 6,
@@ -131,7 +132,7 @@ class Input extends Form {
 											'ImgDir' => CORE_PATH . '/Data/Captcha',
 											'ImgUrl' => $serverUrl($baseHref()) . '/Image/Captcha',
 											'messages' => array(
-													'badCaptcha' => sprintf($comment_msg, $field['options']['label'])
+													'badCaptcha' => str_replace("%field%", (string) $field['options']['label'], $comment_msg)
 											)
 									));
 						}
@@ -151,14 +152,15 @@ class Input extends Form {
 
 						if (isset($field['attributes']['require']) && $field['attributes']['require'] == true) {
 							$is_require = true;
-							$comment_msg = $Translator->translate('text_error_required');
-							$title[] = '* ' . sprintf($comment_msg, $field['options']['label']);
 						}
-
 						if (isset($field['attributes']['require_comment']) && is_array($field['attributes']['require_comment'])) {
 							$is_comment = true;
 						} else {
-							$field['attributes']['require_comment'] = null;
+							$field['attributes']['require_comment'] = array();
+						}
+						if ($type == 'button') {
+							$is_button = true;
+							$not_show_label = true;
 						}
 					} elseif ($type == 'seperator') {
 						$is_seperator = true;

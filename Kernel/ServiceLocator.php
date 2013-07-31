@@ -3,6 +3,7 @@ namespace Kernel;
 
 use Zend\ServiceManager\ServiceManager;
 use Zend\Db\Sql\Sql;
+use Kernel\Exception;
 
 class ServiceLocator {
 

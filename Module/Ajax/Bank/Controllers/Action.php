@@ -3,7 +3,7 @@ namespace Ajax\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Json\Json;
-use Kernel\Country;
+use Kernel\Bank\Bank;
 
 class BankActionController extends AbstractActionController {
 
@@ -14,25 +14,25 @@ class BankActionController extends AbstractActionController {
 		$response = $this->getResponse();
 		$success = 0;
 		$valid = 0;
-		$id = $request->getPost('id');
+		$country = $request->getPost('country');
 		$bank_data = array();
 		$bank_data[] = array(
 				'id' => '',
 				'value' => ''
 		);
-		if (isset($id) && $id > 0) {
+		if (isset($country) && $country > 0) {
 			$bank_state = array();
-			$Country = new Country();
-			$bank_state = $Country->getState(null, $id, 'bank');
+			$Bank = new Bank(array(
+					'country' => $country
+			));
+			$bank_state = $Bank->stateToForm();
 			if (is_array($bank_state)) {
-				foreach ($bank_state as $bank_value) {
-					if ($bank_value['id'] > 0) {
-						$bank_data[] = array(
-								'id' => $bank_value['id'],
-								'value' => $translate->translate('text_country_state_' . $id . '_' . strtolower(str_replace(' ', '_', $bank_value['iso'])))
-						);
-						$valid = 1;
-					}
+				foreach ($bank_state as $bank_key => $bank_value) {
+					$bank_data[] = array(
+							'id' => $bank_key,
+							'value' => $translate->translate($bank_value)
+					);
+					$valid = 1;
 				}
 			}
 			$success = 1;
@@ -44,7 +44,7 @@ class BankActionController extends AbstractActionController {
 		$response->setContent(Json::encode(array(
 						'success' => $success,
 						'valid' => $valid,
-						'id' => $id,
+						'country' => $country,
 						'data' => $bank_data
 				)));
 		return $response;
@@ -57,38 +57,44 @@ class BankActionController extends AbstractActionController {
 		$response = $this->getResponse();
 		$success = 0;
 		$valid = 0;
-		$id = $request->getPost('id');
-		$address_data = array();
-		$address_data[] = array(
+		$country = $request->getPost('country');
+		$state = $request->getPost('state');
+		$bank = $request->getPost('bank');
+		$bank_data = array();
+		$bank_data[] = array(
 				'id' => '',
 				'value' => ''
 		);
-		if (isset($id) && $id > 0) {
-			$address_state = array();
-			$Country = new Country();
-			$address_state = $Country->getState(null, $id, 'address');
-			if (is_array($address_state)) {
-				foreach ($address_state as $address_value) {
-					if ($address_value['id'] > 0) {
-						$address_data[] = array(
-								'id' => $address_value['id'],
-								'value' => $translate->translate('text_country_state_' . $id . '_' . strtolower(str_replace(' ', '_', $address_value['iso'])))
-						);
-						$valid = 1;
-					}
+		if ((isset($bank) && $bank > 0) && (isset($country) && $country > 0) && (isset($state) && $state > 0)) {
+			$bank_state = array();
+			$Bank = new Bank(array(
+					'country' => $country,
+					'state' => $state,
+					'bank' => $bank
+			));
+			$bank_branch = $Bank->branchToForm();
+			if (is_array($bank_branch)) {
+				foreach ($bank_branch as $bank_value) {
+					$bank_data[] = array(
+							'id' => $bank_key,
+							'value' => $translate->translate($bank_value)
+					);
+					$valid = 1;
 				}
 			}
 			$success = 1;
 		}
-		$address_data[] = array(
+		$bank_data[] = array(
 				'id' => '0',
 				'value' => $translate->translate('text_not_listed')
 		);
 		$response->setContent(Json::encode(array(
 						'success' => $success,
 						'valid' => $valid,
-						'id' => $id,
-						'data' => $address_data
+						'country' => $country,
+						'state' => $state,
+						'bank' => $bank,
+						'data' => $bank_data
 				)));
 		return $response;
 	}

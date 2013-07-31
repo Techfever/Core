@@ -6,67 +6,119 @@ echo $form->openTag();
 ?><table class="form">
 <?php
 $formLabel = $this->plugin('formLabel');
+$rowspanCount = 1;
+$rowspanTotal = 1;
+$rowspanStatus = false;
 foreach ($form->getElements() as $elements_key => $elements) {
 	$field = $form->get($elements_key);
 	if (is_object($field)) {
 		$attributes = $field->getAttributes();
 		$options = $field->getOptions();
-?><tr<?php echo ($attributes['is_hidden'] ? ' style="display: none;"' : null) ?> <?php echo (isset($attributes['id']) ? 'id="tr_' . $attributes['id'] . '"' : null); ?>>
+		if (isset($attributes['rowspan']) && $attributes['rowspan'] > 0) {
+			$rowspanTotal = $attributes['rowspan'];
+			$rowspanStatus = true;
+		}
+		if ($rowspanCount == 1) {
+?><tr<?php echo ($attributes['is_hidden'] ? ' style="display: none;"' : null) ?> <?php echo (isset($attributes['id']) ? 'id="' . $attributes['id'] . '"' : null); ?>>
 <?php
-		if (!$attributes['is_seperator']) {
+		}
+		if (isset($attributes['type']) || $attributes['class'] == 'selectdate') {
+			if (!isset($attributes['type'])) {
+				$attributes['type'] = '';
+			}
+			$elementRender = call_user_func_array(array(
+					$this,
+					'form' . ucfirst($attributes['element'])
+			), array(
+					$field
+			));
+			if ($attributes['type'] == 'seperator') {
+?><td class="seperator" colspan="3">
+<?php
+				echo $elementRender;
+?>
+</td>
+<?php
+			} elseif ($attributes['type'] == 'hidden') {
+?><td class="hidden" colspan="3" style="display: none;">
+<?php
+				echo $elementRender;
+?>
+</td>
+<?php
+			} elseif ($attributes['type'] == 'submit' || $attributes['type'] == 'button') {
+				if ($rowspanCount == 1) {
+?><td></td>
+<td class="field" colspan="2">
+<?php
+				}
+?><span class="button">
+<?php
+				echo $elementRender;
+?></span>
+<?php
+				$rowspanCount++;
+				if ($rowspanCount > $rowspanTotal) {
+?></td>
+<?php
+				}
+			} else {
 ?><td class="label">
 <?php
-			if (!$attributes['not_show_label']) {
-				echo $this->formLabel($field) . ':' . ($attributes['is_require'] ? '<span class="Required">*</span>' : null);
-			}
+				if (!$attributes['not_show_label']) {
+					echo $this->formLabel($field) . ':' . ($attributes['is_require'] ? '<span class="required">*</span>' : null);
+				}
 ?></td>
+<td class="field">
 <?php
-		}
-?><td class="field"<?php echo ($attributes['is_seperator'] ? ' colspan="3"' : ($attributes['is_button'] ? ' colspan="2"' : null)) ?>>
+				$messageTemplates = $form->getMessageTemplates($elements_key);
+				$commentStatus = false;
+				if (($attributes['is_comment'] && count($attributes['require_comment']) > 0) || count($messageTemplates) > 0) {
+					$commentStatus = true;
+				}
+				if ($commentStatus) {
+?><div class="tooltip" <?php echo 'title="' . (count($attributes['require_comment']) > 0 ? '* ' . implode("<br>* ", $attributes['require_comment']) : null) . (count($messageTemplates) > 0 ? '* ' . implode("<br>* ", $messageTemplates) : null) . '"' ?>>
 <?php
-		$messageTemplates = $form->getMessageTemplates($elements_key);
-		if (($attributes['is_comment'] && count($attributes['require_comment']) > 0) || count($messageTemplates) > 0) {
-?><div class="tooltip"<?php echo 'title="' . (count($attributes['require_comment']) > 0 ? '* ' . implode("<br>* ", $attributes['require_comment']) : null) . (count($messageTemplates) > 0 ? '* ' . implode("<br>* ", $messageTemplates) : null) . '"';
-					  ?>>
-<?php
-							  }
-							  if ($attributes['is_captcha']) {
+				}
+				if ($attributes['is_captcha']) {
 ?><div class="captcha">
 <?php
-		}
-		echo call_user_func_array(array(
-				$this,
-				'form' . ucfirst($attributes['element'])
-		), array(
-				$field
-		));
-		if ($attributes['is_captcha']) {
+				}
+				echo $elementRender;
+				if ($attributes['is_captcha']) {
 ?></div>
 <?php
-		}
-		if ($attributes['is_comment']) {
+				}
+				if ($commentStatus) {
 ?></div>
 <?php
-		}
-?></td>
-<?php
-		if (!$attributes['is_seperator'] && !$attributes['is_button']) {
-?><td class="help">
+				}
+?>
+</td>
+<td class="help">
 <div class="ui-widget"><div class="ui-state-active">
 <?php
-			if (count($field->getMessages()) > 0) {
-				echo $this->formElementErrors()->setMessageOpenFormat('<span class="ui-icon ui-icon-closethick"></span>')->render($field);
-			} elseif (!$attributes['is_seperator'] && count($this->messages) > 0 && !isset($this->messages[$elements_key])) {
-				echo '<span class="ui-icon ui-icon-check"></span>';
-			}
+				if (count($field->getMessages()) > 0) {
+					echo $this->formElementErrors()->setMessageOpenFormat('<span class="ui-icon ui-icon-closethick"></span>')->render($field);
+				} elseif (!$attributes['is_seperator'] && count($this->messages) > 0 && !isset($this->messages[$elements_key])) {
+					echo '<span class="ui-icon ui-icon-check"></span>';
+				}
 ?></div></div></td>
 <?php
-		}
+			}
+			if (!$rowspanStatus || ($rowspanStatus && $rowspanCount > $rowspanTotal)) {
 ?></tr>
 <?php
+			}
+		}
+		if ($rowspanCount > $rowspanTotal) {
+			$rowspanCount = 1;
+			$rowspanTotal = 1;
+			$rowspanStatus = false;
+		}
 	}
 }
 ?></table>
-	 <?php
+<?php
 echo $form->closeTag();
-	 ?></div>
+?></div>

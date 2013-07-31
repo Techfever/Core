@@ -26,7 +26,7 @@ class HtmlLink extends AbstractHtmlElement {
 	 */
 	public function __invoke($tag = null, $object = null, $attribs = false, $closetag = false, $escape = true) {
 		if ($attribs) {
-			$attribs = $this->htmlAttribs ( $attribs );
+			$attribs = $this->htmlAttribs($attribs);
 		} else {
 			$attribs = '';
 		}

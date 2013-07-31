@@ -16,14 +16,12 @@ use Zend\Validator\AbstractValidator;
 
 class Select extends AbstractValidator {
 	const INVALID = 'selectInvalid';
-	const VALUE_EMPTY = 'selectEmpty';
 
 	/**
 	 * @var array
 	 */
 	protected $messageTemplates = array(
-			self::INVALID => "Invalid Type",
-			self::VALUE_EMPTY => "must select correctly",
+			self::INVALID => "text_error_invalid_value_type",
 	);
 
 	/**
@@ -32,7 +30,9 @@ class Select extends AbstractValidator {
 	protected $messageVariables = array();
 
 	protected $options = array(
-			'type' => 'integer', // Minimum length
+			'type' => 'Integer',
+			// Minimum length,
+			'encoding' => 'UTF-8', // Encoding to use
 	);
 
 	protected $stringWrapper;
@@ -47,6 +47,10 @@ class Select extends AbstractValidator {
 			$options = func_get_args();
 			if (!empty($options)) {
 				$temp['type'] = array_shift($options);
+			}
+
+			if (!empty($options)) {
+				$temp['encoding'] = array_shift($options);
 			}
 			$options = $temp;
 		}
@@ -103,6 +107,28 @@ class Select extends AbstractValidator {
 	}
 
 	/**
+	 * Returns the actual encoding
+	 *
+	 * @return string
+	 */
+	public function getEncoding() {
+		return $this->options['encoding'];
+	}
+
+	/**
+	 * Sets a new encoding to use
+	 *
+	 * @param string $encoding
+	 * @return text
+	 * @throws Exception\InvalidArgumentException
+	 */
+	public function setEncoding($encoding) {
+		$this->stringWrapper = StringUtils::getWrapper($encoding);
+		$this->options['encoding'] = $encoding;
+		return $this;
+	}
+
+	/**
 	 * Returns true if and only if the string length of $value is at least the min option and
 	 * no greater than the max option (when the max option is not null).
 	 *
@@ -110,26 +136,22 @@ class Select extends AbstractValidator {
 	 * @return bool
 	 */
 	public function isValid($value) {
-
-		$this->setValue($value);
-
-		if ($this->getType() == 'integer' && is_numeric($value)) {
-			if ($length < $value) {
-				$this->error(self::VALUE_EMPTY);
-			}
-		} elseif ($this->getType() == 'string' && is_string($value)) {
-			$length = $this->getStringWrapper()->strlen($value);
-			if ($length < 1) {
-				$this->error(self::VALUE_EMPTY);
-			}
-		} else {
+		if (!is_numeric($value) && !is_string($value)) {
 			$this->error(self::INVALID);
-		}
-
-		if (count($this->getMessages())) {
 			return false;
 		}
+		$this->setValue($value);
 
+		if ($this->getType() == 'Integer' && !is_numeric($value)) {
+			$this->error(self::INVALID);
+			return false;
+		} elseif ($this->getType() == 'String' && is_string($value)) {
+			$length = $this->getStringWrapper()->strlen($value);
+			if ($length < 1) {
+				$this->error(self::INVALID);
+				return false;
+			}
+		}
 		return true;
 	}
 }

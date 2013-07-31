@@ -614,20 +614,20 @@ class Request extends HttpRequest
      */
     protected function detectBaseHref()
     {
-    	$filename = basename($this->getServer()->get('SCRIPT_FILENAME', ''));
-    	$baseUrl = $this->getBaseUrl();
-    
-    	// Empty base url detected
-    	if ($baseUrl === '') {
-    		return '';
-    	}
-    
-    	// basename() matches the script filename; return the directory
-    	if (basename($baseUrl) === $filename) {
-    		return str_replace('\\', '/', dirname($baseUrl));
-    	}
-    
-    	// Base href is identical to base URL
-    	return $baseUrl;
+        $filename = basename($this->getServer()->get('SCRIPT_FILENAME', ''));
+        $baseUrl  = $this->getBaseUrl();
+
+        // Empty base url detected
+        if ($baseUrl === '') {
+            return '';
+        }
+
+        // basename() matches the script filename; return the directory
+        if (basename($baseUrl) === $filename) {
+            return str_replace('\\', '/', dirname($baseUrl));
+        }
+
+        // Base href is identical to base URL
+        return $baseUrl;
     }
 }

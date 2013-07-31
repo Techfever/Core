@@ -3,7 +3,7 @@ namespace Kernel;
 
 use Zend\Session\Container as SessionContainer;
 use Kernel\ServiceLocator;
-use Kernel\Database;
+use Kernel\Database\Database;
 use DateTime;
 
 class Snapshot {
@@ -12,6 +12,11 @@ class Snapshot {
 	 * @var Location
 	 **/
 	private $_location = null;
+
+	/**
+	 * @var Container
+	 **/
+	private $container = null;
 
 	/**
 	 * Constructor

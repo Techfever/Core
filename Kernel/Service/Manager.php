@@ -3,7 +3,7 @@ namespace Kernel\Service;
 
 use Zend\ServiceManager\ServiceManager;
 use Kernel\ServiceLocator;
-use Kernel\Database;
+use Kernel\Database\Database;
 
 class Manager {
 

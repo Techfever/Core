@@ -3,8 +3,8 @@ namespace Kernel\Service\Initializers;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Kernel\Template;
-use Kernel\Database;
+use Kernel\Template\Template;
+use Kernel\Database\Database;
 use Kernel\ServiceLocator;
 
 /**

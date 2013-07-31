@@ -12,7 +12,7 @@ namespace Index;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Kernel\ServiceLocator;
-use Kernel\Template;
+use Kernel\Template\Template;
 
 class Module {
 	private static $_template = null;
@@ -111,6 +111,16 @@ class Module {
 	public function getFormElementConfig() {
 		return self::getTemplate()->getFormElementConfig();
 	}
+
+	/**
+	 * Expected to return \Zend\ServiceManager\Config object or array to
+	 * seed such an object.
+	 *
+	 * @return array|\Zend\ServiceManager\Config
+	 */
+	public function getControllerPluginConfig() {
+		return self::getTemplate()->getControllerPluginConfig();
+	}	
 
 	public function initTheme($e) {
 		$Template = $e->getApplication()->getServiceManager()->get('Template');

@@ -3,15 +3,15 @@ namespace Kernel\Service\Initializers;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Kernel\Access;
+use Kernel\User\Access as UserAccess;
 
 /**
- * Access
+ * User Access
  */
 class AccessServiceFactory implements FactoryInterface {
 	public function createService(ServiceLocatorInterface $serviceLocator) {
-		$Access = new Access();
+		$UserAccess = new UserAccess();
 		//$Access->setLogin(1);
-		return $Access;
+		return $UserAccess;
 	}
 }

@@ -3,6 +3,7 @@ namespace Kernel;
 
 use Zend\Loader\ClassMapAutoloader;
 use Kernel\ServiceLocator;
+use Kernel\Database\Database;
 
 class Module {
 

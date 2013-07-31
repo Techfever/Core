@@ -918,7 +918,9 @@ class Select extends AbstractSql implements SqlInterface, PreparableSqlInterface
             $sql = $driver->formatParameterName('limit');
             $parameterContainer->offsetSet('limit', $limit, ParameterContainer::TYPE_INTEGER);
         } else {
-            $sql = $platform->quoteValue($limit);
+            /* Technation Added */
+            //$sql = $platform->quoteValue($limit);
+            $sql = $limit;
         }
 
         return array($sql);

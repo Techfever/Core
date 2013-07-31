@@ -99,7 +99,12 @@ class Url extends AbstractHelper
 
         $options['name'] = $name;
 
-        return $this->router->assemble($params, $options);
+        /* Technation Added */
+		$url = $this->router->assemble($params, $options);
+		if (substr($url, -2) == '//') {
+			$url = substr($url, 0, (strlen($url) - 1));
+		}
+        return $url;
     }
 
     /**

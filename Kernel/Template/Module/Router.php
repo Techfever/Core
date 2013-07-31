@@ -2,7 +2,7 @@
 namespace Kernel\Template\Module;
 
 use Kernel\Exception;
-use Kernel\Database;
+use Kernel\Database\Database;
 
 class Router implements ModuleInterface {
 

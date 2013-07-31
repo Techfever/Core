@@ -2,7 +2,7 @@
 namespace Kernel;
 
 use Zend\Session\Container as SessionContainer;
-use Kernel\Database;
+use Kernel\Database\Database;
 use Kernel\ServiceLocator;
 
 class Navigator {
