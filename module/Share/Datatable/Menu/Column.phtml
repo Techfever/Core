@@ -1,0 +1,27 @@
+<?php
+$column = $this->column;
+$columndata = array();
+if (is_array($column) && count($column) > 0) {
+	foreach ($column as $columnvalue) {
+		if ($columnvalue['primary'] !== 1) {
+			if (!array_key_exists($columnvalue['table'], $columndata)) {
+				$columndata[$columnvalue['table']] = null;
+			}
+			$columndata[$columnvalue['table']] .= '<input type="checkbox"' . ($columnvalue['default'] === 1 ? ' checked="checked"' : null) . ' id="' . $columnvalue['column'] . '" /><label for="' . $columnvalue['column'] . '">' . $this->translate('text_' . $columnvalue['key']) . '</label>' . "\n";
+		}
+	}
+}
+echo '<div id="menucolumn">' . "\n";
+foreach ($columndata as $key => $data) {
+	echo '<h3>' . $this->translate("text_" . $key) . '</h3>' . "\n";
+	echo '<div>' . "\n";
+	echo '<span>' . "\n";
+	echo '<div id="checkbox" style="height: auto;">' . "\n";
+	echo $data;
+	echo "\n";
+	echo '</div>' . "\n";
+	echo '</span>' . "\n";
+	echo '</div>' . "\n";
+}
+echo '</div>' . "\n";
+?>

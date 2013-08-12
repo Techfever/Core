@@ -1,0 +1,88 @@
+.container .layoutContent div.body {
+	border: 2px solid #FFFFFF;
+	background: #F5F5F5;
+	moz-border-radius: 4px 4px 4px 4px;
+	-webkit-border-radius: 4px 4px 4px 4px;
+	border-radius: 4px 4px 4px 4px;
+}
+
+.container .layoutContent div.body div.bodyheader {
+	min-height: 36px;
+	background: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/bck_header.png') ?>') top center repeat-x;
+	-moz-border-radius: 4px 4px 4px 4px;
+	-webkit-border-radius: 4px 4px 4px 4px;
+	border-radius: 4px 4px 4px 4px;
+}
+
+.container .layoutContent div.body div.bodyheader div {
+	color: #333333;
+	line-height: 24px;
+	margin-bottom: 0px;
+	padding: 7px 20px 9px 20px;
+	font-size: 19px;
+	background: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/rule.gif') ?>')	bottom left repeat-x;
+}
+
+.container .layoutContent div.body div.bodycontent {
+	padding: 7px 10px 9px 10px;
+	background-color: white;
+}
+
+.container .layoutContent div.seperator {
+	margin-top: 10px;
+	padding-bottom: 10px;
+	background: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/rule2.gif') ?>') 0px 0px repeat-x;
+}
+
+.container .layoutContentLogin {
+	margin-top: 5px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #DDDDDD #DDDDDD #C4C4C4 #DDDDDD;
+	background: #FFFFFF;
+	margin-bottom: 10px;
+	-moz-border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius: 5px 5px 5px 5px;
+	border-radius: 5px 5px 5px 5px;
+	width: 350px;
+	margin-left: auto;	
+	margin-right: auto;	
+	margin-top: 50px;	
+	margin-bottom: 50px;
+}
+
+.container .layoutContentLogin div.body {
+	border: 2px solid #FFFFFF;
+	background: #F5F5F5;
+	moz-border-radius: 4px 4px 4px 4px;
+	-webkit-border-radius: 4px 4px 4px 4px;
+	border-radius: 4px 4px 4px 4px;
+}
+
+.container .layoutContentLogin div.body div.bodyheader {
+	min-height: 36px;
+	background: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/bck_header.png') ?>') top center repeat-x;
+	-moz-border-radius: 4px 4px 4px 4px;
+	-webkit-border-radius: 4px 4px 4px 4px;
+	border-radius: 4px 4px 4px 4px;
+}
+
+.container .layoutContentLogin div.body div.bodyheader div {
+	color: #333333;
+	line-height: 24px;
+	margin-bottom: 0px;
+	padding: 7px 20px 9px 20px;
+	font-size: 19px;
+	background: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/rule.gif') ?>')	bottom left repeat-x;
+}
+
+.container .layoutContentLogin div.body div.bodycontent {
+	padding: 7px 10px 9px 10px;
+	background-color: white;
+}
+
+.container .layoutContentLogin div.seperator {
+	margin-top: 10px;
+	padding-bottom: 10px;
+	background: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/rule2.gif') ?>') 0px 0px repeat-x;
+}

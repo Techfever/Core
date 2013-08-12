@@ -1,0 +1,119 @@
+<?php
+$container = $this->navigation('Navigator')->getContainer();
+$menucontainer = clone $container;
+$breadcrumbcontainer = clone $container;
+echo $this->doctype();
+?><html lang="en">
+<head>
+<meta charset="utf-8"><?php
+echo $this->headTitle();
+echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0');
+					  ?>
+<!-- Le styles -->
+<?php
+echo $this->headLink(array(
+				'rel' => 'shortcut icon',
+				'type' => 'image/vnd.microsoft.icon',
+				'href' => $this->serverUrl($this->baseHref() . '/Theme/Image/favicon.ico')
+		))->prependStylesheet($this->serverUrl($this->baseHref() . '/Theme/CSS'));
+?>
+<!-- Scripts -->
+<?php
+echo $this->headScript()->prependFile($this->serverUrl($this->baseHref() . '/Theme/Javascript/respond.min.js'), 'text/javascript', array(
+				'conditional' => 'lt IE 9',
+		))->prependFile($this->serverUrl($this->baseHref() . '/Theme/Javascript/html5.js'), 'text/javascript', array(
+				'conditional' => 'lt IE 9'
+		))->prependFile($this->serverUrl($this->baseHref() . '/Theme/Javascript'));
+?>
+</head>   
+    <body><div class="container">
+	    <div class="layoutHeader">
+	   		<div class="layoutHeaderBG">
+	   		<?php 
+			if(!$this->moduleLogin){
+			?><div class="layoutNavigator">
+			<ul class="modern-menu navigator">
+			<?php
+					$partial = array(
+							'navigator/layout',
+							'default'
+					);
+					echo $this->navigation($menucontainer)->menu()->setPartial($partial)->render();
+			echo '<ul class="mm-group mm-right">'. "\n";
+			echo '<li class="mm-icon"><a href="'.($this->isLogin ? $this->serverUrl($this->baseHref() . '/Account/Logout') : $this->serverUrl($this->baseHref() . '/Account/Login')).'"><span class="mm-keystroke"></span></a></li>'. "\n";
+			echo '</ul>'. "\n";
+			?>
+			</ul>
+			<script type="text/javascript">	$(".modern-menu").modernMenu();</script>
+			</div>
+			<?php 
+			}
+			?></div>
+	    </div>
+	    <?php
+		if($this->moduleLogin){
+			?><div class="layoutContentLogin">
+		<div class="body"><div class="bodyheader"><div><?php echo $this->escapeHtml($this->translate($this->moduleTitle)); ?></div></div>
+		<div class="bodycontent">
+		<div id="flashmessager"></div><?php
+		echo $this->content;
+		?></div></div>
+		</div>			
+			<?php 
+		}else{
+				   if (!empty($this->left)) {
+		?><div class="layoutLeft">
+		<?php echo $this->left; ?></div>
+		<?php
+		}
+		if (!empty($this->right)) {
+		?><div class="layoutRight">
+		<?php echo $this->right; ?></div>
+		<?php
+		}
+		?><div class="layoutCenter" style="margin: 5px <?php echo (!empty($this->right) ? '235px' : '0'); ?> 0 <?php echo (!empty($this->left) ? '235px' : '0'); ?>;">
+		<?php
+		$partial = array(
+				'breadcrumb/layout',
+				'default'
+		);
+		echo $this->navigation($breadcrumbcontainer)->breadcrumbs()->setPartial($partial)->render();
+		if (!empty($this->after)) {
+		?><div class="layoutBefore">
+		<?php echo $this->before; ?></div>
+		<?php
+		}
+		?><div class="layoutContent">
+		<div class="body"><div class="bodyheader"><div><?php echo $this->escapeHtml($this->translate($this->moduleTitle)); ?></div></div>
+		<div class="bodycontent">
+		<div id="flashmessager">
+		<?php
+		$FlashMessenger = $this->FlashMessenger();
+		if ($FlashMessenger->hasMessages()) {
+		?><div class="ui-widget">
+		<?php
+			echo $FlashMessenger->setMessageOpenFormat('<div class="ui-state-error ui-corner-all" %s><span><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>')
+					->setMessageSeparatorString('</span><span><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>')->setMessageCloseString('</span></div>')->render();
+		?></div>
+		<?php
+		}
+		?></div><?php
+		echo $this->content;
+		?></div></div>
+		</div>
+		<?php
+		if (!empty($this->after)) {
+		?><div class="layoutAfter">
+		<?php echo $this->after; ?></div>
+		<?php
+		}
+		?></div>
+		<?php 
+		}
+		?><div class="layoutFooter">
+	    <?php echo sprintf($this->translate('text_copyright'), date("Y", time()), $this->htmlLink($this->baseHref(), $this->translate('text_system_name'), array(
+						'class' => 'copyright'
+				)));
+		?></div>
+    </div></body>
+</html>

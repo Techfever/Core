@@ -1,0 +1,174 @@
+.modern-menu {
+	width: 950px;
+	height: 40px;
+	font-family: "Arial Narrow", sans-serif;
+	font-size: 15px;
+	font-weight: 700;
+	position: relative;
+	clear: both
+}
+
+.modern-menu.mm-vertical {
+	width: 184px;
+	height: auto
+}
+
+.modern-menu,.modern-menu ul {
+	list-style: none;
+	margin: 0;
+	padding: 0
+}
+
+.modern-menu li {
+	position: relative
+}
+
+.modern-menu a {
+	height: 100%;
+	text-decoration: none;
+	display: block;
+	position: relative;
+	overflow: hidden;
+	z-index: 101;
+	border: 0
+}
+
+.modern-menu a span {
+	line-height: 40px;
+	padding: 0 20px;
+	display: block
+}
+
+.modern-menu.mm-vertical a span {
+	line-height: 36px
+}
+
+.mm-container.mm-drop span {
+	padding-right: 15px
+}
+
+.mm-horizontal span {
+	float: left
+}
+
+.mm-hdrop,.mm-hdrop-over,.mm-vdrop,.mm-vdrop-over {
+	background-repeat: no-repeat;
+	background-position: center right;
+	padding-right: 20px
+}
+
+.modern-menu .mm-right {
+	display: block;
+	float: right
+}
+
+.modern-menu>li {
+	float: left
+}
+
+.modern-menu.mm-vertical>li {
+	float: none
+}
+
+.mm-group li {
+	float: left
+}
+
+.modern-menu .mm-group span {
+	line-height: 40px
+}
+
+.modern-menu ul span {
+	line-height: 36px
+}
+
+.modern-menu li>ul {
+	width: 155px;
+	font-size: 14px;
+	position: absolute;
+	left: -5000px;
+	opacity: 0;
+	z-index: 100
+}
+
+.mm-vertical li>ul {
+	top: 0
+}
+
+.modern-menu ul ul {
+	float: right;
+	top: 0
+}
+
+.modern-menu .mm-icon span {
+	width: 14px;
+	height: 40px;
+	background-repeat: no-repeat;
+	background-position: center;
+	padding: 0 18px
+}
+
+.mm-vertical .mm-icon span {
+	width: 10px
+}
+.theme2 {
+	background-color: #fafafa
+}
+
+.theme2 a span {
+	color: #707070;
+	background-color: #fafafa
+}
+
+.theme2 .mm-over {
+	color: #fafafa;
+	background-color: #4ad
+}
+
+.theme2 .mm-hdrop {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme2/hdrop.png') ?>')
+}
+
+.theme2 .mm-hdrop-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme2/hdrop-over.png') ?>')
+}
+
+.theme2 .mm-vdrop {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme2/vdrop.png') ?>')
+}
+
+.theme2 .mm-vdrop-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme2/vdrop-over.png') ?>')
+}
+
+.theme2 .mm-facebook {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme2/facebook.png') ?>')
+}
+
+.theme2 .mm-facebook-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme2/facebook-over.png') ?>')
+}
+
+.theme2 .mm-twitter {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme2/twitter.png') ?>')
+}
+
+.theme2 .mm-twitter-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme2/twitter-over.png') ?>')
+}
+
+.theme2 .mm-googleplus {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme2/googleplus.png') ?>')
+}
+
+.theme2 .mm-googleplus-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme2/googleplus-over.png') ?>')
+}
+
+.theme2 .mm-linkedin {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme2/linkedin.png') ?>')
+}
+
+.theme2 .mm-linkedin-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme2/linkedin-over.png') ?>')
+}

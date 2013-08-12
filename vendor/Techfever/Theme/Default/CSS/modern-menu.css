@@ -1,0 +1,186 @@
+.modern-menu {
+	width: 100%;
+	height: 28px;
+	font-family: "Arial Narrow", sans-serif;
+	font-size: 15px;
+	font-weight: 700;
+	position: relative;
+}
+
+.modern-menu.mm-vertical {
+	width: 184px;
+	height: auto
+}
+
+.modern-menu,.modern-menu ul {
+	list-style: none;
+	margin: 0;
+	padding: 0
+}
+
+.modern-menu li {
+	position: relative
+}
+
+.modern-menu a {
+	height: 100%;
+	text-decoration: none;
+	display: block;
+	position: relative;
+	overflow: hidden;
+	z-index: 101;
+	border: 0
+}
+
+.modern-menu a span {
+	line-height: 28px;
+	padding: 0 20px;
+	display: block
+}
+
+.modern-menu.mm-vertical a span {
+	line-height: 28px
+}
+
+.mm-container.mm-drop span {
+	padding-right: 15px
+}
+
+.mm-horizontal span {
+	float: left
+}
+
+.mm-hdrop,.mm-hdrop-over,.mm-vdrop,.mm-vdrop-over {
+	background-repeat: no-repeat;
+	background-position: center right;
+	padding-right: 20px
+}
+
+.modern-menu .mm-right {
+	display: block;
+	float: right
+}
+
+.modern-menu>li {
+	float: left
+}
+
+.modern-menu.mm-vertical>li {
+	float: none
+}
+
+.mm-group li {
+	float: left
+}
+
+.modern-menu .mm-group span {
+	line-height: 28px
+}
+
+.modern-menu ul span {
+	line-height: 28px
+}
+
+.modern-menu li>ul {
+	width: 155px;
+	font-size: 14px;
+	position: absolute;
+	left: -5000px;
+	opacity: 0;
+	z-index: 100
+}
+
+.mm-vertical li>ul {
+	top: 0
+}
+
+.modern-menu ul ul {
+	float: right;
+	top: 0
+}
+
+.modern-menu .mm-icon span {
+	height: 28px
+}
+
+.modern-menu .mm-icon span {
+	width: 14px;
+	height: 28px;
+	background-repeat: no-repeat;
+	background-position: center;
+	padding: 0 18px
+}
+
+.mm-vertical .mm-icon span {
+	width: 10px
+}
+
+.navigator {
+	background-color: #cacaca
+}
+
+.navigator a span {
+	color: #505050;
+	background-color: #cacaca
+}
+
+.navigator .mm-over {
+	color: #eaeaea;
+	background-color: #4a4a4a
+}
+
+.navigator .mm-hdrop {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/modern-menu/hdrop.png ') ?>')
+}
+
+.navigator .mm-hdrop-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/modern-menu/hdrop-over.png ') ?>')
+}
+
+.navigator .mm-vdrop {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/modern-menu/vdrop.png ') ?>')
+}
+
+.navigator .mm-vdrop-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/modern-menu/vdrop-over.png ') ?>')
+}
+
+.navigator .mm-facebook {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/modern-menu/facebook.png ') ?>')
+}
+
+.navigator .mm-facebook-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/modern-menu/ acebook-over.png ') ?>')
+}
+
+.navigator .mm-twitter {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/modern-menu/twitter.png ') ?>')
+}
+
+.navigator .mm-twitter-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/modern-menu/twitter-over.png ') ?>')
+}
+
+.navigator .mm-googleplus {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/modern-menu/googleplus.png ') ?>')
+}
+
+.navigator .mm-googleplus-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/modern-menu/googleplus-over.png ') ?>')
+}
+
+.navigator .mm-linkedin {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/modern-menu/linkedin.png ') ?>')
+}
+
+.navigator .mm-linkedin-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/modern-menu/linkedin-over.png ') ?>')
+}
+
+.navigator .mm-keystroke {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/modern-menu/keystroke.png ') ?>')
+}
+
+.navigator .mm-keystroke-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/modern-menu/keystroke-over.png ') ?>')
+}

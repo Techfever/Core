@@ -1,0 +1,63 @@
+@import("default.css");
+
+.theme8 {
+	background-color: #f5f5f5
+}
+
+.theme8 a span {
+	color: #707070;
+	background-color: #f5f5f5
+}
+
+.theme8 .mm-over {
+	color: #f0f0f0;
+	background-color: #505050
+}
+
+.theme8 .mm-hdrop {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme8/hdrop.png') ?>')
+}
+
+.theme8 .mm-hdrop-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme8/hdrop-over.png') ?>')
+}
+
+.theme8 .mm-vdrop {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme8/vdrop.png') ?>')
+}
+
+.theme8 .mm-vdrop-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme8/vdrop-over.png') ?>')
+}
+
+.theme8 .mm-facebook {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme8/facebook.png') ?>')
+}
+
+.theme8 .mm-facebook-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme8/facebook-over.png') ?>')
+}
+
+.theme8 .mm-twitter {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme8/twitter.png') ?>')
+}
+
+.theme8 .mm-twitter-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme8/twitter-over.png') ?>')
+}
+
+.theme8 .mm-googleplus {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme8/googleplus.png') ?>')
+}
+
+.theme8 .mm-googleplus-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme8/googleplus-over.png') ?>')
+}
+
+.theme8 .mm-linkedin {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme8/linkedin.png') ?>')
+}
+
+.theme8 .mm-linkedin-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme8/linkedin-over.png') ?>')
+}

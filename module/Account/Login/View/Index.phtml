@@ -1,0 +1,50 @@
+<?php
+$form = $this->form;
+$elements = $form->getElements();
+$total_element = count($elements);
+if ($total_element > 0) {
+	echo $this->form()->openTag($form) . "\n";
+?><table class="form">
+	<tr class="row"><?php
+	$account_username = $form->get('account_username');
+	$isRequire = $account_username->getAttribute('is_require');
+					?><td class="label"><?php
+						echo $this->formLabel($account_username) . '&nbsp;:' . ($isRequire ? '<span class="required">*</span>' : null);
+
+										?></td><td class="element"><?php
+											echo $this->formText($account_username);
+																   ?></td><td></td>
+	</tr>
+	<tr class="row" id="account_username">
+		<td></td>
+		<td class="help" colspan="2">
+		<div class="ui-widget"><div class="ui-state-active"></div></div>
+		</td>
+	</tr>
+	<tr class="row"><?php
+																	   $account_password = $form->get('account_password');
+																	   $isRequire = $account_username->getAttribute('is_require');
+					?><td class="label"><?php
+						echo $this->formLabel($account_password) . '&nbsp;:' . ($isRequire ? '<span class="required">*</span>' : null);
+
+										?></td><td class="element"><?php
+											echo $this->formPassword($account_password);
+																   ?></td><td></td>
+	</tr>
+	<tr class="row" id="account_password">
+		<td></td>
+		<td class="help" colspan="2">
+		<div class="ui-widget"><div class="ui-state-active"></div></div>
+		</td>
+	</tr>
+	<tr class="row"><?php
+																	   $login_button = $form->get('button_login');
+					?><td></td><td class="button" colspan="2"><?php
+						echo $this->formButton($login_button);
+															  ?></td>
+	</tr>
+	</table><?php
+																  echo $this->form()->closeTag() . "\n";
+															  }
+			?>
+			

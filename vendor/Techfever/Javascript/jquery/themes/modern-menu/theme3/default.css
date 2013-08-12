@@ -1,0 +1,63 @@
+@import("default.css");
+
+.theme3 {
+	background-color: #5af
+}
+
+.theme3 a span {
+	color: #fafafa;
+	background-color: #5af
+}
+
+.theme3 .mm-over {
+	color: #09f;
+	background-color: #fafafa
+}
+
+.theme3 .mm-hdrop {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme3/hdrop.png') ?>')
+}
+
+.theme3 .mm-hdrop-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme3/hdrop-over.png') ?>')
+}
+
+.theme3 .mm-vdrop {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme3/vdrop.png') ?>')
+}
+
+.theme3 .mm-vdrop-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme3/vdrop-over.png') ?>')
+}
+
+.theme3 .mm-facebook {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme3/facebook.png') ?>')
+}
+
+.theme3 .mm-facebook-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme3/facebook-over.png') ?>')
+}
+
+.theme3 .mm-twitter {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme3/twitter.png') ?>')
+}
+
+.theme3 .mm-twitter-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme3/twitter-over.png') ?>')
+}
+
+.theme3 .mm-googleplus {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme3/googleplus.png') ?>')
+}
+
+.theme3 .mm-googleplus-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme3/googleplus-over.png') ?>')
+}
+
+.theme3 .mm-linkedin {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme3/linkedin.png') ?>')
+}
+
+.theme3 .mm-linkedin-over {
+	background-image: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Jquery/modern-menu/theme3/linkedin-over.png') ?>')
+}

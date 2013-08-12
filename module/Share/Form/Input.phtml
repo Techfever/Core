@@ -1,0 +1,179 @@
+<?php
+$form = $this->form;
+$elements = $form->getElements();
+$total_element = count($elements);
+if ($total_element > 0) {
+
+	$preview_element = array();
+	$navigator_element = array();
+	$step_element = array();
+	foreach ($elements as $element_key => $element) {
+		$field = $form->get($element_key);
+		if ($field instanceof \Zend\Form\ElementInterface) {
+			$type = $field->getAttribute('type');
+			if (!in_array($type, array(
+					'button',
+					'submit'
+			))) {
+				$title = $field->getAttribute('stitle');
+				$step = $field->getAttribute('step');
+
+				$createSeperator = false;
+				if (!array_key_exists($step, $navigator_element)) {
+					$navigator_element[$step] = "";
+					$createSeperator = true;
+				}
+				$navigator_element[$step] = $title;
+
+				if (!array_key_exists($step, $step_element)) {
+					$navigator_element[$step] = array();
+				}
+				$step_element[$step][$element_key] = $element;
+				if ($createSeperator && count($preview_element) > 0) {
+					$preview_element[$element_key . '_seperator'] = 'seperator';
+				}
+				if (in_array($type, array(
+						'seperator'
+				))) {
+					$preview_element[$element_key] = 'seperator';
+				} else {
+					$preview_element[$element_key] = $element;
+				}
+			}
+		}
+	}
+	$navigator_element['preview'] = $this->translate('text_preview');
+	$step_element['preview'] = $preview_element;
+
+	echo $this->form()->openTag($form) . "\n";
+	echo '<table id="wizardstep">' . "\n";
+	echo '	<tr>' . "\n";
+	echo '		<td id="tab">' . "\n";
+	echo '		<table class="tabcontrol">' . "\n";
+	echo '			<tr>' . "\n";
+	$navigator_count = 1;
+	foreach ($navigator_element as $navigator_key => $navigator_value) {
+		echo '				<td id="' . $navigator_key . '"><div><span>' . $navigator_count . '.</span>' . $navigator_value . '</div></td>' . "\n";
+		$navigator_count++;
+	}
+	echo '			<tr>' . "\n";
+	echo '		</table>' . "\n";
+	echo '		</td>' . "\n";
+	echo '	</tr>' . "\n";
+	echo '	<tr>' . "\n";
+	echo '		<td id="step">' . "\n";
+	foreach ($step_element as $step_key => $step_value) {
+		echo '	<div class="stepcontrol" id="' . $step_key . '">' . "\n";
+		echo '		<table class="' . ($step_key == "preview" ? 'preview' : 'form') . '">' . "\n";
+		foreach ($step_value as $element_key => $element) {
+			if ($element == 'seperator') {
+				echo '		<tr class="seperator" id="' . $element_key . '">' . "\n";
+				echo '			<td class="seperator" colspan="3">';
+				echo '<div name="' . $element_key . '" class="seperator" id="' . $element_key . '"></div>';
+				echo '</td>' . "\n";
+				echo '		</tr>' . "\n";
+			} else {
+				$field = $form->get($element_key);
+				$title = $field->getAttribute('stitle');
+				$step = $field->getAttribute('step');
+				$type = $field->getAttribute('type');
+				$label = $field->getLabel();
+				$isHide = $field->getAttribute('is_hide');
+				$showLabel = $field->getAttribute('show_label');
+				$isPreview = ($step_key == "preview" ? true : false);
+				$isRequire = $field->getAttribute('is_require');
+
+				if ($step_key == "preview") {
+					$isHide = false;
+					$isRequire = false;
+				}
+
+				if (!in_array($type, array(
+						'button',
+						'submit'
+				))) {
+					$isHidden = false;
+					if ($type == 'hidden') {
+						$isHidden = true;
+
+					}
+
+					$renderLabel = null;
+					$isElement = false;
+					if (!in_array($type, array(
+							'button',
+							'hidden',
+							'submit',
+							'seperator'
+					))) {
+						if (!empty($label)) {
+							if (empty($showLabel) && !$showLabel) {
+								$renderLabel = '			<td class="label">' . $this->formLabel($element) . '&nbsp;:' . ($isRequire ? '<span class="required">*</span>' : null) . '</td>' . "\n";
+							} else {
+								$renderLabel = '			<td ></td>' . "\n";
+							}
+						} else {
+							$renderLabel = '			<td ></td>' . "\n";
+						}
+						$isElement = true;
+					} elseif (in_array($type, array(
+							'button',
+							'submit'
+					))) {
+						$renderLabel = '			<td ></td>' . "\n";
+						$isElement = true;
+					}
+
+					$messageTemplates = null;
+					$renderElement = null;
+					if ($isPreview) {
+						$renderElement .= '			<td class="value" colspan="2"></td>' . "\n";
+					} else {
+						$messageTemplates = $form->getMessageTemplates($element->getName());
+
+						$renderElement = '			<td' . (!$isHidden && count($messageTemplates) > 0 ? ' title="* ' . implode("<br>* ", $messageTemplates) . '"' : null) . ' class="' . ($isElement ? 'element' : '') . '"' . (!$isElement ? ' colspan="3"' : null) . '>' . "\n";
+						$renderElement .= '				' . call_user_func_array(array(
+										$this,
+										'form' . ucfirst($type)
+								), array(
+										$element
+								)) . "\n";
+						$renderElement .= '			</td>' . "\n";
+					}
+
+					$renderMessage = null;
+					if ($isElement && !$isPreview) {
+						$renderMessage = '			<td class="help">' . "\n";
+						$renderMessage .= '				<div class="ui-widget"><div class="ui-state-active"></div></div>' . "\n";
+						$renderMessage .= '			</td>' . "\n";
+					}
+					echo '		<tr' . ($isHide ? ' style="display: none;"' : null) . ' class="' . ($type == "seperator" ? 'seperator' : 'row') . '" id="' . $element_key . '">' . "\n";
+					echo $renderLabel;
+					echo $renderElement;
+					echo $renderMessage;
+					echo '		</tr>' . "\n";
+				}
+			}
+		}
+		echo '		</table>' . "\n";
+		echo '	</div>' . "\n";
+	}
+	echo '		</td>' . "\n";
+	echo '	</tr>' . "\n";
+	echo '	<tr>' . "\n";
+	echo '		<td id="action">' . "\n";
+	echo '		<table class="actioncontrol">' . "\n";
+	echo '			<tr>' . "\n";
+	echo '				<td>' . "\n";
+	echo '				<a id="previous">' . $this->translate('text_previous') . '</a>' . "\n";
+	echo '				<a id="next">' . $this->translate('text_next') . '</a>' . "\n";
+	echo '				<a id="finish">' . $this->translate('text_finish') . '</a>' . "\n";
+	echo '				</td>' . "\n";
+	echo '			<tr>' . "\n";
+	echo '		</table>' . "\n";
+	echo '		</td>' . "\n";
+	echo '	</tr>' . "\n";
+	echo '</table>' . "\n";
+	echo $this->form()->closeTag() . "\n";
+}
+?>

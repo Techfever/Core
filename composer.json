@@ -13,25 +13,15 @@
 	],
 	"homepage" : "http://www.technation.cc/",
 	"license" : [
-		"MIT"
+		"BSD-3-Clause"
 	],
 	"require" : {
-		"Techfever/Theme" : "dev-master",
-		"Techfever/Javascript" : "dev-master",
-		"php" : ">=5.3.14"
+		"php" : ">=5.3.3"
 	},
-	"minimum-stability" : "dev",
-	"repositories" : [{
-			"name" : "Techfever/Theme",
-			"type" : "git",
-			"url" : "https://github.com/Techfever/Theme.git"
-		},{
-			"name" : "Techfever/Javascript",
-			"type" : "git",
-			"url" : "https://github.com/Techfever/Javascript.git"
+	"autoload" : {
+		"psr-0" : {
+			"Zend" : "vendor",
+			"Techfever" : "vendor"
 		}
-	],
-	"config" : {
-		"notify-on-install" : false
 	}
 }

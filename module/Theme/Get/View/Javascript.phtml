@@ -1,0 +1,27 @@
+<?php
+
+$currenturi = str_replace('http://', '', (array_key_exists('HTTP_REFERER', $_SERVER) ? $_SERVER['HTTP_REFERER'] : 'javascript'));
+$currenturi = str_replace('https://', '', $currenturi);
+$key = strtolower(str_replace('.', '_', str_replace('/', '_', $currenturi)));
+
+header('Cache-Control: no-cache, must-revalidate');
+header('Expires: ' . $this->expire);
+header('Content-Type: application/x-javascript');
+$cache = $this->cache;
+if (!$cache->start($key)) {
+	foreach ($this->javascript as $javascript => $status) {
+		$parameter = null;
+		if (!is_bool($status) && is_array($status)) {
+			$parameter = $status['parameter'];
+			$status = $status['status'];
+		}
+		$filepath = $javascript;
+		if (file_exists($filepath) && $status) {
+			include $filepath;
+			echo "\n";
+			echo "\n";
+		}
+	}
+	$cache->end();
+}
+

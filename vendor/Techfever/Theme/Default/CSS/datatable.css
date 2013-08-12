@@ -1,0 +1,136 @@
+div.menu div#menutabs {
+	padding: 0px;
+	border: 0px;
+	margin-bottom: 5px;
+}
+
+div.menu div#menutabs .ui-tabs {
+	border: 0px;
+	padding: 0px;
+	padding-bottom: -1px;
+	background: none;
+}
+
+div.menu div#menutabs .ui-tabs .ui-corner-bl {
+	border-bottom-left-radius: 0px;
+}
+
+div.menu div#menutabs .ui-tabs .ui-corner-br {
+	border-bottom-right-radius: 0px;
+}
+
+div.menu div#menutabs .ui-tabs-nav {
+	border: 0px;
+	padding: 0px;
+	background:
+		url("<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/bck_header.png') ?>");
+	border-bottom: 1px solid #CCCCCC;
+}
+
+div.menu div#menutabs .ui-tabs-nav .ui-tabs-anchor {
+	color: black;
+}
+
+div.menu div#menutabs .ui-tabs-nav li#href {
+	float: right;
+}
+
+div.menu div#menutabs .ui-tabs-nav li#href a {
+	color: red;
+}
+
+div.menu div#menutabs .ui-tabs-panel {
+	padding: 1px 10px;
+	background-color: white;
+	border-left: 1px solid #CCCCCC;
+	border-right: 1px solid #CCCCCC;
+	border-bottom: 1px solid #CCCCCC;
+	font-weight: normal;
+	padding-bottom: 10px;
+}
+
+div.menu div#menutabs .ui-tabs-panel .ui-state-default {
+	height: 20px;
+	padding: 5px 0px 0px 30px;
+}
+
+div.menu div#menutabs .ui-tabs-panel .ui-state-default .ui-icon {
+	float: left;
+	padding-top: 2px;
+	padding-left: -30px;
+	display: block;
+}
+
+div.menu div#menutabs .ui-tabs-panel .ui-state-default span {
+	padding-top: 2px;
+	display: block;
+}
+
+div.menu div#menutabs .ui-tabs-panel .ui-accordion-content {
+	padding: 1em 1em;
+	height: auto;
+}
+
+div.menu div#menutabs .ui-tabs-panel .ui-accordion-content div.ui-buttonset .ui-state-default
+	{
+	padding: 0px;
+}
+
+div.menu div#menutabs #menucolumn #checkbox .ui-corner-left {
+	border-bottom-left-radius: 0px;
+	border-top-left-radius: 0px;
+}
+
+div.menu div#menutabs #menucolumn #checkbox .ui-corner-right {
+	border-bottom-right-radius: 0px;
+	border-top-right-radius: 0px;
+}
+
+div.list div#datatable div.jtable-main-container table.jtable {
+	width: 100%;
+}
+
+div.list div#datatable div.jtable-main-container table.jtable thead th {
+	color: black;
+	white-space: nowrap;	
+	width: auto;
+}
+
+div.list div#datatable div.jtable-main-container table.jtable thead th div.jtable-column-header-container span.jtable-column-header-text{
+	margin-right: 20px;
+}
+
+div.list div#datatable div.jtable-main-container table.jtable thead th:first-child {
+    width: 10px;
+}
+
+div.list div#datatable div.jtable-main-container table.jtable tbody tr td
+	{
+	padding: 1px;
+}
+
+div.list div#datatable div.jtable-main-container div.jtable-child-table-container #listlegend
+	{
+	width: auto;
+	padding: 5px;
+	position: relative;
+	float: right;
+}
+
+div.list div#datatable div.jtable-main-container div.jtable-child-table-container #listlegend img
+	{
+	position: absolute;
+	top: 50%;
+	margin-top: -13px; /* = image height div 2 */
+}
+
+div.list div#datatable div.jtable-main-container div.jtable-child-table-container #listlegend span
+	{
+	margin-left: 28px; /* = image width + 8 */
+	display: block;
+}
+
+div.list div#datatable div.jtable-main-container div.jtable-child-table-container #listlegend a
+	{
+	font-weight: bold;
+}

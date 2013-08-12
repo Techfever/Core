@@ -1,0 +1,21 @@
+{
+    "name": "Techfever/Javascript",
+    "description": "Techfever Javascript is an Opensource Project",
+	"authors" : [{
+			"name" : "LkM",
+			"email" : "liew@technation.cc",
+			"role" : "Developer"
+		}
+	],
+	"keywords" : [
+		"Multisystem"
+	],
+	"homepage" : "http://www.technation.cc/",
+	"license" : [
+		"MIT"
+	],
+	"require" : {
+		"php" : ">=5.3.14"
+	},
+	"minimum-stability" : "dev"
+}
