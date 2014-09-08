@@ -1,20 +1,26 @@
 <?php
-$currenturi = str_replace('http://', '', (array_key_exists('HTTP_REFERER', $_SERVER) ? $_SERVER['HTTP_REFERER'] : 'css'));
-$currenturi = str_replace('https://', '', $currenturi);
-$key = strtolower(str_replace('.', '_', str_replace('/', '_', $currenturi)));
+use Techfever\Template\Plugin\Filters\ToUnderscore;
+$ForwardslashToUnderscore = new ToUnderscore ( '/' );
+$DotToUnderscore = new ToUnderscore ( '/' );
 
-header('Cache-Control: no-cache, must-revalidate');
-header('Expires: ' . $this->expire);
-header('Content-Type: text/css');
+$currenturi = str_replace ( 'http://', '', (array_key_exists ( 'HTTP_REFERER', $_SERVER ) ? $_SERVER ['HTTP_REFERER'] : 'css') );
+$currenturi = str_replace ( 'https://', '', $currenturi );
+$currenturi = $ForwardslashToUnderscore->filter ( $currenturi );
+$currenturi = $DotToUnderscore->filter ( $currenturi );
+$key = strtolower ( $currenturi );
+
+header ( 'Cache-Control: no-cache, must-revalidate' );
+header ( 'Expires: ' . $this->expire );
+header ( 'Content-Type: text/css' );
 $cache = $this->cache;
-if (!$cache->start($key)) {
-	foreach ($this->css as $css => $status) {
+if (! $cache->start ( $key )) {
+	foreach ( $this->css as $css => $status ) {
 		$filepath = $css;
-		if (file_exists($filepath) && $status) {
+		if (file_exists ( $filepath ) && $status) {
 			include $filepath;
 			echo "\n";
 			echo "\n";
 		}
 	}
-	$cache->end();
+	$cache->end ();
 }

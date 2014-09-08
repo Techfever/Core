@@ -22,6 +22,7 @@
             //Options
             actions: {},
             fields: {},
+            showTableHeader: true,
             animationsEnabled: true,
             defaultDateFormat: 'yy-mm-dd',
             dialogShowEffect: 'fade',
@@ -242,8 +243,9 @@
             }
 
             this._jqueryuiThemeAddClass(this._$table, 'ui-widget-content');
-
-            this._createTableHead();
+            if(this.options.showTableHeader){
+            	this._createTableHead();
+            }
             this._createTableBody();
         },
 

@@ -1,97 +1,77 @@
 <?php
+
 namespace Wallet\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Json\Json;
-use Techfever\User\Form\Defined as UserLoginForm;
+use Techfever\Wallet\Form\Defined as WalletForm;
 
 class LoginActionController extends AbstractActionController {
-
 	protected $type = 'wallet';
-
 	protected $module = 'login';
-
 	protected $inputform = null;
-
 	public function IndexAction() {
-		if ($this->getUserAccess()->isLogin()) {
-			return $this->redirect()->toRoute('Wallet/List', array(
-							'action' => 'Index'
-					));
+		if ($this->getUserAccess ()->isLoginWallet ()) {
+			$this->getSnapshot ()->redirect ();
 		}
-
-		$this->getTemplate()->addCSS("ui-lightness/jquery-ui.css", "jquery");
-		$this->getTemplate()->addJavascript("vendor/Techfever/Theme/" . SYSTEM_THEME . "/Js/user.login.js", array(
-						'loginformid' => $this->getMatchedRouteName(),
-						'loginformuri' => $this->getMatchedRouteName(),
-						'loginformaction' => 'Index',
-				));
-
-		$InputForm = $this->InputForm();
-		if ($InputForm->isXmlHttpRequest()) {
+		
+		$this->addCSS ( "ui-lightness/jquery-ui.css", "jquery" );
+		$this->addJavascript ( "vendor/Techfever/Theme/" . SYSTEM_THEME . "/Js/user.login.js", array (
+				'loginformid' => $this->convertToUnderscore ( $this->getMatchedRouteName () . '/Index', '/' ),
+				'loginformuri' => $this->url ()->fromRoute ( $this->getMatchedRouteName (), array (
+						'action' => 'Index' 
+				) ) 
+		) );
+		
+		$InputForm = $this->InputForm ();
+		if ($this->isXmlHttpRequest ()) {
+			$id = 0;
+			$subaction = null;
+			$js = null;
 			$valid = false;
 			$redirect = null;
-			$messages = array();
-			$messagescount = 0;
 			$flashmessages = null;
-			$input = $InputForm->getPost('Input', null);
-			$relation = null;
-			if (!is_null($input)) {
-				$relation = $InputForm->getValidatorRelation($input);
-				$messages[$input] = "";
-			}
-			if ($InputForm->isPost()) {
-				if ($InputForm->isValid()) {
-					$submit = strtolower($InputForm->getPost('submit', null));
-					$username = $InputForm->getPost('wallet_username', null);
-					$password = $InputForm->getPost('wallet_password', null);
-					$loginID = $this->getUserAccess()->verifyPassword($username, $password);
-					if ($submit == 'submit' && $loginID > 0) {
-						$valid = true;
-						$this->getUserAccess()->setLogin($loginID);
-						$redirect = $this->url()->fromRoute($this->getMatchedRouteName(), array(
-										'action' => 'Index'
-								));
-					} else {
-						$flashmessages = '<div class="ui-state-error ui-corner-all"><span><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>' . $this->getTranslate('text_error_msg_wallet_' . $this->module) . '</span></div>';
-					}
+			if ($InputForm->isPost () && $InputForm->isValid ()) {
+				$js = '$("form[id=' . $this->convertToUnderscore ( $this->getMatchedRouteName () . '/Index', '/' ) . '] table[class=form] button[id=login]").show()';
+				$submit = strtolower ( $InputForm->getPost ( 'submit', null ) );
+				$username = $InputForm->getPost ( 'wallet_username', null );
+				$password = $InputForm->getPost ( 'wallet_password', null );
+				if ($submit == 'submit' && $this->getUserAccess ()->verifySecurity ( $username, $password )) {
+					$valid = true;
+					$id = $this->getUserManagement ()->getID ( $username );
+					$this->getUserAccess ()->setLoginWallet ( $id );
+					$this->getSnapshot ()->redirect ();
 				} else {
-					$messages_data = $InputForm->getMessages();
-					$messagescount = count($messages_data);
-					if (count($messages_data) > 0) {
-						foreach ($messages_data as $messages_key => $messages_data) {
-							foreach ($messages_data as $messages_data) {
-								$messages[$messages_key] = $messages_data;
-							}
-						}
-					}
+					$flashmessages = '<div class="ui-state-error ui-corner-all"><span><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>' . $this->getTranslate ( 'text_error_msg_wallet_' . $this->module ) . '</span></div>';
 				}
 			}
-			$InputForm->getResponse()
-					->setContent(Json::encode(array(
-							'input' => $input,
-							'valid' => $valid,
-							'redirect' => $redirect,
-							'relation' => null,
-							'flashmessages' => $flashmessages,
-							'messages' => $messages,
-							'messagescount' => $messagescount,
-					)));
-			return $InputForm->getResponse();
+			$Input = $InputForm->getPost ( 'Input', null );
+			$InputForm->getResponse ()->setContent ( Json::encode ( array (
+					'id' => $id,
+					'subaction' => $subaction,
+					'valid' => $valid,
+					'redirect' => $redirect,
+					'flashmessages' => $flashmessages,
+					'js' => $js,
+					'input' => $Input,
+					'relation' => $InputForm->getValidatorRelation ( $Input ),
+					'messages' => $InputForm->getMessages (),
+					'messagescount' => $InputForm->getMessagesTotal () 
+			) ) );
+			return $InputForm->getResponse ();
 		} else {
-			return array(
-					'form' => $InputForm,
+			return array (
+					'form' => $InputForm 
 			);
 		}
 	}
-
 	private function InputForm() {
-		if (!is_object($this->inputform) || !empty($id)) {
-			$options = array(
-					'servicelocator' => $this->getServiceLocator(),
-					'action' => 'Index',
+		if (! is_object ( $this->inputform )) {
+			$options = array (
+					'servicelocator' => $this->getServiceLocator (),
+					'action' => 'Index' 
 			);
-			$this->inputform = new UserLoginForm($options);
+			$this->inputform = new WalletForm ( $options );
 		}
 		return $this->inputform;
 	}

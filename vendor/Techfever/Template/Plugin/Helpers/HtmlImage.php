@@ -1,4 +1,5 @@
 <?php
+
 namespace Techfever\Template\Plugin\Helpers;
 
 use Zend\View\Helper\AbstractHtmlElement;
@@ -16,28 +17,28 @@ class HtmlImage extends AbstractHtmlElement {
 	 */
 	public function __invoke($src = null, $attribs = false, $escape = true) {
 		$href = null;
-		if (!empty($src)) {
+		if (! empty ( $src )) {
 			$href = ' src="';
 			if ($escape) {
-				$escaper = $this->view->plugin('escapeHtml');
-				$href .= $escaper($src);
+				$escaper = $this->view->plugin ( 'escapeHtml' );
+				$href .= $escaper ( $src );
 			} else {
 				$href .= $src;
 			}
 			$href .= '"';
 		}
-
+		
 		if ($attribs) {
-			if (array_key_exists('src', $attribs)) {
-				unset($attribs['src']);
+			if (array_key_exists ( 'src', $attribs )) {
+				unset ( $attribs ['src'] );
 			}
-			$attribs = $this->htmlAttribs($attribs);
+			$attribs = $this->htmlAttribs ( $attribs );
 		} else {
 			$attribs = '';
 		}
-
+		
 		$tag = 'img';
-
+		
 		return '<' . $tag . $href . $attribs . '>';
 	}
 }

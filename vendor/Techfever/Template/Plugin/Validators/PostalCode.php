@@ -7,60 +7,62 @@ use Zend\Stdlib\StringUtils;
 use Zend\Stdlib\StringWrapper\StringWrapperInterface as StringWrapper;
 use Zend\Validator\AbstractValidator;
 use Techfever\Address\Country;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Techfever\Functions\General as GeneralBase;
 
 class PostalCode extends AbstractValidator {
+	
 	/**
-	 * @var ServiceLocator
+	 * General object
+	 *
+	 * @var General
 	 */
-	private $serviceLocator = null;
-
+	protected $generalobject = null;
 	const INVALID = 'postalCodeInvalid';
 	const COUNTRY_INCORRECT = 'postalCodeCountryIncorrect';
 	const LENGTH_MIN = 'postalCodeLengthMin';
 	const LENGTH_MAX = 'postalCodeLengthMax';
-
+	
 	/**
+	 *
 	 * @var array
 	 */
-	protected $messageTemplates = array(
+	protected $messageTemplates = array (
 			self::INVALID => "text_error_invalid_value_type",
 			self::COUNTRY_INCORRECT => "text_error_incorrect_for_country",
 			self::LENGTH_MIN => "text_error_characters_min",
-			self::LENGTH_MAX => "text_error_characters_max",
+			self::LENGTH_MAX => "text_error_characters_max" 
 	);
-
 	protected $stringWrapper;
-
+	
 	/**
+	 *
 	 * @var array
 	 */
-	protected $messageVariables = array(
-			'country' => array(
-					'options' => 'country'
+	protected $messageVariables = array (
+			'country' => array (
+					'options' => 'country' 
 			),
-			'min' => array(
-					'options' => 'min'
+			'min' => array (
+					'options' => 'min' 
 			),
-			'max' => array(
-					'options' => 'max'
-			),
+			'max' => array (
+					'options' => 'max' 
+			) 
 	);
-
-	protected $options = array(
+	protected $options = array (
 			'min' => 0,
 			// Minimum length
 			'max' => null,
 			'country' => null,
-			'allowed' => true
+			'allowed' => true 
 	);
-
+	
 	/**
 	 * Postal Code regexes by territory
 	 *
 	 * @var array
 	 */
-	protected static $postCodeRegex = array(
+	protected static $postCodeRegex = array (
 			'AFG' => '/^[1-3][0-9]{3}$/',
 			'ALB' => '/^(1[0578]|2[05]|3[03-5]|4[03-7]|5[034]|6[034]|7[034]|8[03-7]|9[0347])[0-9]{2}$/',
 			'DZA' => '/^[0-9]{5}$/',
@@ -292,162 +294,175 @@ class PostalCode extends AbstractValidator {
 			'BLM' => '/^9[78][01][0-9]{2}$/',
 			'MAF' => '/^9[78][01][0-9]{2}$/',
 			'SXM' => null,
-			'TAA' => '/^TDCU 1ZZ$/',
+			'TAA' => '/^TDCU 1ZZ$/' 
 	);
-
+	
 	/**
 	 * Sets validator options
 	 *
-	 * @param  int|array|\Traversable $options
+	 * @param int|array|\Traversable $options        	
 	 */
 	public function __construct($options = null) {
-		if (!is_array($options)) {
-			$options = func_get_args();
-
-			$temp['min'] = array_shift($options);
-			if (!empty($options)) {
-				$temp['max'] = array_shift($options);
+		if (! is_array ( $options )) {
+			$options = func_get_args ();
+			
+			$temp ['min'] = array_shift ( $options );
+			if (! empty ( $options )) {
+				$temp ['max'] = array_shift ( $options );
 			}
-
-			if (!empty($options)) {
-				$temp['country'] = array_shift($options);
+			
+			if (! empty ( $options )) {
+				$temp ['country'] = array_shift ( $options );
 			}
-
-			if (!empty($options)) {
-				$temp['allowed'] = array_shift($options);
+			
+			if (! empty ( $options )) {
+				$temp ['allowed'] = array_shift ( $options );
 			}
-
+			
 			$options = $temp;
 		} else {
-			$options = array_merge($this->options, $options);
+			$options = array_merge ( $this->options, $options );
 		}
-		if (!isset($options['servicelocator'])) {
-			throw new Exception\RuntimeException('ServiceLocator has not been set or configured.');
+		if (! isset ( $options ['servicelocator'] )) {
+			throw new Exception\RuntimeException ( 'ServiceLocator has not been set or configured.' );
 		}
-		$this->setServiceLocator($options['servicelocator']);
-		unset($options['servicelocator']);
+		$this->generalobject = new GeneralBase ( $options );
+		$this->setServiceLocator ( $options ['servicelocator'] );
+		unset ( $options ['servicelocator'] );
 		$this->options = $options;
-
-		if (array_key_exists('country', $options)) {
-			$this->setCountry($options['country']);
+		
+		if (array_key_exists ( 'country', $options )) {
+			$this->setCountry ( $options ['country'] );
 		}
-
-		if (array_key_exists('allowed', $options)) {
-			$this->allowed($options['allowed']);
+		
+		if (array_key_exists ( 'allowed', $options )) {
+			$this->allowed ( $options ['allowed'] );
 		}
-
-		parent::__construct($options);
+		
+		parent::__construct ( $options );
 	}
-
+	
 	/**
-	 * Set serviceManager instance
+	 * function call handler
 	 *
-	 * @param  ServiceLocatorInterface $serviceLocator
-	 * @return void
+	 * @param string $function
+	 *        	Function name to call
+	 * @param array $args
+	 *        	Function arguments
+	 * @return mixed
+	 * @throws Exception\RuntimeException
+	 * @throws \Exception
 	 */
-	public function setServiceLocator(ServiceLocatorInterface $serviceLocator) {
-		$this->serviceLocator = $serviceLocator;
+	public function __call($name, $arguments) {
+		if (is_object ( $this->generalobject )) {
+			$obj = $this->generalobject;
+			if (method_exists ( $obj, $name )) {
+				if (is_array ( $arguments ) && count ( $arguments ) > 0) {
+					return call_user_func_array ( array (
+							$obj,
+							$name 
+					), $arguments );
+				} else {
+					return call_user_func ( array (
+							$obj,
+							$name 
+					) );
+				}
+			}
+		}
+		return null;
 	}
-
-	/**
-	 * Retrieve serviceManager instance
-	 *
-	 * @return ServiceLocatorInterface
-	 */
-	public function getServiceLocator() {
-		return $this->serviceLocator;
-	}
-
+	
 	/**
 	 * Get Country
 	 *
 	 * @return string
 	 */
 	public function getCountry() {
-		return $this->options['country'];
+		return $this->options ['country'];
 	}
-
+	
 	/**
 	 * Set Country
 	 *
-	 * @param  string $country
+	 * @param string $country        	
 	 * @return self
 	 */
 	public function setCountry($country) {
-		$this->options['country'] = $country;
-
+		$this->options ['country'] = $country;
+		
 		return $this;
 	}
-
+	
 	/**
 	 * Returns the min option
 	 *
 	 * @return int
 	 */
 	public function getMin() {
-		return $this->options['min'];
+		return $this->options ['min'];
 	}
-
+	
 	/**
 	 * Sets the min option
 	 *
-	 * @param  int $min
+	 * @param int $min        	
 	 * @throws Exception\InvalidArgumentException
 	 * @return text Provides a fluent interface
 	 */
 	public function setMin($min) {
-		if (null !== $this->getMax() && $min > $this->getMax()) {
-			throw new Exception\InvalidArgumentException("The minimum must be less than or equal to the maximum length, but $min >" . " " . $this->getMax());
+		if (null !== $this->getMax () && $min > $this->getMax ()) {
+			throw new Exception\InvalidArgumentException ( "The minimum must be less than or equal to the maximum length, but $min >" . " " . $this->getMax () );
 		}
-
-		$this->options['min'] = max(0, (int) $min);
+		
+		$this->options ['min'] = max ( 0, ( int ) $min );
 		return $this;
 	}
-
+	
 	/**
 	 * Returns the max option
 	 *
-	 * @return int|null
+	 * @return int null
 	 */
 	public function getMax() {
-		return $this->options['max'];
+		return $this->options ['max'];
 	}
-
+	
 	/**
 	 * Sets the max option
 	 *
-	 * @param  int|null $max
+	 * @param int|null $max        	
 	 * @throws Exception\InvalidArgumentException
 	 * @return text Provides a fluent interface
 	 */
 	public function setMax($max) {
 		if (null === $max) {
-			$this->options['max'] = null;
-		} elseif ($max < $this->getMin()) {
-			throw new Exception\InvalidArgumentException("The maximum must be greater than or equal to the minimum length, but " . "$max < " . $this->getMin());
+			$this->options ['max'] = null;
+		} elseif ($max < $this->getMin ()) {
+			throw new Exception\InvalidArgumentException ( "The maximum must be greater than or equal to the minimum length, but " . "$max < " . $this->getMin () );
 		} else {
-			$this->options['max'] = (int) $max;
+			$this->options ['max'] = ( int ) $max;
 		}
-
+		
 		return $this;
 	}
-
+	
 	/**
 	 * Get the string wrapper to detect the string length
 	 *
 	 * @return StringWrapper
 	 */
 	public function getStringWrapper() {
-		if (!$this->stringWrapper) {
-			$this->stringWrapper = StringUtils::getWrapper();
+		if (! $this->stringWrapper) {
+			$this->stringWrapper = StringUtils::getWrapper ();
 		}
 		return $this->stringWrapper;
 	}
-
+	
 	/**
 	 * Set the string wrapper to detect the string length
 	 *
-	 * @param StringWrapper $stringWrapper
+	 * @param StringWrapper $stringWrapper        	
 	 * @return text
 	 */
 	public function setStringWrapper(StringWrapper $stringWrapper) {
@@ -456,52 +471,53 @@ class PostalCode extends AbstractValidator {
 	/**
 	 * Allow Possible
 	 *
-	 * @param  bool|null $possible
-	 * @return self|bool
+	 * @param bool|null $possible        	
+	 * @return self bool
 	 */
 	public function allowed($allowed = null) {
 		if (null !== $allowed) {
-			$this->options['allowed'] = (bool) $allowed;
-
+			$this->options ['allowed'] = ( bool ) $allowed;
+			
 			return $this;
 		}
-
-		return $this->options['allowed'];
+		
+		return $this->options ['allowed'];
 	}
-
+	
 	/**
-	 * @param  string $value
+	 *
+	 * @param string $value        	
 	 * @return bool
 	 */
 	public function isValid($value) {
-		if (!is_scalar($value)) {
-			$this->error(self::INVALID);
-
+		if (! is_scalar ( $value )) {
+			$this->error ( self::INVALID );
+			
 			return false;
 		}
-		$this->setValue($value);
-
-		if (strlen($this->getValue()) > 0) {
-			$length = $this->getStringWrapper()->strlen($value);
-			if ($length < $this->getMin()) {
-				$this->error(self::LENGTH_MIN);
+		$this->setValue ( $value );
+		
+		if (strlen ( $this->getValue () ) > 0) {
+			$length = $this->getStringWrapper ()->strlen ( $value );
+			if ($length < $this->getMin ()) {
+				$this->error ( self::LENGTH_MIN );
 				return false;
 			}
-
-			if (null !== $this->getMax() && $this->getMax() < $length) {
-				$this->error(self::LENGTH_MAX);
+			
+			if (null !== $this->getMax () && $this->getMax () < $length) {
+				$this->error ( self::LENGTH_MAX );
 				return false;
 			}
-			if (!$this->allowed()) {
-				$Country = new Country(array(
-						'country' => $this->options['country'],
-						'servicelocator' => $this->getServiceLocator(),
-				));
-				$regex = $Country->postcodeRegex();
-				if (strlen($regex) > 0 && !preg_match($regex, $value)) {
-					$country_name = $Country->getCountryName($this->options['country']);
-					$this->setCountry($country_name);
-					$this->error(self::COUNTRY_INCORRECT);
+			if (! $this->allowed ()) {
+				$Country = new Country ( array (
+						'country' => $this->options ['country'],
+						'servicelocator' => $this->getServiceLocator () 
+				) );
+				$regex = $Country->postcodeRegex ();
+				if (strlen ( $regex ) > 0 && ! preg_match ( $regex, $value )) {
+					$country_name = $Country->getCountryName ( $this->options ['country'] );
+					$this->setCountry ( $country_name );
+					$this->error ( self::COUNTRY_INCORRECT );
 					return false;
 				}
 			}

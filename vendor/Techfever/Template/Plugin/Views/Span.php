@@ -10,7 +10,7 @@ class Span extends Element {
 	 *
 	 * @var array
 	 */
-	protected $attributes = array(
-			'type' => 'span',
+	protected $attributes = array (
+			'type' => 'span' 
 	);
 }

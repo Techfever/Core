@@ -1,6 +1,5 @@
 <?php 
-$uri = $parameter['bankformuri'];
-$form = str_replace('/', '_', $parameter['bankformid']);
+$form = $parameter['bankformid'];
 ?>
 
 $(document).ready(function() {		

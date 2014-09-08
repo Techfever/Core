@@ -1,17 +1,15 @@
 <?php
+
 namespace Techfever\Template\Plugin\Controllers;
 
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 
 class getTemplate extends AbstractPlugin {
-	/**
-	 * Grabs Template.
-	 *
-	 * @return mixed
-	 */
+	protected $template = null;
 	public function __invoke() {
-		$Template = $this->getController()->getServiceLocator()->get('template');
-
-		return $Template;
+		if (! isset ( $this->template )) {
+			$this->template = $this->getController ()->getServiceLocator ()->get ( 'template' );
+		}
+		return $this->template;
 	}
 }

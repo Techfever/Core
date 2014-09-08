@@ -2,12 +2,21 @@
 $container = $this->navigation('Navigator')->getContainer();
 $menucontainer = clone $container;
 $breadcrumbcontainer = clone $container;
-echo $this->doctype();
-?><html lang="en">
+//echo $this->doctype();
+?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	dir="ltr"
+	xml:lang="en_US"
+	lang="en_US">
 <head>
-<meta charset="utf-8"><?php
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<?php
 echo $this->headTitle();
-echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0');
+//echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0');
 					  ?>
 <!-- Le styles -->
 <?php
@@ -29,86 +38,116 @@ echo $this->headScript()->prependFile($this->serverUrl($this->baseHref() . '/The
     <body><div class="container">
 	    <div class="layoutHeader">
 	   		<div class="layoutHeaderBG">
-	   		<?php 
-			if(!$this->moduleLogin){
-			?><div class="layoutNavigator">
+	   		<div class="layoutLanguage">
+	   		<?php
+echo $this->translate('text_language') . ': ';
+$translatorLocale = $this->translatorLocale;
+if (is_array($translatorLocale) && count($translatorLocale) > 0) {
+	$Locale = $this->Locale;
+	$locale_count = 1;
+	foreach ($translatorLocale as $locale_value) {
+		if ($Locale !== $locale_value['iso']) {
+			if ($locale_count > 1) {
+				echo "&nbsp;|&nbsp;";
+			}
+			echo $this->htmlLink($this->serverUrl($this->baseHref() . '/Language/Switch/' . $locale_value['iso']), $this->translate('text_language_' . strtolower($locale_value['iso'])));
+		$locale_count++;
+		}
+	}
+}
+			   ?>
+	   		</div>
+	   		<?php
+if (!$this->moduleLogin) {
+			   ?><div class="layoutNavigator">
 			<ul class="modern-menu navigator">
 			<?php
-					$partial = array(
-							'navigator/layout',
-							'default'
-					);
-					echo $this->navigation($menucontainer)->menu()->setPartial($partial)->render();
-			echo '<ul class="mm-group mm-right">'. "\n";
-			echo '<li class="mm-icon"><a href="'.($this->isLogin ? $this->serverUrl($this->baseHref() . '/Account/Logout') : $this->serverUrl($this->baseHref() . '/Account/Login')).'"><span class="mm-keystroke"></span></a></li>'. "\n";
-			echo '</ul>'. "\n";
+				   $partial = array(
+						   'navigator/layout',
+						   'default'
+				   );
+				   echo $this->navigation($menucontainer)->menu()->setPartial($partial)->render();
+				   echo '<ul class="mm-group mm-right">' . "\n";
+				   echo '<li class="mm-icon"><a href="' . ($this->isLogin ? $this->serverUrl($this->baseHref() . '/Account/Logout') : $this->serverUrl($this->baseHref() . '/Account/Login')) . '"><span class="mm-keystroke"></span></a></li>' . "\n";
+				   echo '</ul>' . "\n";
 			?>
 			</ul>
 			<script type="text/javascript">	$(".modern-menu").modernMenu();</script>
 			</div>
-			<?php 
-			}
+			<?php
+}
 			?></div>
 	    </div>
 	    <?php
-		if($this->moduleLogin){
-			?><div class="layoutContentLogin">
+			if ($this->moduleLogin) {
+		?><div class="layoutContentLogin">
 		<div class="body"><div class="bodyheader"><div><?php echo $this->escapeHtml($this->translate($this->moduleTitle)); ?></div></div>
 		<div class="bodycontent">
-		<div id="flashmessager"></div><?php
-		echo $this->content;
-		?></div></div>
+		<div id="flashmessager">
+		<?php
+			$FlashMessenger = $this->FlashMessenger();
+			if ($FlashMessenger->hasMessages()) {
+		?><div class="ui-widget">
+		<?php
+				echo $FlashMessenger->setMessageOpenFormat('<div class="ui-state-error ui-corner-all" %s><span><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>')
+						->setMessageSeparatorString('</span><span><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>')->setMessageCloseString('</span></div>')->render();
+		?></div>
+		<?php
+			}
+		?></div><?php
+			echo $this->content;
+									  ?></div></div>
 		</div>			
-			<?php 
-		}else{
-				   if (!empty($this->left)) {
-		?><div class="layoutLeft">
+			<?php
+									  } else {
+										  if (!empty($this->left)) {
+			?><div class="layoutLeft">
 		<?php echo $this->left; ?></div>
 		<?php
-		}
-		if (!empty($this->right)) {
+				}
+				if (!empty($this->right)) {
 		?><div class="layoutRight">
 		<?php echo $this->right; ?></div>
 		<?php
-		}
+			}
 		?><div class="layoutCenter" style="margin: 5px <?php echo (!empty($this->right) ? '235px' : '0'); ?> 0 <?php echo (!empty($this->left) ? '235px' : '0'); ?>;">
 		<?php
-		$partial = array(
-				'breadcrumb/layout',
-				'default'
-		);
-		echo $this->navigation($breadcrumbcontainer)->breadcrumbs()->setPartial($partial)->render();
-		if (!empty($this->after)) {
+			$partial = array(
+					'breadcrumb/layout',
+					'default'
+			);
+			echo $this->navigation($breadcrumbcontainer)->breadcrumbs()->setPartial($partial)->render();
+			if (!empty($this->after)) {
 		?><div class="layoutBefore">
 		<?php echo $this->before; ?></div>
 		<?php
-		}
+			}
 		?><div class="layoutContent">
 		<div class="body"><div class="bodyheader"><div><?php echo $this->escapeHtml($this->translate($this->moduleTitle)); ?></div></div>
 		<div class="bodycontent">
 		<div id="flashmessager">
 		<?php
-		$FlashMessenger = $this->FlashMessenger();
-		if ($FlashMessenger->hasMessages()) {
+			$FlashMessenger = $this->FlashMessenger();
+			if ($FlashMessenger->hasMessages()) {
 		?><div class="ui-widget">
 		<?php
-			echo $FlashMessenger->setMessageOpenFormat('<div class="ui-state-error ui-corner-all" %s><span><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>')
-					->setMessageSeparatorString('</span><span><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>')->setMessageCloseString('</span></div>')->render();
+				echo $FlashMessenger->setMessageOpenFormat('<div class="ui-state-error ui-corner-all" %s><span><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>')
+						->setMessageSeparatorString('</span><span><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>')->setMessageCloseString('</span></div>')->render();
 		?></div>
 		<?php
-		}
+			}
 		?></div><?php
-		echo $this->content;
-		?></div></div>
+			echo $this->content;
+				?></div></div>
 		</div>
 		<?php
-		if (!empty($this->after)) {
+					if (!empty($this->after)) {
 		?><div class="layoutAfter">
 		<?php echo $this->after; ?></div>
 		<?php
-		}
+			}
 		?></div>
-		<?php 
+		<?php
 		}
 		?><div class="layoutFooter">
 	    <?php echo sprintf($this->translate('text_copyright'), date("Y", time()), $this->htmlLink($this->baseHref(), $this->translate('text_system_name'), array(

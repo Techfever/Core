@@ -11,8 +11,8 @@ class getTranslate extends AbstractPlugin {
 	 * @return mixed
 	 */
 	public function __invoke($key) {
-		$Translator = $this->getController()->getServiceLocator()->get('translator');
-
-		return $Translator->translate($key);
+		$Translator = $this->getController ()->getServiceLocator ()->get ( 'translator' );
+		
+		return $Translator->translate ( $key );
 	}
 }

@@ -10,7 +10,7 @@ class Div extends Element {
 	 *
 	 * @var array
 	 */
-	protected $attributes = array(
-			'type' => 'div',
+	protected $attributes = array (
+			'type' => 'div' 
 	);
 }

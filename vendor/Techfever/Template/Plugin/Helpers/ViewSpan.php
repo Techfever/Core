@@ -1,4 +1,5 @@
 <?php
+
 namespace Techfever\Template\Plugin\Helpers;
 
 use Techfever\View\ElementInterface;
@@ -10,12 +11,12 @@ class ViewSpan extends AbstractViewHelper {
 	 *
 	 * @var array
 	 */
-	protected $validTagAttributes = array(
+	protected $validTagAttributes = array (
 			'name' => true,
 			'id' => true,
-			'class' => true
+			'class' => true 
 	);
-
+	
 	/**
 	 * Render a form <textarea> element from the provided $element
 	 *
@@ -24,18 +25,18 @@ class ViewSpan extends AbstractViewHelper {
 	 * @return string
 	 */
 	public function render(ElementInterface $element) {
-		$name = $element->getName();
-		if (empty($name) && $name !== 0) {
-			throw new Exception\DomainException(sprintf('%s requires that the element has an assigned name; none discovered', __METHOD__));
+		$name = $element->getName ();
+		if (empty ( $name ) && $name !== 0) {
+			throw new Exception\DomainException ( sprintf ( '%s requires that the element has an assigned name; none discovered', __METHOD__ ) );
 		}
-
-		$attributes = $element->getAttributes();
-		$attributes['name'] = $name;
-		$content = (string) $element->getContent();
-		$escapeHtml = $this->getEscapeHtmlHelper();
-		return sprintf('<span %s>%s</span>', $this->createAttributesString($attributes), $escapeHtml($content));
+		
+		$attributes = $element->getAttributes ();
+		$attributes ['name'] = $name;
+		$content = ( string ) $element->getContent ();
+		$escapeHtml = $this->getEscapeHtmlHelper ();
+		return sprintf ( '<span %s>%s</span>', $this->createAttributesString ( $attributes ), $escapeHtml ( $content ) );
 	}
-
+	
 	/**
 	 * Invoke helper as functor
 	 *
@@ -45,10 +46,10 @@ class ViewSpan extends AbstractViewHelper {
 	 * @return string FormTextarea
 	 */
 	public function __invoke(ElementInterface $element = null) {
-		if (!$element) {
+		if (! $element) {
 			return $this;
 		}
-
-		return $this->render($element);
+		
+		return $this->render ( $element );
 	}
 }

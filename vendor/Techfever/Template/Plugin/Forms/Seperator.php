@@ -10,7 +10,7 @@ class Seperator extends Element {
 	 *
 	 * @var array
 	 */
-	protected $attributes = array(
-			'type' => 'seperator',
+	protected $attributes = array (
+			'type' => 'seperator' 
 	);
 }

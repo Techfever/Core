@@ -186,6 +186,17 @@ input.text {
 	width: 220px;
 }
 
+input.number {
+	display: inline;
+	border: 1px solid #B8B8B8;
+	font-size: 12px;
+	font-family: 'Trebuchet MS', arial;
+	color: #333333;
+	height: 16px;
+	padding: 2px 4px 2px 4px;
+	width: 220px;
+}
+
 input.date {
 	display: inline;
 	border: 1px solid #B8B8B8;
@@ -289,4 +300,6 @@ textarea {
 	color: #333333;
 	padding: 4px;
 	font-weight: bold;
+	width: 220px;		
+	height: 250px;	
 }

@@ -1,13 +1,12 @@
 <?php 
 $uri = $parameter['loginformuri'];
-$action = $parameter['loginformaction'];
-$form = str_replace('/', '_', ($parameter['loginformid'] . '/' . $action));
+$form = $parameter['loginformid'];
 ?>
 $(document).ready(function() {	
 	$.fn.Login = function() {
 		var formname = "<?php echo $form; ?>";
 		var formid = "form[id=" + formname + "]";
-		var formuri = "<?php echo $this->url($uri, array('action' => $action)); ?>";
+		var formuri = "<?php echo $uri; ?>";
 		$(formid + " table[class=form]").find( "tr" ).each(
 			function() {
 				$(this).find( ':input' ).not(':button, :submit, :reset').each(

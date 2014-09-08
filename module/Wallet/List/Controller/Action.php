@@ -1,110 +1,284 @@
 <?php
+
 namespace Wallet\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Json\Json;
+use Techfever\Datatable\Datatable;
+use Techfever\View\View as WalletView;
 
 class ListActionController extends AbstractActionController {
-
 	protected $type = 'wallet';
-
 	protected $module = 'list';
-
-	protected $inputform = null;
-
+	protected $datatable = null;
+	protected $datacolumn = null;
+	protected $datasearch = null;
 	public function IndexAction() {
-		$this->getTemplate()->addCSS("ui-lightness/jquery-ui.css", "jquery");
-		$this->getTemplate()->addCSS("vendor/Techfever/Theme/" . SYSTEM_THEME . "/CSS/tooltip.css");
-		$this->getTemplate()->addJavascript("vendor/Techfever/Theme/" . SYSTEM_THEME . "/Js/account.update.js", array(
-						'updateformid' => $this->getMatchedRouteName(),
-						'updateformuri' => $this->getMatchedRouteName(),
-						'updateformaction' => 'Index',
-				));
-
-		$InputForm = $this->InputForm();
-		if ($InputForm->isXmlHttpRequest()) {
-			$valid = false;
-			$redirect = null;
-			$messages = array();
-			$messagescount = 0;
-			$relation = null;
-			$input = $InputForm->getPost('Input', null);
-			if (!is_null($input)) {
-				$relation = $InputForm->getValidatorRelation($input);
-				$messages[$input] = "";
-			}
-			if ($InputForm->isPost()) {
-				if ($InputForm->isValid()) {
-					$submit = strtolower($InputForm->getPost('submit', 'preview'));
-					if ($submit == 'submit') {
-						$valid = true;
-						$id = 1;
-						$data = $InputForm->getData();
-						if ($this->getUserManagement()->verifyID($id) && $this->getUserManagement()->updateSecurity($id, $data)) {
-							$this->FlashMessenger()->addMessage($this->getTranslate('text_success_msg_user_update_' . $this->module));
-						} else {
-							$this->FlashMessenger()->addMessage($this->getTranslate('text_error_msg_user_update_' . $this->module));
-						}
-						$redirect = $this->url()->fromRoute($this->getMatchedRouteName(), array(
-										'action' => 'Index'
-								));
-					}
-				} else {
-					$messages_data = $InputForm->getMessages();
-					$messagescount = count($messages_data);
-					if (count($messages_data) > 0) {
-						foreach ($messages_data as $messages_key => $messages_data) {
-							foreach ($messages_data as $messages_data) {
-								$messages[$messages_key] = $messages_data;
-							}
-						}
-					}
-				}
-			}
-			$InputForm->getResponse()->setContent(Json::encode(array(
-							'input' => $input,
-							'valid' => $valid,
-							'redirect' => $redirect,
-							'relation' => $relation,
-							'messages' => $messages,
-							'messagescount' => $messagescount,
-					)));
-			return $InputForm->getResponse();
-		} else {
-			return array(
-					'inputmodel' => $this->ViewModel()
-			);
-		}
+		$this->datacolumn = $this->getDatatable ()->getColumnData ();
+		$this->datasearch = $this->getDatatable ()->getSearchData ();
+		$this->addCSS ( "vendor/Techfever/Javascript/jquery/themes/jtable/lightcolor/gray/jtable.css" );
+		$this->addJavascript ( 'vendor/Techfever/Javascript/jquery/ui/jquery.jtable.js' );
+		$this->addJavascript ( "vendor/Techfever/Theme/" . SYSTEM_THEME . "/Js/datatable.menu.js", array (
+				'datatableid' => $this->convertToUnderscore ( $this->getMatchedRouteName () . '/Datatable', '/' ),
+				'datalisturi' => $this->url ()->fromRoute ( ucfirst ( str_replace ( '_', '/', $this->type ) ) . '/List' ),
+				'datacolumn' => $this->datacolumn,
+				'datasearch' => $this->datasearch 
+		) );
+		
+		return array (
+				'menumodel' => $this->MenuModel (),
+				'isAdminUser' => $this->isAdminUser () 
+		);
 	}
-
-	private function ViewModel() {
-		$ViewModel = new ViewModel();
-		$ViewModel->setTerminal(true);
-		$ViewModel->setTemplate('share/account/update');
-		$ViewModel->setVariables(array(
-						'form' => $this->InputForm()
-				));
-		return $this->getServiceLocator()->get('viewrenderer')->render($ViewModel);
-	}
-
-	private function InputForm() {
-		if (!is_object($this->inputform)) {
-			$id = $this->getUserAccess()->getID();
-			$rank_group = $this->getUserAccess()->getRankGroupID();
-			$options = array(
-					'servicelocator' => $this->getServiceLocator(),
-					'rank' => $rank_group,
+	private function getDatatable() {
+		if (! is_object ( $this->datatable )) {
+			$options = array (
+					'route' => $this->getMatchedRouteName (),
 					'action' => 'Index',
+					'variable' => $this->getVariable (),
+					'servicelocator' => $this->getServiceLocator () 
 			);
-			if ($this->getUserManagement()->verifyID($id, $rank_group)) {
-				$data = $this->getUserManagement()->getData($id, $rank_group);
-				if (count($data) > 0) {
-					$options['value'] = $data;
+			$this->datatable = new Datatable ( $options );
+		}
+		return $this->datatable;
+	}
+	public function GetAction() {
+		$this->layout ( 'blank/layout' );
+		$Request = $this->getRequest ();
+		$Response = $this->getResponse ();
+		
+		if ($Request->isXmlHttpRequest ()) {
+			$index = 0;
+			$perpage = 10;
+			$order = 'ua.user_access_id ASC';
+			
+			$routequery = ( string ) $this->params ()->fromRoute ( 'query', null );
+			$routequery = (substr ( $routequery, 0, 1 ) == '/' ? substr ( $routequery, 1 ) : $routequery);
+			$routequery = explode ( '&', $routequery );
+			if (is_array ( $routequery ) && count ( $routequery ) > 0) {
+				foreach ( $routequery as $routequeryvalue ) {
+					$routequeryraw = explode ( '=', $routequeryvalue );
+					if ($routequeryraw [0] === "jtStartIndex") {
+						$index = $routequeryraw [1];
+					} elseif ($routequeryraw [0] === "jtPageSize") {
+						$perpage = $routequeryraw [1];
+					} elseif ($routequeryraw [0] === "jtSorting") {
+						$order = $routequeryraw [1];
+					}
 				}
 			}
-			$this->inputform = new UserUpdateForm($options);
+			
+			$cache = $this->convertToUnderscore ( $order, ',' );
+			$cache = $this->convertToUnderscore ( $cache, ',' );
+			$cache = $this->convertToUnderscore ( $cache, ' ' );
+			$cache = $cache . '_' . $perpage . '_' . $index;
+			if (strpos ( $order, ',' ) !== false) {
+				$order = explode ( ',', $order );
+			} else {
+				$order = array (
+						$order 
+				);
+			}
+			if (is_array ( $order ) && count ( $order ) > 0) {
+				$orderraw = array ();
+				foreach ( $order as $ordervalue ) {
+					$arrange = explode ( ' ', $ordervalue );
+					$column = $this->getDatatable ()->getColumnFieldByColumn ( $arrange [0] );
+					$table = $this->getDatatable ()->getColumnTableByColumn ( $arrange [0] );
+					if ($table == 'user_wallet_history') {
+						$orderraw [] = 'uwh.' . $column . ' ' . $arrange [1];
+					} elseif ($table == 'user_access_from') {
+						$orderraw [] = 'uaf.' . $column . ' ' . $arrange [1];
+					} elseif ($table == 'user_access_to') {
+						$orderraw [] = 'uat.' . $column . ' ' . $arrange [1];
+					}
+				}
+				$order = $orderraw;
+			}
+			
+			$search = $Request->getPost ()->toArray ();
+			if (is_array ( $search ) && count ( $search ) > 0) {
+				$searchraw = array ();
+				foreach ( $search as $searchkey => $searchvalue ) {
+					$column = $this->getDatatable ()->getSearchFieldByColumn ( $searchkey );
+					$table = $this->getDatatable ()->getSearchTableByColumn ( $searchkey );
+					$pattern = $this->getDatatable ()->getSearchPatternByColumn ( $searchkey );
+					if ($table == 'user_wallet_history' && ! empty ( $searchvalue )) {
+						$searchraw [$table] [] = 'uwh.' . $column . ' ' . sprintf ( $pattern, $searchvalue );
+					} elseif ($table == 'user_access_from' && ! empty ( $searchvalue )) {
+						$searchraw [$table] [] = 'uaf.' . $column . ' ' . sprintf ( $pattern, $searchvalue );
+					} elseif ($table == 'user_access_to' && ! empty ( $searchvalue )) {
+						$searchraw [$table] [] = 'uat.' . $column . ' ' . sprintf ( $pattern, $searchvalue );
+					}
+				}
+				$search = $searchraw;
+			} else {
+				$search = array (
+						'user_wallet_history' => array () 
+				);
+			}
+			if (! $this->isAdminUser ()) {
+				$search ['user_wallet_history'] [] = 'uwh.user_access_id = ' . $this->getUserIDn ();
+			}
+			$listdataraw = $this->getUserWallet ()->getHistoryListing ( $search, $order, $index, $perpage, $cache, true );
+			$jsonData = array ();
+			$jsonData ['Result'] = "OK";
+			$jsonData ['Records'] = $listdataraw;
+			$jsonData ['TotalRecordCount'] = count ( $listdataraw );
+			$Response->setContent ( Json::encode ( $jsonData ) );
 		}
-		return $this->inputform;
+		return $Response;
+	}
+	public function ManageAction() {
+		$this->layout ( 'blank/layout' );
+		$Request = $this->getRequest ();
+		$Response = $this->getResponse ();
+		
+		if ($Request->isXmlHttpRequest ()) {
+			$id = ( string ) $this->params ()->fromRoute ( 'query', null );
+			$legend = array ();
+			
+			$legend ['print'] = $this->HrefLink ( array (
+					'value' => $this->Img ( array (
+							'folder' => 'Icons',
+							'image' => 'details-24x24.png' 
+					) ) . '<span>' . $this->getTranslate ( 'text_details' ) . '</span>',
+					'attributes' => array (
+							'href' => '#',
+							'onclick' => '$(this).formDialogPreview({
+												uri: "' . $this->url ()->fromRoute ( ucfirst ( str_replace ( '_', '/', $this->type ) ) . '/List', array (
+									'action' => 'View',
+									'query' => $id 
+							) ) . '",  
+												title: "' . $this->getTranslate ( "text_dialog_wallet_view_" . $this->module . "_title" ) . '",  
+											});' 
+					) 
+			) );
+			$managedata [] = array (
+					'legend' => '<div id="listlegend">' . implode ( '</div><div id="listlegend">', $legend ) . '</div>' 
+			);
+			
+			$jsonData = array ();
+			$jsonData ['Result'] = "OK";
+			$jsonData ['Records'] = $managedata;
+			$jsonData ['TotalRecordCount'] = count ( $managedata );
+			$Response->setContent ( Json::encode ( $jsonData ) );
+		}
+		return $Response;
+	}
+	public function ViewAction() {
+		$this->layout ( 'blank/layout' );
+		$Request = $this->getRequest ();
+		$Response = $this->getResponse ();
+		$data = array ();
+		$ViewModel = null;
+		// if ($Request->isXmlHttpRequest()) {
+		$id = 0;
+		$valid = false;
+		$id = $this->Decrypt ( ( string ) $this->params ()->fromRoute ( 'query', null ) );
+		if ($this->getUserWallet ()->verifyHistoryID ( $id )) {
+			$data = $this->getUserWallet ()->getHistoryData ( $id );
+			if (count ( $data ) > 0) {
+				$options = array (
+						'servicelocator' => $this->getServiceLocator (),
+						'variable' => $data 
+				);
+				$data = new WalletView ( $options );
+				
+				$ViewModel = new ViewModel ();
+				$ViewModel->setTerminal ( true );
+				$ViewModel->setTemplate ( 'share/form/preview' );
+				$ViewModel->setVariables ( array (
+						'view' => $data 
+				) );
+				$ViewModel = $this->getServiceLocator ()->get ( 'viewrenderer' )->render ( $ViewModel );
+				$valid = true;
+			}
+		}
+		$Response->setContent ( Json::encode ( array (
+				'id' => $id,
+				'valid' => $valid,
+				'content' => $ViewModel,
+				'height' => "250",
+				'width' => "500" 
+		) ) );
+		// }
+		return $Response;
+	}
+	private function MenuModel() {
+		$menu = array (
+				array (
+						'label' => $this->getTranslate ( 'text_search' ),
+						'tab' => 'tabs-search',
+						'istab' => True,
+						'content' => $this->SearchModel () 
+				),
+				array (
+						'label' => $this->getTranslate ( 'text_column' ),
+						'tab' => 'tabs-column',
+						'istab' => True,
+						'content' => $this->ColumnModel () 
+				) 
+		);
+		$MenuModel = new ViewModel ();
+		$MenuModel->setTerminal ( true );
+		$MenuModel->setTemplate ( 'share/datatable/menu' );
+		$MenuModel->setVariables ( array (
+				'menu' => $menu 
+		) );
+		
+		return $this->getServiceLocator ()->get ( 'viewrenderer' )->render ( $MenuModel );
+	}
+	private function SearchModel() {
+		$SearchSimpleModel = new ViewModel ();
+		$SearchSimpleModel->setTerminal ( true );
+		$SearchSimpleModel->setTemplate ( 'share/wallet/searchsimple' );
+		$SearchSimpleModel->setVariables ( array (
+				'search' => $this->datasearch 
+		) );
+		$SearchSimpleModel = $this->getServiceLocator ()->get ( 'viewrenderer' )->render ( $SearchSimpleModel );
+		
+		$SearchAdvanceModel = new ViewModel ();
+		$SearchAdvanceModel->setTerminal ( true );
+		$SearchAdvanceModel->setTemplate ( 'share/wallet/searchadvance' );
+		$SearchAdvanceModel->setVariables ( array (
+				'search' => $this->datasearch 
+		) );
+		$SearchAdvanceModel = $this->getServiceLocator ()->get ( 'viewrenderer' )->render ( $SearchAdvanceModel );
+		
+		$SearchModel = new ViewModel ();
+		$SearchModel->setTerminal ( true );
+		$SearchModel->setTemplate ( 'share/datatable/menu/search' );
+		$SearchModel->setVariables ( array (
+				'simple' => $SearchSimpleModel,
+				'advance' => $SearchAdvanceModel 
+		) );
+		return $this->getServiceLocator ()->get ( 'viewrenderer' )->render ( $SearchModel );
+	}
+	private function ColumnModel() {
+		$ColumnModel = new ViewModel ();
+		$ColumnModel->setTerminal ( true );
+		$ColumnModel->setTemplate ( 'share/datatable/menu/column' );
+		$ColumnModel->setVariables ( array (
+				'column' => $this->datacolumn 
+		) );
+		return $this->getServiceLocator ()->get ( 'viewrenderer' )->render ( $ColumnModel );
+	}
+	private function getVariable() {
+		$Status = $this->getUserWallet ()->StatusToForm ();
+		;
+		$Transaction = $this->getUserWallet ()->TransactionToForm ();
+		;
+		$Type_From = $this->getUserWallet ()->TypeToForm ();
+		;
+		$Type_To = $this->getUserWallet ()->TypeToForm ();
+		;
+		return array (
+				'user_wallet_status_text' => $Status,
+				'user_wallet_transaction_text' => $Transaction,
+				'user_wallet_type_from_text' => $Type_From,
+				'user_wallet_type_to_text' => $Type_To 
+		);
 	}
 }

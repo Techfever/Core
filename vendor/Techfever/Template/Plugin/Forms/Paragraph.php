@@ -10,7 +10,7 @@ class Paragraph extends Element {
 	 *
 	 * @var array
 	 */
-	protected $attributes = array(
-			'type' => 'paragraph',
+	protected $attributes = array (
+			'type' => 'paragraph' 
 	);
 }

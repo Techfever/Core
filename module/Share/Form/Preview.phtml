@@ -1,77 +1,77 @@
 <?php
 $form = $this->view;
-$elements = $form->getElements();
-if (count($elements) > 0) {
+$elements = $form->getElements ();
+if (count ( $elements ) > 0) {
 	echo '<table class="preview">' . "\n";
-	$button = array();
-	foreach ($elements as $element_key => $element) {
-		$field = $form->get($element_key);
+	$button = array ();
+	foreach ( $elements as $element_key => $element ) {
+		$field = $form->get ( $element_key );
 		if ($field instanceof \Techfever\View\ElementInterface) {
-			$type = $field->getAttribute('type');
-			$label = $field->getLabel();
-			if (in_array($type, array(
-					'button',
-			))) {
-				$button[$element_key] = $element;
+			$type = $field->getAttribute ( 'type' );
+			$label = $field->getLabel ();
+			if (in_array ( $type, array (
+					'button' 
+			) )) {
+				$button [$element_key] = $element;
 			} else {
 				$isSeperator = false;
 				if ($type == 'seperator') {
 					$isSeperator = true;
 				}
-
+				
 				$renderLabel = null;
 				$isElement = false;
-				if (!in_array($type, array(
+				if (! in_array ( $type, array (
 						'button',
-						'seperator'
-				))) {
-					if (!empty($label)) {
-						$renderLabel = '	<td class="label">' . $this->viewLabel($element) . '&nbsp;:</td>' . "\n";
-					} else if (!$isSeperator) {
+						'seperator' 
+				) )) {
+					if (! empty ( $label )) {
+						$renderLabel = '	<td class="label">' . $this->viewLabel ( $element ) . '&nbsp;:</td>' . "\n";
+					} else if (! $isSeperator) {
 						$renderLabel = '	<td ></td>' . "\n";
 					}
 					$isElement = true;
-				} elseif (in_array($type, array(
-						'button',
-				))) {
+				} elseif (in_array ( $type, array (
+						'button' 
+				) )) {
 					$renderLabel = '	<td ></td>' . "\n";
 					$isElement = true;
 				}
-
+				
 				$renderElement = null;
-				$renderElement = '	<td' . ($isElement && !$isSeperator ? ' class="data"' : '') . (!$isElement || $isSeperator ? ' colspan="3"' : null) . '>' . "\n";
-				$renderElement .= call_user_func_array(array(
+				$renderElement = '	<td' . ($isElement && ! $isSeperator ? ' class="data"' : '') . (! $isElement || $isSeperator ? ' colspan="3"' : null) . '>' . "\n";
+				$renderElement .= call_user_func_array ( array (
 						$this,
-						'view' . ucfirst($type)
-				), array(
-						$element
-				)) . "\n";
+						'view' . ucfirst ( $type ) 
+				), array (
+						$element 
+				) ) . "\n";
 				$renderElement .= '</td>' . "\n";
-
+				
 				echo '<tr class="' . ($isSeperator ? 'seperator' : 'row') . '">' . "\n";
 				echo $renderLabel;
 				echo $renderElement;
-				if ($isElement && !$isSeperator) {
+				if ($isElement && ! $isSeperator) {
 					echo '<td></td>';
 				}
 				echo '</tr>' . "\n";
 			}
 		}
 	}
-	if (is_array($button) && count($button) > 0) {
+	if (is_array ( $button ) && count ( $button ) > 0) {
 		echo '<tr class="row" id="button">' . "\n";
 		echo '	<td ></td>' . "\n";
 		echo '	<td colspan="2">' . "\n";
-		foreach ($button as $element_key => $element) {
-			$field = $form->get($element_key);
+		foreach ( $button as $element_key => $element ) {
+			$field = $form->get ( $element_key );
 			if ($field instanceof \Techfever\View\ElementInterface) {
-				$type = $field->getAttribute('type');
-				echo call_user_func_array(array(
+				$type = $field->getAttribute ( 'type' );
+				echo call_user_func_array ( array (
 						$this,
-						'view' . ucfirst($type)
-				), array(
-						$element
-				)) . "\n";
+						'view' . ucfirst ( $type ) 
+				), array (
+						$element 
+				) ) . "\n";
 			}
 		}
 		echo '	</td>' . "\n";

@@ -11,21 +11,21 @@ class Radio extends MultiCheckbox {
 	 *
 	 * @var array
 	 */
-	protected $attributes = array(
-			'type' => 'radio'
+	protected $attributes = array (
+			'type' => 'radio' 
 	);
-
+	
 	/**
 	 * Get validator
 	 *
 	 * @return \Zend\Validator\ValidatorInterface
 	 */
 	protected function getValidator() {
-		if (null === $this->validator && !$this->disableInArrayValidator()) {
-			$this->validator = new InArrayValidator(array(
-					'haystack' => $this->getValueOptionsValues(),
-					'strict' => false,
-			));
+		if (null === $this->validator && ! $this->disableInArrayValidator ()) {
+			$this->validator = new InArrayValidator ( array (
+					'haystack' => $this->getValueOptionsValues (),
+					'strict' => false 
+			) );
 		}
 		return $this->validator;
 	}

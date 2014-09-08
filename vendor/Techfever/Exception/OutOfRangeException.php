@@ -1,4 +1,5 @@
 <?php
+
 namespace Techfever\Exception;
 
 use Zend\Barcode\Exception;

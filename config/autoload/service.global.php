@@ -24,8 +24,9 @@ return array(
 						'template' => 'Techfever\Template\TemplateServiceFactory',
 						'snapshot' => 'Techfever\Snapshot\SnapshotServiceFactory',
 						'MvcTranslator' => 'Techfever\Translator\TranslatorServiceFactory',
-						'navigator' => 'Techfever\Navigator\NavigatorServiceFactory',
 						'UserAccess' => 'Techfever\User\AccessServiceFactory',
+						'UserPermission' => 'Techfever\User\PermissionServiceFactory',
+						'navigator' => 'Techfever\Navigator\NavigatorServiceFactory',
 				),
 				'abstract_factories' => array(
 						'Zend\Cache\Service\StorageCacheAbstractServiceFactory',

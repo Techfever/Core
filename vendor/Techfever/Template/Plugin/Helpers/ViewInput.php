@@ -11,7 +11,7 @@ class ViewInput extends AbstractViewHelper {
 	 *
 	 * @var array
 	 */
-	protected $validTagAttributes = array(
+	protected $validTagAttributes = array (
 			'name' => true,
 			'accept' => true,
 			'alt' => true,
@@ -41,15 +41,15 @@ class ViewInput extends AbstractViewHelper {
 			'step' => true,
 			'type' => true,
 			'value' => true,
-			'width' => true,
+			'width' => true 
 	);
-
+	
 	/**
 	 * Valid values for the input type
 	 *
 	 * @var array
 	 */
-	protected $validTypes = array(
+	protected $validTypes = array (
 			'text' => true,
 			'button' => true,
 			'checkbox' => true,
@@ -60,6 +60,7 @@ class ViewInput extends AbstractViewHelper {
 			'radio' => true,
 			'reset' => true,
 			'select' => true,
+			'selection' => true,
 			'submit' => true,
 			'color' => true,
 			'date' => true,
@@ -73,63 +74,63 @@ class ViewInput extends AbstractViewHelper {
 			'tel' => true,
 			'time' => true,
 			'url' => true,
-			'week' => true,
+			'week' => true 
 	);
-
+	
 	/**
 	 * Invoke helper as functor
 	 *
 	 * Proxies to {@link render()}.
 	 *
-	 * @param  ElementInterface|null $element
-	 * @return string|ViewInput
+	 * @param ElementInterface|null $element        	
+	 * @return string ViewInput
 	 */
 	public function __invoke(ElementInterface $element = null) {
-		if (!$element) {
+		if (! $element) {
 			return $this;
 		}
-
-		return $this->render($element);
+		
+		return $this->render ( $element );
 	}
-
+	
 	/**
 	 * Render a view <input> element from the provided $element
 	 *
-	 * @param  ElementInterface $element
+	 * @param ElementInterface $element        	
 	 * @throws Exception\DomainException
 	 * @return string
 	 */
 	public function render(ElementInterface $element) {
-		$name = $element->getName();
+		$name = $element->getName ();
 		if ($name === null || $name === '') {
-			throw new Exception\DomainException(sprintf('%s requires that the element has an assigned name; none discovered', __METHOD__));
+			throw new Exception\DomainException ( sprintf ( '%s requires that the element has an assigned name; none discovered', __METHOD__ ) );
 		}
-
-		$attributes = $element->getAttributes();
-		$attributes['name'] = $name;
-		$attributes['type'] = $this->getType($element);
-		$attributes['value'] = $element->getContent();
-
-		return sprintf('<input %s%s', $this->createAttributesString($attributes), $this->getInlineClosingBracket());
+		
+		$attributes = $element->getAttributes ();
+		$attributes ['name'] = $name;
+		$attributes ['type'] = $this->getType ( $element );
+		$attributes ['value'] = $element->getContent ();
+		
+		return sprintf ( '<input %s%s', $this->createAttributesString ( $attributes ), $this->getInlineClosingBracket () );
 	}
-
+	
 	/**
 	 * Determine input type to use
 	 *
-	 * @param  ElementInterface $element
+	 * @param ElementInterface $element        	
 	 * @return string
 	 */
 	protected function getType(ElementInterface $element) {
-		$type = $element->getAttribute('type');
-		if (empty($type)) {
+		$type = $element->getAttribute ( 'type' );
+		if (empty ( $type )) {
 			return 'text';
 		}
-
-		$type = strtolower($type);
-		if (!isset($this->validTypes[$type])) {
+		
+		$type = strtolower ( $type );
+		if (! isset ( $this->validTypes [$type] )) {
 			return 'text';
 		}
-
+		
 		return $type;
 	}
 }

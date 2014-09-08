@@ -1,6 +1,5 @@
 <?php 
-$uri = $parameter['addressformuri'];
-$form = str_replace('/', '_', $parameter['addressformid']);
+$form = $parameter['addressformid'];
 ?>
 
 $(document).ready(function() {	

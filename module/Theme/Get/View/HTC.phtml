@@ -1,18 +1,22 @@
 <?php
-use Zend\Cache\PatternFactory;
+use Techfever\Template\Plugin\Filters\ToUnderscore;
+$ForwardslashToUnderscore = new ToUnderscore ( '/' );
+$DotToUnderscore = new ToUnderscore ( '.' );
 
-$currenturi = str_replace('http://', '', (array_key_exists('HTTP_REFERER', $_SERVER) ? $_SERVER['HTTP_REFERER'] : 'css'));
-$currenturi = str_replace('https://', '', $currenturi);
-$key = strtolower(str_replace('.', '_', str_replace('/', '_', $currenturi)));
+$currenturi = str_replace ( 'http://', '', (array_key_exists ( 'HTTP_REFERER', $_SERVER ) ? $_SERVER ['HTTP_REFERER'] : 'htc') );
+$currenturi = str_replace ( 'https://', '', $currenturi );
+$currenturi = $ForwardslashToUnderscore->filter ( $currenturi );
+$currenturi = $DotToUnderscore->filter ( $currenturi );
+$key = strtolower ( $currenturi );
 
-header('Cache-Control: no-cache, must-revalidate');
-header('Expires: ' . $this->expire);
-header('Content-Type: text/x-component');
+header ( 'Cache-Control: no-cache, must-revalidate' );
+header ( 'Expires: ' . $this->expire );
+header ( 'Content-Type: text/x-component' );
 $cache = $this->cache;
-if (!$cache->start($key)) {
+if (! $cache->start ( $key )) {
 	$filepath = $this->htc;
-	if (file_exists($filepath)) {
+	if (file_exists ( $filepath )) {
 		include $filepath;
 	}
-	$cache->end();
+	$cache->end ();
 }

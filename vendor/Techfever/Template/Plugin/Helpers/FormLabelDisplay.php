@@ -1,4 +1,5 @@
 <?php
+
 namespace Techfever\Template\Plugin\Helpers;
 
 use Zend\Form\ElementInterface;
@@ -8,69 +9,69 @@ use Techfever\Exception;
 class FormLabelDisplay extends AbstractHelper {
 	const APPEND = 'append';
 	const PREPEND = 'prepend';
-
+	
 	/**
 	 * Attributes valid for the label tag
 	 *
 	 * @var array
 	 */
-	protected $validTagAttributes = array(
-			'form' => true,
+	protected $validTagAttributes = array (
+			'form' => true 
 	);
-
+	
 	/**
 	 * Generate a form label, optionally with content
 	 *
 	 * Always generates a "for" statement, as we cannot assume the form input
 	 * will be provided in the $labelContent.
 	 *
-	 * @param  ElementInterface $element
-	 * @param  null|string      $labelContent
-	 * @param  string           $position
+	 * @param ElementInterface $element        	
+	 * @param null|string $labelContent        	
+	 * @param string $position        	
 	 * @throws Exception\DomainException
-	 * @return string|FormLabel
+	 * @return string FormLabel
 	 */
 	public function __invoke(ElementInterface $element = null, $labelContent = null, $position = null) {
-		if (!$element) {
+		if (! $element) {
 			return $this;
 		}
-
-		$openTag = $this->openTag($element);
+		
+		$openTag = $this->openTag ( $element );
 		$label = '';
 		if ($labelContent === null || $position !== null) {
-			$label = $element->getLabel();
-			if (empty($label)) {
-				throw new Exception\DomainException(sprintf('%s expects either label content as the second argument, ' . 'or that the element provided has a label attribute; neither found', __METHOD__));
+			$label = $element->getLabel ();
+			if (empty ( $label )) {
+				throw new Exception\DomainException ( sprintf ( '%s expects either label content as the second argument, ' . 'or that the element provided has a label attribute; neither found', __METHOD__ ) );
 			}
-
-			if (null !== ($translator = $this->getTranslator())) {
-				$label = $translator->translate($label, $this->getTranslatorTextDomain());
+			
+			if (null !== ($translator = $this->getTranslator ())) {
+				$label = $translator->translate ( $label, $this->getTranslatorTextDomain () );
 			}
 		}
-
+		
 		if ($label && $labelContent) {
 			switch ($position) {
-				case self::APPEND:
+				case self::APPEND :
 					$labelContent .= $label;
 					break;
-				case self::PREPEND:
-				default:
+				case self::PREPEND :
+				default :
 					$labelContent = $label . $labelContent;
 					break;
 			}
 		}
-
+		
 		if ($label && null === $labelContent) {
 			$labelContent = $label;
 		}
-
-		return $openTag . $labelContent . $this->closeTag();
+		
+		return $openTag . $labelContent . $this->closeTag ();
 	}
-
+	
 	/**
 	 * Generate an opening label tag
 	 *
-	 * @param  null|array|ElementInterface $attributesOrElement
+	 * @param null|array|ElementInterface $attributesOrElement        	
 	 * @throws Exception\InvalidArgumentException
 	 * @throws Exception\DomainException
 	 * @return string
@@ -79,34 +80,34 @@ class FormLabelDisplay extends AbstractHelper {
 		if (null === $attributesOrElement) {
 			return '<label>';
 		}
-
-		if (is_array($attributesOrElement)) {
-			$attributes = $this->createAttributesString($attributesOrElement);
-			return sprintf('<label %s>', $attributes);
+		
+		if (is_array ( $attributesOrElement )) {
+			$attributes = $this->createAttributesString ( $attributesOrElement );
+			return sprintf ( '<label %s>', $attributes );
 		}
-
-		if (!$attributesOrElement instanceof ElementInterface) {
-			throw new Exception\InvalidArgumentException(sprintf('%s expects an array or Zend\Form\ElementInterface instance; received "%s"', __METHOD__, (is_object($attributesOrElement) ? get_class($attributesOrElement) : gettype($attributesOrElement))));
+		
+		if (! $attributesOrElement instanceof ElementInterface) {
+			throw new Exception\InvalidArgumentException ( sprintf ( '%s expects an array or Zend\Form\ElementInterface instance; received "%s"', __METHOD__, (is_object ( $attributesOrElement ) ? get_class ( $attributesOrElement ) : gettype ( $attributesOrElement )) ) );
 		}
-
-		$id = $this->getId($attributesOrElement);
+		
+		$id = $this->getId ( $attributesOrElement );
 		if (null === $id) {
-			throw new Exception\DomainException(sprintf('%s expects the Element provided to have either a name or an id present; neither found', __METHOD__));
+			throw new Exception\DomainException ( sprintf ( '%s expects the Element provided to have either a name or an id present; neither found', __METHOD__ ) );
 		}
-
-		$labelAttributes = $attributesOrElement->getLabelAttributes();
-		$attributes = array(
-				'for' => $id
+		
+		$labelAttributes = $attributesOrElement->getLabelAttributes ();
+		$attributes = array (
+				'for' => $id 
 		);
-
-		if (!empty($labelAttributes)) {
-			$attributes = array_merge($labelAttributes, $attributes);
+		
+		if (! empty ( $labelAttributes )) {
+			$attributes = array_merge ( $labelAttributes, $attributes );
 		}
-
-		$attributes = $this->createAttributesString($attributes);
-		return sprintf('<label %s>', $attributes);
+		
+		$attributes = $this->createAttributesString ( $attributes );
+		return sprintf ( '<label %s>', $attributes );
 	}
-
+	
 	/**
 	 * Return a closing label tag
 	 *

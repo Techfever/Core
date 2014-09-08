@@ -15,28 +15,28 @@ class ContentTitle extends AbstractHelper {
 	 * @var string
 	 */
 	protected $contentTitle;
-
+	
 	/**
 	 * Returns content title
 	 *
 	 * $file is appended to the base path for simplicity.
 	 *
-	 * @param  string|null $file
+	 * @param string|null $file        	
 	 * @throws Exception\RuntimeException
 	 * @return string
 	 */
 	public function __invoke($title = null) {
 		if (null === $this->contentTitle) {
-			throw new Exception\RuntimeException('No content title provided');
+			throw new Exception\RuntimeException ( 'No content title provided' );
 		}
-
+		
 		return $this->contentTitle . $title;
 	}
-
+	
 	/**
 	 * Set the base path.
 	 *
-	 * @param  string $contentTitle
+	 * @param string $contentTitle        	
 	 * @return self
 	 */
 	public function set($contentTitle) {

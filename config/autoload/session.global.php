@@ -4,7 +4,8 @@ return array(
 				'config' => array(
 						'class' => 'Zend\Session\Config\SessionConfig',
 						'options' => array(
-								'name' => 'TnM'
+								'name' => 'TnM',
+								'gc_maxlifetime' => '1440',
 						)
 				),
 				'storage' => 'Zend\Session\Storage\SessionArrayStorage',

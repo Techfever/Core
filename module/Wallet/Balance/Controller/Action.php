@@ -1,110 +1,139 @@
 <?php
+
 namespace Wallet\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Json\Json;
+use Techfever\Wallet\Form\Defined as WalletForm;
 
 class BalanceActionController extends AbstractActionController {
-
 	protected $type = 'wallet';
-
 	protected $module = 'balance';
-
-	protected $inputform = null;
-
+	protected $inputform = array ();
+	protected $search_username = null;
 	public function IndexAction() {
-		$this->getTemplate()->addCSS("ui-lightness/jquery-ui.css", "jquery");
-		$this->getTemplate()->addCSS("vendor/Techfever/Theme/" . SYSTEM_THEME . "/CSS/tooltip.css");
-		$this->getTemplate()->addJavascript("vendor/Techfever/Theme/" . SYSTEM_THEME . "/Js/account.update.js", array(
-						'updateformid' => $this->getMatchedRouteName(),
-						'updateformuri' => $this->getMatchedRouteName(),
-						'updateformaction' => 'Index',
-				));
-
-		$InputForm = $this->InputForm();
-		if ($InputForm->isXmlHttpRequest()) {
-			$valid = false;
-			$redirect = null;
-			$messages = array();
-			$messagescount = 0;
-			$relation = null;
-			$input = $InputForm->getPost('Input', null);
-			if (!is_null($input)) {
-				$relation = $InputForm->getValidatorRelation($input);
-				$messages[$input] = "";
+		if (! $this->getUserAccess ()->isLoginWallet ()) {
+			return $this->redirect ()->toRoute ( 'Wallet/Login', array (
+					'action' => 'Index' 
+			) );
+		}
+		
+		$this->addCSS ( "ui-lightness/jquery-ui.css", "jquery" );
+		$this->addCSS ( "vendor/Techfever/Theme/" . SYSTEM_THEME . "/CSS/tooltip.css" );
+		
+		$viewModel = '';
+		$userID = $this->getUserIDAction ();
+		if ($this->isAdminUser ()) {
+			$cryptId = ( string ) $this->params ()->fromRoute ( 'crypt', null );
+			if (! empty ( $cryptId ) && strlen ( $cryptId ) > 0) {
+				$userID = $this->Decrypt ( $cryptId );
+				$this->search_username = $this->getUserManagement ()->getUsername ( $userID );
 			}
-			if ($InputForm->isPost()) {
-				if ($InputForm->isValid()) {
-					$submit = strtolower($InputForm->getPost('submit', 'preview'));
-					if ($submit == 'submit') {
-						$valid = true;
-						$id = 1;
-						$data = $InputForm->getData();
-						if ($this->getUserManagement()->verifyID($id) && $this->getUserManagement()->updateSecurity($id, $data)) {
-							$this->FlashMessenger()->addMessage($this->getTranslate('text_success_msg_user_update_' . $this->module));
-						} else {
-							$this->FlashMessenger()->addMessage($this->getTranslate('text_error_msg_user_update_' . $this->module));
-						}
-						$redirect = $this->url()->fromRoute($this->getMatchedRouteName(), array(
-										'action' => 'Index'
-								));
-					}
-				} else {
-					$messages_data = $InputForm->getMessages();
-					$messagescount = count($messages_data);
-					if (count($messages_data) > 0) {
-						foreach ($messages_data as $messages_key => $messages_data) {
-							foreach ($messages_data as $messages_data) {
-								$messages[$messages_key] = $messages_data;
-							}
-						}
-					}
-				}
-			}
-			$InputForm->getResponse()->setContent(Json::encode(array(
-							'input' => $input,
-							'valid' => $valid,
-							'redirect' => $redirect,
-							'relation' => $relation,
-							'messages' => $messages,
-							'messagescount' => $messagescount,
-					)));
-			return $InputForm->getResponse();
+			
+			$this->addCSS ( "vendor/Techfever/Theme/" . SYSTEM_THEME . "/CSS/steps.css" );
+			$this->addJavascript ( "vendor/Techfever/Theme/" . SYSTEM_THEME . "/Js/user.search.js", array (
+					'updateformid' => $this->convertToUnderscore ( $this->getMatchedRouteName () . '/Index', '/' ),
+					'searchformid' => $this->convertToUnderscore ( $this->getMatchedRouteName () . '/Search', '/' ),
+					'searchformuri' => $this->url ()->fromRoute ( $this->getMatchedRouteName (), array (
+							'action' => 'Search' 
+					) ),
+					'searchformusername' => $this->search_username 
+			) );
+			$this->addJavascript ( "vendor/Techfever/Theme/" . SYSTEM_THEME . "/Js/steps.js" );
+			$viewModel = 'Search';
 		} else {
-			return array(
-					'inputmodel' => $this->ViewModel()
+			$viewModel = 'User';
+		}
+		
+		if (! $this->isXmlHttpRequest ()) {
+			return array (
+					'inputmodel' => $this->ViewModel ( $viewModel, $userID ),
+					'isAdminUser' => $this->isAdminUser () 
 			);
 		}
 	}
-
-	private function ViewModel() {
-		$ViewModel = new ViewModel();
-		$ViewModel->setTerminal(true);
-		$ViewModel->setTemplate('share/account/update');
-		$ViewModel->setVariables(array(
-						'form' => $this->InputForm()
-				));
-		return $this->getServiceLocator()->get('viewrenderer')->render($ViewModel);
+	public function SearchAction() {
+		$valid = false;
+		$id = 0;
+		$username = null;
+		$messages = array ();
+		$InputModel = null;
+		
+		$SearchForm = $this->InputForm ( 'Search' );
+		if ($SearchForm->isXmlHttpRequest ()) {
+			$username = strtoupper ( $SearchForm->getPost ( 'search_username', null ) );
+			$userID = $this->getUserManagement ()->getID ( $username );
+			if ($userID > 0) {
+				$valid = true;
+				
+				$this->InputForm ( 'Index', $userID );
+				$InputModel = $this->ViewModel ( 'Index' );
+			} else {
+				$messages = $this->getTranslate ( 'text_error_user_username_not_exist' );
+				$messages = sprintf ( $messages, $username );
+			}
+		} else {
+			return $this->redirect ()->toRoute ( $this->getMatchedRouteName (), array (
+					'action' => 'Update' 
+			) );
+		}
+		$SearchForm->getResponse ()->setContent ( Json::encode ( array (
+				'inputmodel' => $InputModel,
+				'messages' => $messages,
+				'id' => $userID,
+				'username' => $username,
+				'valid' => $valid,
+				'js' => '$(this).Steps({
+							formname : "' . $this->convertToUnderscore ( $this->getMatchedRouteName () . '/Index', '/' ) . '",
+							formuri : "' . $this->url ()->fromRoute ( $this->getMatchedRouteName (), array (
+						'action' => 'Index' 
+				) ) . '",
+							dialogtitle : "' . $this->getTranslate ( "text_dialog_wallet_update_" . $this->module . "_title" ) . '",
+							dialogcontent : "' . $this->getTranslate ( "text_dialog_wallet_update_" . $this->module . "_content" ) . '",
+						})' 
+		) ) );
+		
+		return $SearchForm->getResponse ();
 	}
-
-	private function InputForm() {
-		if (!is_object($this->inputform)) {
-			$id = $this->getUserAccess()->getID();
-			$rank_group = $this->getUserAccess()->getRankGroupID();
-			$options = array(
-					'servicelocator' => $this->getServiceLocator(),
-					'rank' => $rank_group,
-					'action' => 'Index',
+	private function ViewModel($action = 'Index', $id = null) {
+		$ViewModel = new ViewModel ();
+		$ViewModel->setTerminal ( true );
+		if ($action === 'Search') {
+			$ViewModel->setTemplate ( 'share/user/searchupdate' );
+			$ViewModel->setVariables ( array (
+					'searchform' => $this->InputForm ( $action ) 
+			) );
+		} elseif ($action === 'Index') {
+			$ViewModel->setTemplate ( 'share/form/update' );
+			$ViewModel->setVariables ( array (
+					'form' => $this->InputForm ( $action, $id ) 
+			) );
+		} elseif ($action === 'User') {
+			$ViewModel->setTemplate ( 'share/wallet/update' );
+			$ViewModel->setVariables ( array (
+					'form' => $this->InputForm ( $action, $id ) 
+			) );
+		}
+		return $this->getServiceLocator ()->get ( 'viewrenderer' )->render ( $ViewModel );
+	}
+	private function InputForm($action = 'Index', $id = null) {
+		if (! array_key_exists ( $action, $this->inputform ) || ! is_object ( $this->inputform [$action] )) {
+			$options = array (
+					'servicelocator' => $this->getServiceLocator (),
+					'rank' => $this->getUserRankGroupID (),
+					'action' => $action 
 			);
-			if ($this->getUserManagement()->verifyID($id, $rank_group)) {
-				$data = $this->getUserManagement()->getData($id, $rank_group);
-				if (count($data) > 0) {
-					$options['value'] = $data;
+			if (! empty ( $id ) && $id > 0) {
+				if ($this->getUserManagement ()->verifyID ( $id )) {
+					$data = $this->getUserManagement ()->getData ( $id );
+					if (count ( $data ) > 0) {
+						$options ['datavalues'] = $data;
+					}
 				}
 			}
-			$this->inputform = new UserUpdateForm($options);
+			$this->inputform [$action] = new WalletForm ( $options );
 		}
-		return $this->inputform;
+		return $this->inputform [$action];
 	}
 }

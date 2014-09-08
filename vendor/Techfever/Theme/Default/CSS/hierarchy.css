@@ -1,0 +1,129 @@
+div#structurecontainer{
+	width: 100%;
+	overflow: hidden;
+}
+
+table.structurehierarchy{
+	margin-right: auto;
+}
+
+table.structurehierarchy tr td.root{
+	width: 130px;	
+	min-width: 130px;	
+	max-width: 130px;	
+	padding-left: 3px;	
+	padding-right: 3px;
+}
+
+table.structurehierarchy tr td.root div#details{
+	border: 1px solid black;
+	text-align: center;
+	background-color: #4A4A4A;	
+	color: White;	
+	padding: 3px;	
+}
+
+table.structurehierarchy tr td.root A#enabled {
+	cursor: pointer;	
+}
+
+table.structurehierarchy tr td.root A#disabled {
+	cursor: not-allowed;	
+}
+
+table.structurehierarchy tr td.root A:link {
+	text-decoration: none;
+}
+
+table.structurehierarchy tr td.root A:visited {
+	text-decoration: none;
+}
+
+table.structurehierarchy tr td.root A:active {
+	text-decoration: none;
+}
+
+table.structurehierarchy tr td.root A:hover {
+	text-decoration: none;
+}
+
+table.structurehierarchy tr td.root div#details div#username{
+	padding-bottom: 3px;
+}
+
+table.structurehierarchy tr td.root div#details div#rank{
+	background-color: #CACACA;	
+	color: Black;	
+}
+
+table.structurehierarchy tr td.child{
+	width: auto;
+}
+
+table.structurehierarchy tr td.connector_space{
+}
+
+table.structurehierarchy tr td.connector_vline{
+	width: 2px;
+	min-width: 2px;	
+	max-width: 2px;	
+	height: 2px;	
+	min-height: 2px;	
+	max-height: 2px;	
+	background-color: #4A4A4A;
+}
+
+table.structurehierarchy tr td.connector_hline{
+	width: 2px;	
+	min-width: 2px;	
+	max-width: 2px;	
+	background-color: #4A4A4A;
+}
+
+table.structurelinear{
+	width: 100%;
+}
+
+table.structurelinear thead{
+	background-color: #4A4A4A;	
+	color: White;
+}
+
+table.structurelinear thead tr th#no{
+	width: 10px;
+	padding: 3px;	
+}
+
+table.structurelinear thead tr th#username{
+	padding: 3px;	
+}
+
+table.structurelinear thead tr th#level{
+	width: 10px;
+	padding: 3px;	
+}
+
+table.structurelinear thead tr th#rank{
+	width: 10px;
+	padding: 3px;
+}
+
+table.structurelinear tbody tr td#no{
+	text-align: left;
+	padding: 3px;	
+}
+
+table.structurelinear tbody tr td#username{
+	text-align: left;	
+	padding: 3px;	
+}
+
+table.structurelinear tbody tr td#level{
+	text-align: center;	
+	padding: 3px;	
+}
+
+table.structurelinear tbody tr td#rank{
+	text-align: center;	
+	padding: 3px;	
+}

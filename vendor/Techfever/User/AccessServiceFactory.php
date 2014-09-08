@@ -1,4 +1,5 @@
 <?php
+
 namespace Techfever\User;
 
 use Zend\ServiceManager\FactoryInterface;
@@ -10,10 +11,11 @@ use Techfever\User\Access as UserAccess;
  */
 class AccessServiceFactory implements FactoryInterface {
 	public function createService(ServiceLocatorInterface $serviceLocator) {
-		$database = $serviceLocator->get('db');
-		$session = $serviceLocator->get('session');
-		$UserAccess = new UserAccess($database, $session);
-		$UserAccess->setLogin(1);
+		$UserAccess = new UserAccess ( array (
+				'servicelocator' => $serviceLocator 
+		) );
+		// $UserAccess->setLogin(1);
+		// $UserAccess->setLoginWallet(1);
 		return $UserAccess;
 	}
 }

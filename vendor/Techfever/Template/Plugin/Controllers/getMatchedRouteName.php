@@ -9,27 +9,29 @@ use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Techfever\Exception;
 
 class getMatchedRouteName extends AbstractPlugin {
-
+	
 	/**
-	 * @param MatchedRouteName
+	 *
+	 * @param
+	 *        	MatchedRouteName
 	 */
 	public function __invoke() {
-		$controller = $this->getController();
-		if (!$controller instanceof InjectApplicationEventInterface) {
-			throw new Exception\DomainException('MatchedRouteName plugin requires a controller that implements InjectApplicationEventInterface');
+		$controller = $this->getController ();
+		if (! $controller instanceof InjectApplicationEventInterface) {
+			throw new Exception\DomainException ( 'MatchedRouteName plugin requires a controller that implements InjectApplicationEventInterface' );
 		}
-
-		$event = $controller->getEvent();
+		
+		$event = $controller->getEvent ();
 		$matches = null;
 		if ($event instanceof MvcEvent) {
-			$matches = $event->getRouteMatch();
+			$matches = $event->getRouteMatch ();
 		} elseif ($event instanceof EventInterface) {
-			$matches = $event->getParam('route-match', false);
+			$matches = $event->getParam ( 'route-match', false );
 		}
-		if (!$matches) {
-			throw new Exception\RuntimeException('No RouteMatch instance present');
+		if (! $matches) {
+			throw new Exception\RuntimeException ( 'No RouteMatch instance present' );
 		}
-
-		return $matches->getMatchedRouteName();
+		
+		return $matches->getMatchedRouteName ();
 	}
 }

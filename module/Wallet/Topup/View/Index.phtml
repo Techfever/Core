@@ -1,3 +1,18 @@
 <?php
-echo $this->inputmodel;
+$isAdminUser = $this->isAdminUser;
+if ($isAdminUser) {
+	?>
+<div class="search"><?php
+	echo $this->inputmodel;
+	?></div>
+<div class="seperator"></div>
+<div class="form" style="display: none;"></div>
+<?php
+} else {
+	?>
+<div class="form"><?php
+	echo $this->inputmodel;
+	?></div>
+<?php
+}
 ?>

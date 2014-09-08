@@ -10,7 +10,7 @@ class Button extends Element {
 	 *
 	 * @var array
 	 */
-	protected $attributes = array(
-			'type' => 'button',
+	protected $attributes = array (
+			'type' => 'button' 
 	);
 }

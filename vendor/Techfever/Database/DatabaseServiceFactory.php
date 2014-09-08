@@ -1,4 +1,5 @@
 <?php
+
 namespace Techfever\Database;
 
 use Zend\ServiceManager\FactoryInterface;
@@ -11,17 +12,16 @@ class DatabaseServiceFactory implements FactoryInterface {
 	/**
 	 * Create Template Module service
 	 *
-	 * @param ServiceLocatorInterface $serviceLocator
+	 * @param ServiceLocatorInterface $serviceLocator        	
 	 * @return Template
 	 */
 	public function createService(ServiceLocatorInterface $serviceLocator) {
-
-		$adapter = $serviceLocator->get('dbadapter');
-
-		$cache = $serviceLocator->get('cachestorage');
-
-		$log = $serviceLocator->get('log');
-
-		return new Database($adapter, $cache, $log);
+		$adapter = $serviceLocator->get ( 'dbadapter' );
+		
+		$cache = $serviceLocator->get ( 'cachestorage' );
+		
+		$log = $serviceLocator->get ( 'log' );
+		
+		return new Database ( $adapter, $cache, $log );
 	}
 }

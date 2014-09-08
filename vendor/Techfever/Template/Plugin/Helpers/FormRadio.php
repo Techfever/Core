@@ -13,14 +13,14 @@ class FormRadio extends FormMultiCheckbox {
 	protected function getInputType() {
 		return 'radio';
 	}
-
+	
 	/**
 	 * Get element name
 	 *
-	 * @param  ElementInterface $element
+	 * @param ElementInterface $element        	
 	 * @return string
 	 */
 	protected static function getName(ElementInterface $element) {
-		return $element->getName();
+		return $element->getName ();
 	}
 }

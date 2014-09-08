@@ -1,34 +1,34 @@
 <?php
 if ($this->menu) {
-?>
+	?>
 <div id="menutabs">
 	<?php
 	$pages = $this->menu;
 	$tabs = null;
 	$contents = null;
-	$total = count($pages);
+	$total = count ( $pages );
 	$count = 1;
-	foreach ($pages as $page) {
-		$label = (isset($page['label']) ? $page['label'] : null);
-		$tab = (isset($page['tab']) ? $page['tab'] : null);
-		$istab = (isset($page['istab']) ? $page['istab'] : False);
-		$islink = (isset($page['islink']) ? $page['islink'] : False);
+	foreach ( $pages as $page ) {
+		$label = (isset ( $page ['label'] ) ? $page ['label'] : null);
+		$tab = (isset ( $page ['tab'] ) ? $page ['tab'] : null);
+		$istab = (isset ( $page ['istab'] ) ? $page ['istab'] : False);
+		$islink = (isset ( $page ['islink'] ) ? $page ['islink'] : False);
 		$link = null;
-
+		
 		if ($islink) {
-			$href = (isset($page['href']) ? $page['href'] : null);
+			$href = (isset ( $page ['href'] ) ? $page ['href'] : null);
 			$link = '<a href="' . $href . '" id="href">' . $label . '</a>';
 			$tabs .= '<li id="href">' . $link . '</li>';
 			$tabs .= "\n";
 		} else {
 			$link = '<a href="#' . $tab . '">' . $label . '</a>';
-
+			
 			$tabs .= '<li>' . $link . '</li>';
 			$tabs .= "\n";
 		}
-
+		
 		if ($istab) {
-			$content = (isset($page['content']) ? $page['content'] : null);
+			$content = (isset ( $page ['content'] ) ? $page ['content'] : null);
 			$contents .= '<div id="' . $tab . '">';
 			$contents .= "\n";
 			$contents .= '<p>' . $content . '</p>';

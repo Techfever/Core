@@ -1,4 +1,5 @@
 <?php
+
 namespace Techfever\Cache;
 
 use Zend\ServiceManager\FactoryInterface;
@@ -13,11 +14,11 @@ class OutputCacheServiceFactory implements FactoryInterface {
 	 * @return Adapter
 	 */
 	public function createService(ServiceLocatorInterface $serviceLocator) {
-		$config = $serviceLocator->get('Config');
-		$options = $config['cachepattern']['output'];
-
-		$pattern = PatternFactory::factory('output', $options['options']);
-
+		$config = $serviceLocator->get ( 'Config' );
+		$options = $config ['cachepattern'] ['output'];
+		
+		$pattern = PatternFactory::factory ( 'output', $options ['options'] );
+		
 		return $pattern;
 	}
 }

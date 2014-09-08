@@ -16,6 +16,26 @@ $(document).ready(function() {
 	var buttonPrevious = "";
 	var buttonNext = "";
 	var buttonFinish = "";
+
+	$.fn.StepsReset = function() {
+		formname = "";
+		formid = "";
+		formuri = "";
+		wizardid = "";
+		tabcontrolid = "";
+		stepcontrolid = "";
+		actioncontrolid = "";
+		
+		dialogtitle = "";
+		dialogcontent = "";
+		currentstep = 1;
+		totalstep = 1;
+		steps = new Array();
+		
+		buttonPrevious = "";
+		buttonNext = "";
+		buttonFinish = "";
+	}
 	
 	$.fn.Steps = function(options) {
 		var defaults = {
@@ -40,7 +60,7 @@ $(document).ready(function() {
 		buttonPrevious = $(formid + " " + wizardid + " " + actioncontrolid + " a[id=previous]");
 		buttonNext = $(formid + " " + wizardid + " " + actioncontrolid + " a[id=next]");
 		buttonFinish = $(formid + " " + wizardid + " " + actioncontrolid + " a[id=finish]");
-		
+
 		$(formid + " " + wizardid + " " + tabcontrolid + "").find( "td" ).each(
 			function() {
 				var id = $(this).attr('id');
@@ -116,7 +136,9 @@ $(document).ready(function() {
 			tooltipClass: 'right'
 		});
 
-		buttonFinish.addClass("disable").hide();
+		if(buttonFinish.attr('id') !== undefined){
+			buttonFinish.addClass("disable").hide();
+		}
 		buttonPrevious.addClass("disable").hide();
 		buttonNext.addClass("enable").show();
 
@@ -132,13 +154,12 @@ $(document).ready(function() {
 						formuri,
 						$(formid + " " + wizardid + " " + stepcontrolid + "[id="+steps[currentstep]+"] :input").serialize() + '&XMLHttpRequest=1', null, 'json'
 		    	);
-
+				
 				ajaxPost.done(function(JsonReturn) {
 					var messages = JsonReturn.messages;
 					var totalMsg = JsonReturn.messagescount;
 					var countMsg = 0;
 					var isValid = true;
-
 					if(totalMsg >= 1){
 				    	$.each( messages, function( key, message ) {
 				    		countMsg++;
@@ -165,10 +186,12 @@ $(document).ready(function() {
 		    	});
 			}
 		});
-		
-		buttonFinish.click(function() {
-			$(this).stepFinish(currentstep);
-		});
+
+		if(buttonFinish.attr('id') !== undefined){
+			buttonFinish.click(function() {
+				$(this).stepFinish(currentstep);
+			});
+		}
 	}
 	
 	$.fn.stepPrevious = function(currentIndex, previousIndex) {
@@ -176,9 +199,10 @@ $(document).ready(function() {
 			buttonPrevious.removeClass("enable");
 			buttonPrevious.addClass("disable").hide();
 		}			
-		buttonFinish.removeClass("enable");
-		buttonFinish.addClass("disable").hide();
-
+		if(buttonFinish.attr('id') !== undefined){
+			buttonFinish.removeClass("enable");
+			buttonFinish.addClass("disable").hide();
+		}
 		buttonNext.removeClass("disable");
 		buttonNext.addClass("enable").show();
 		
@@ -196,9 +220,11 @@ $(document).ready(function() {
 		if(nextIndex == totalstep){
 			buttonNext.removeClass("enable");
 			buttonNext.addClass("disable").hide();
-			
-			buttonFinish.removeClass("disable");
-			buttonFinish.addClass("enable").show();
+
+			if(buttonFinish.attr('id') !== undefined){
+				buttonFinish.removeClass("disable");
+				buttonFinish.addClass("enable").show();
+			}
 
 			buttonNext.html("<?php echo $this->translate('text_preview'); ?>");
 		}
@@ -276,16 +302,47 @@ $(document).ready(function() {
 
 	$.fn.stepFinish = function(currentIndex) {
 		if(currentIndex == totalstep){
-		    $(this).formSubmit({  
-				uri: formuri,  
-				form: formname,  
-				data: $(formid).serialize() + '&submit=submit',
-				title: dialogtitle,  
-				message: dialogcontent,
-				failcallback: function(){
-					$(this).stepClear();
-				},
-		    });
+			var ajaxPost = $.post(
+					formuri,
+					$(formid + " " + wizardid + " " + stepcontrolid + "[id="+steps[currentIndex]+"] :input").serialize() + '&XMLHttpRequest=1', null, 'json'
+	    	);
+			
+			ajaxPost.done(function(JsonReturn) {
+				var messages = JsonReturn.messages;
+				var totalMsg = JsonReturn.messagescount;
+				var countMsg = 0;
+				var isValid = true;
+				if(totalMsg >= 1){
+			    	$.each( messages, function( key, message ) {
+			    		countMsg++;
+			    		
+						var element = formid + " " + wizardid + " " + stepcontrolid + "[id="+steps[currentIndex]+"] tr[id=" + key + "] td[class=help] div[class=ui-widget] div[class=ui-state-active]";
+						var elementclass = $(element).attr('class');
+						if(elementclass !== undefined){
+							var html = '';
+							if (message.length > 0) {
+								isValid = false;
+								html = '<span class="ui-icon ui-icon-closethick"></span>' + message;
+							} else {
+								html = '<span class="ui-icon ui-icon-check"></span>';
+							}
+							$(element).html(html);
+						}
+			    	});
+				}else{
+				    $(this).formSubmit({  
+						uri: formuri,  
+						form: formname,  
+						data: $(formid).serialize() + '&submit=submit',
+						title: dialogtitle,  
+						message: dialogcontent,
+						failcallback: function(){
+							$(this).stepClear();
+						},
+				    });
+				}
+	    	});
+			
 		}
 	}
 

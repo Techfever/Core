@@ -83,6 +83,9 @@
 			$(this).formProgressBar();
 			$(this).JSONAjax(options.uri, options.data, function(JsonReturn) {
 				if (JsonReturn.valid == false) {
+					if (JsonReturn.flashmessages) {
+						$(this).formDialog({ title : options.title,	text : JsonReturn.flashmessages});
+					}
 					if (options.failcallback && typeof (options.failcallback) === "function") {
 						options.failcallback();
 					}
@@ -248,34 +251,122 @@
 
 	$.fn.formDialog = function(options) {
 		var defaults = {
+			height : 170,
+			width : 300,
 			title : "",
 			text : "",
+			buttons : {
+				"<?php echo $this->translate('text_confirm') ?>" : function() {
+					$(this).dialog("destroy");
+
+					if (options.callback
+							&& typeof (options.callback) === "function") {
+						options.callback();
+					}
+				},
+				"<?php echo $this->translate('text_cancel') ?>" : function() {
+					$(this).dialog("destroy");
+				}
+			},
 			callback : "",
 		};
 		var options = $.extend(defaults, options);
-		$(
-				'<div class="dialog-confirm" title="' + options.title + '"><p>'
-						+ options.text + '</p></div>')
-				.dialog(
-						{
-							resizable : false,
-							height : 170,
-							modal : true,
-							buttons : {
-								"<?php echo $this->translate('text_confirm') ?>" : function() {
-									$(this).dialog("destroy");
+		$('<div class="dialog-confirm" title="' + options.title + '"><p>' + options.text + '</p></div>').dialog({
+			resizable : false,
+			height : options.height,
+			width : options.width,
+			modal : true,
+			buttons : options.buttons
+		});
+	}
 
-									if (options.callback
-											&& typeof (options.callback) === "function") {
-										options.callback();
-									}
-								},
-								Cancel : function() {
+	$.fn.formDialogPreview = function(options) {
+		var defaults = {
+				uri : "",
+				data : "",
+				title : "",
+				callback : "",
+			};
+			var options = $.extend(defaults, options);
+			$(this).formProgressBar();
+			$(this).JSONAjax(options.uri, options.data, function(JsonReturn) {
+				if (JsonReturn.valid == true) {
+					if (JsonReturn.content) {
+						$(this).formDialog({ 
+							height : JsonReturn.height,
+							width : JsonReturn.width,
+							title : options.title,	
+							text : JsonReturn.content,
+							buttons : {
+								"<?php echo $this->translate('text_close') ?>" : function() {
 									$(this).dialog("destroy");
 								}
-							}
+							},
 						});
-	}
+					}
+					if (options.callback && typeof (options.callback) === "function") {
+						options.callback();
+					}
+				}
+				$(this).formProgressBar(true);
+			});
+		};
+
+		$.fn.formWithdrawPreview = function(options) {
+			var defaults = {
+					uriapprove : "",
+					urireject : "",
+					uri : "",
+					data : "",
+					title : "",
+					callback : "",
+				};
+				var options = $.extend(defaults, options);
+				$(this).formProgressBar();
+				$(this).JSONAjax(options.uri, options.data, function(JsonReturn) {
+					if (JsonReturn.valid == true) {
+						if (JsonReturn.content) {
+							$(this).formDialog({ 
+								height : JsonReturn.height,
+								width : JsonReturn.width,
+								title : options.title,	
+								text : JsonReturn.content,
+								buttons : {
+									"<?php echo $this->translate('text_approve') ?>" : function() {
+										$(this).dialog("destroy");
+										$(this).JSONAjax(options.uriapprove, "", function(JsonReturnApprove) {
+											$(this).formDialog({ title : JsonReturnApprove.title,	text : JsonReturnApprove.messages, callback : function(){ 
+												if (JsonReturnApprove.redirect) {
+													window.location.replace(JsonReturnApprove.redirect);
+												}
+											}});
+										});
+									},
+
+									"<?php echo $this->translate('text_reject') ?>" : function() {
+										$(this).dialog("destroy");
+										$(this).JSONAjax(options.urireject, "", function(JsonReturnReject) {
+											$(this).formDialog({ title : JsonReturnReject.title,	text : JsonReturnReject.messages, callback : function(){ 
+												if (JsonReturnReject.redirect) {
+													window.location.replace(JsonReturnReject.redirect);
+												}
+											}});
+										});
+									},
+
+									"<?php echo $this->translate('text_close') ?>" : function() {
+										$(this).dialog("destroy");
+									}
+								},
+							});
+						}
+						if (options.callback && typeof (options.callback) === "function") {
+							options.callback();
+						}
+					}
+					$(this).formProgressBar(true);
+				});
+			};
 
 	$.fn.formProgressBar = function(closed) {
 		if (closed && closed) {

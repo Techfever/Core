@@ -1,4 +1,5 @@
 <?php
+
 namespace Techfever\Template\Plugin\Controllers;
 
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
@@ -10,8 +11,8 @@ class getLog extends AbstractPlugin {
 	 * @return mixed
 	 */
 	public function __invoke() {
-		$Log = $this->getController()->getServiceLocator()->get('log');
-
+		$Log = $this->getController ()->getServiceLocator ()->get ( 'log' );
+		
 		return $Log;
 	}
 }

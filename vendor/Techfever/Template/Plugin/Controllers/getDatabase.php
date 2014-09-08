@@ -1,4 +1,5 @@
 <?php
+
 namespace Techfever\Template\Plugin\Controllers;
 
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
@@ -10,8 +11,8 @@ class getDatabase extends AbstractPlugin {
 	 * @return mixed
 	 */
 	public function __invoke() {
-		$Database = $this->getController()->getServiceLocator()->get('db');
-
+		$Database = $this->getController ()->getServiceLocator ()->get ( 'db' );
+		
 		return $Database;
 	}
 }

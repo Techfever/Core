@@ -6,19 +6,19 @@ interface ElementAttributeRemovalInterface {
 	/**
 	 * Remove a single element attribute
 	 *
-	 * @param  string $key
+	 * @param string $key        	
 	 * @return ElementAttributeRemovalInterface
 	 */
 	public function removeAttribute($key);
-
+	
 	/**
 	 * Remove many attributes at once
 	 *
-	 * @param array $keys
+	 * @param array $keys        	
 	 * @return ElementAttributeRemovalInterface
 	 */
 	public function removeAttributes(array $keys);
-
+	
 	/**
 	 * Remove all attributes at once
 	 *
