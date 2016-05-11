@@ -3,12 +3,7 @@
 namespace Techfever\Template\Plugin\Controllers;
 
 use Traversable;
-use Zend\EventManager\EventInterface;
 use Zend\Mvc\Exception;
-use Zend\Mvc\InjectApplicationEventInterface;
-use Zend\Mvc\ModuleRouteListener;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\RouteStackInterface;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\Escaper;
 
@@ -272,7 +267,6 @@ class HrefLink extends AbstractPlugin {
 	 */
 	public function getOpeningBracket() {
 		$this->openingBracket = '<a' . $this->htmlAttribs ( $this->getAttributes () ) . '>';
-		
 		return $this->openingBracket;
 	}
 	
@@ -360,70 +354,32 @@ class HrefLink extends AbstractPlugin {
 	 */
 	public function url($route = null, $params = array(), $options = array(), $reuseMatchedParams = false) {
 		$controller = $this->getController ();
-		if (! $controller instanceof InjectApplicationEventInterface) {
-			throw new Exception\DomainException ( 'Url plugin requires a controller that implements InjectApplicationEventInterface' );
+		if (! $controller || ! method_exists ( $controller, 'plugin' )) {
+			throw new Exception\DomainException ( 'Redirect plugin requires a controller that defines the plugin() method' );
 		}
 		
-		if (! is_array ( $params )) {
-			if (! $params instanceof Traversable) {
-				throw new Exception\InvalidArgumentException ( 'Params is expected to be an array or a Traversable object' );
-			}
-			$params = iterator_to_array ( $params );
-		}
+		$urlPlugin = $controller->plugin ( 'url' );
 		
-		$event = $controller->getEvent ();
-		$router = null;
-		$matches = null;
-		if ($event instanceof MvcEvent) {
-			$router = $event->getRouter ();
-			$matches = $event->getRouteMatch ();
-		} elseif ($event instanceof EventInterface) {
-			$router = $event->getParam ( 'router', false );
-			$matches = $event->getParam ( 'route-match', false );
+		if (is_scalar ( $options )) {
+			$url = $urlPlugin->fromRoute ( $route, $params, $options );
+		} else {
+			$url = $urlPlugin->fromRoute ( $route, $params, $options, $reuseMatchedParams );
 		}
-		if (! $router instanceof RouteStackInterface) {
-			throw new Exception\DomainException ( 'Url plugin requires that controller event compose a router; none found' );
-		}
-		
-		if (3 == func_num_args () && is_bool ( $options )) {
-			$reuseMatchedParams = $options;
-			$options = array ();
-		}
-		
-		if ($route === null) {
-			if (! $matches) {
-				throw new Exception\RuntimeException ( 'No RouteMatch instance present' );
-			}
-			
-			$route = $matches->getMatchedRouteName ();
-			
-			if ($route === null) {
-				throw new Exception\RuntimeException ( 'RouteMatch does not contain a matched route name' );
-			}
-		}
-		
-		if ($reuseMatchedParams && $matches) {
-			$routeMatchParams = $matches->getParams ();
-			
-			if (isset ( $routeMatchParams [ModuleRouteListener::ORIGINAL_CONTROLLER] )) {
-				$routeMatchParams ['controller'] = $routeMatchParams [ModuleRouteListener::ORIGINAL_CONTROLLER];
-				unset ( $routeMatchParams [ModuleRouteListener::ORIGINAL_CONTROLLER] );
-			}
-			
-			if (isset ( $routeMatchParams [ModuleRouteListener::MODULE_NAMESPACE] )) {
-				unset ( $routeMatchParams [ModuleRouteListener::MODULE_NAMESPACE] );
-			}
-			
-			$params = array_merge ( $routeMatchParams, $params );
-		}
-		
-		$options ['name'] = $route;
 		
 		/* Technation Added */
-		$url = $router->assemble ( $params, $options );
 		if (substr ( $url, - 1 ) === '/') {
 			$url = substr ( $url, 0, (strlen ( $url ) - 1) );
 		}
+		return $this->toUrl ( $url );
+	}
+	
+	/**
+	 * Redirect to the given URL
+	 *
+	 * @param string $url        	
+	 * @return Response
+	 */
+	public function toUrl($url) {
 		return $url;
 	}
 	

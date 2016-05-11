@@ -69,7 +69,6 @@ class Country extends State {
 			$DBCountry->order ( array (
 					'country_name ASC' 
 			) );
-			$DBCountry->setCacheName ( 'country_bank' );
 			$DBCountry->execute ();
 			if ($DBCountry->hasResult ()) {
 				$data = array ();
@@ -126,6 +125,41 @@ class Country extends State {
 	 */
 	public function getCountryAll() {
 		return $this->getCountryData ();
+	}
+	
+	/**
+	 * Get Country Id
+	 */
+	public function getCountryID($val = null) {
+		$data = $this->getCountryData ();
+		if (is_array ( $data ) && count ( $data ) > 0) {
+			foreach ( $data as $country ) {
+				$countryName = $this->getCountryName ( $country ['id'] );
+				if (strtolower($val) === strtolower($countryName)) {
+					return $country['id'];
+				}
+			}
+		}
+		return 0;
+	}
+	
+	/**
+	 * Get Country By Expr
+	 */
+	public function getCountryByExpr($expr = null) {
+		$data = $this->getCountryData ();
+		$countryData = array ();
+		if (is_array ( $data ) && count ( $data ) > 0) {
+			foreach ( $data as $country ) {
+				$countryName = $this->getCountryName ( $country ['id'] );
+				if(empty($expr)){
+					$countryData [$countryName] = $countryName;
+				}elseif (strpos ( strtolower ( $countryName ), strtolower ( $expr ) ) !== false) {
+					$countryData [$countryName] = $countryName;
+				}
+			}
+		}
+		return $countryData;
 	}
 	
 	/**

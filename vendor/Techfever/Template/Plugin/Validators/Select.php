@@ -183,10 +183,6 @@ class Select extends AbstractValidator {
 	 * @return bool
 	 */
 	public function isValid($value) {
-		if (! is_numeric ( $value ) && ! is_string ( $value )) {
-			$this->error ( self::INVALID );
-			return false;
-		}
 		$this->setValue ( $value );
 		
 		if (isset ( $this->options ['match'] )) {

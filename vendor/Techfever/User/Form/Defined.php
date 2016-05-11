@@ -6,6 +6,7 @@ use Techfever\Address\Address;
 use Techfever\Bank\Bank;
 use Techfever\Nationality\Nationality;
 use Techfever\User\Rank;
+use Techfever\Wallet\Wallet;
 use Techfever\Form\Form as BaseForm;
 
 class Defined extends BaseForm {
@@ -23,8 +24,8 @@ class Defined extends BaseForm {
 		) );
 		$nationality_country = $Nationality->countryToForm ();
 		
-		$address_country_select = $request->getPost ( 'address_country_select' );
-		$address_state_select = $request->getPost ( 'address_state_select' );
+		$address_country_select = $request->getPost ( 'user_address_country' );
+		$address_state_select = $request->getPost ( 'user_address_state' );
 		$address_state_select_disable = true;
 		$address_state_text_hidden = true;
 		$Address = new Address ( array (
@@ -42,17 +43,17 @@ class Defined extends BaseForm {
 			}
 			if (count ( $address_state ) < 2) {
 				$address_state_select = 0;
-				$request->getPost ()->set ( 'address_state_select', 0 );
+				$request->getPost ()->set ( 'user_address_state', 0 );
 				$address_state_text_hidden = false;
 			} else {
 				$address_state_select_disable = false;
 			}
 		}
 		
-		$bank_name_select = $request->getPost ( 'bank_name_select' );
-		$bank_country_select = $request->getPost ( 'bank_country_select' );
-		$bank_state_select = $request->getPost ( 'bank_state_select' );
-		$bank_branch_select = $request->getPost ( 'bank_branch_select' );
+		$bank_name_select = $request->getPost ( 'user_bank_name' );
+		$bank_country_select = $request->getPost ( 'user_bank_country' );
+		$bank_state_select = $request->getPost ( 'user_bank_state' );
+		$bank_branch_select = $request->getPost ( 'user_bank_branch' );
 		$bank_name_text_hidden = true;
 		$bank_country_select_disable = true;
 		$bank_state_select_disable = true;
@@ -93,7 +94,7 @@ class Defined extends BaseForm {
 			}
 			if (count ( $bank_state ) < 2) {
 				$bank_state_select = 0;
-				$request->getPost ()->set ( 'bank_state_select', 0 );
+				$request->getPost ()->set ( 'user_bank_state', 0 );
 				$bank_state_text_hidden = false;
 			} else {
 				$bank_state_select_disable = false;
@@ -105,7 +106,7 @@ class Defined extends BaseForm {
 				}
 				if (count ( $bank_branch ) < 2) {
 					$bank_branch_select = 0;
-					$request->getPost ()->set ( 'bank_branch_select', 0 );
+					$request->getPost ()->set ( 'user_bank_branch', 0 );
 					$bank_branch_text_hidden = false;
 				} else {
 					$bank_branch_select_disable = false;
@@ -157,7 +158,6 @@ class Defined extends BaseForm {
 					'mc.module_controllers_alias ASC' 
 			// 'mca.module_controllers_action_param ASC'
 						) );
-			$QUser->setCacheName ( 'user_permission_user_' . $user_id );
 			$QUser->execute ();
 			if ($QUser->hasResult ()) {
 				while ( $QUser->valid () ) {
@@ -191,7 +191,6 @@ class Defined extends BaseForm {
 				'mc.module_controllers_alias ASC',
 				'mca.module_controllers_action_param ASC' 
 		) );
-		$QControllers->setCacheName ( 'module_controllers_action' );
 		$QControllers->execute ();
 		if ($QControllers->hasResult ()) {
 			while ( $QControllers->valid () ) {
@@ -207,7 +206,12 @@ class Defined extends BaseForm {
 			}
 		}
 		
+		$Wallet = new Wallet ( array (
+				'servicelocator' => $this->getServiceLocator () 
+		) );
+		$wallet_type = $Wallet->getActionTypeToForm ( 'register', 0 );
 		return array (
+				'register_wallet_type' => $wallet_type,
 				'permission' => $permission,
 				'permission_as' => ($isAdmin ? "1" : ($isDefault ? "2" : ($isUserDefined ? "3" : "0"))),
 				'rankgroup' => $this->getOption ( 'rank' ),

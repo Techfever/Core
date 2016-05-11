@@ -51,7 +51,6 @@ class Parameter extends GeneralBase {
 	public function getParameterData() {
 		if (! is_array ( $this->_parameter_data ) || count ( $this->_parameter_data ) < 1) {
 			if (strlen ( $this->getOption ( 'key' ) ) > 0 || $this->getOption ( 'id' ) > 0) {
-				$DBParameterCache = 'parameter_data';
 				$DBParameter = $this->getDatabase ();
 				$DBParameter->select ();
 				$DBParameter->columns ( array (
@@ -69,17 +68,14 @@ class Parameter extends GeneralBase {
 				);
 				if (strlen ( $this->getOption ( 'key' ) ) > 0) {
 					$DBParameterWhere [] = 'pd.parameter_data_key like "' . $this->getOption ( 'key' ) . '%"';
-					$DBParameterCache .= '_' . $this->getOption ( 'key' );
 				}
 				if ($this->getOption ( 'id' ) > 0) {
 					$DBParameterWhere [] = 'ur.parameter_data_id = ' . $this->getOption ( 'id' );
-					$DBParameterCache .= '_' . $this->getOption ( 'id' );
 				}
 				$DBParameter->where ( $DBParameterWhere );
 				$DBParameter->order ( array (
 						'parameter_data_order ASC, parameter_data_key ASC' 
 				) );
-				$DBParameter->setCacheName ( $DBParameterCache );
 				$DBParameter->execute ();
 				if ($DBParameter->hasResult ()) {
 					$data = array ();
@@ -141,6 +137,18 @@ class Parameter extends GeneralBase {
 			}
 		}
 		return $key;
+	}
+	public function isValidByValue($value) {
+		$data = $this->getParameterData ();
+		$status = false;
+		if (is_array ( $data ) && count ( $data ) > 0) {
+			foreach ( $data as $data_value ) {
+				if ($data_value ['value'] == $value) {
+					$status = true;
+				}
+			}
+		}
+		return $status;
 	}
 	public function getValueByKey($key) {
 		$data = $this->getParameterData ();

@@ -3,11 +3,13 @@
  * Zend Framework (http://framework.zend.com/)
  *
  * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
 namespace Zend\Mail\Header;
+
+use Zend\Mime\Mime;
 
 class GenericHeader implements HeaderInterface, UnstructuredInterface
 {
@@ -24,22 +26,45 @@ class GenericHeader implements HeaderInterface, UnstructuredInterface
     /**
      * Header encoding
      *
-     * @var string
+     * @var null|string
      */
-    protected $encoding = 'ASCII';
+    protected $encoding;
 
     public static function fromString($headerLine)
     {
-        $decodedLine = iconv_mime_decode($headerLine, ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF-8');
-        $parts = explode(':', $decodedLine, 2);
-        if (count($parts) != 2) {
-            throw new Exception\InvalidArgumentException('Header must match with the format "name: value"');
-        }
-        $header = new static($parts[0], ltrim($parts[1]));
-        if ($decodedLine != $headerLine) {
-            $header->setEncoding('UTF-8');
-        }
+        list($name, $value) = self::splitHeaderLine($headerLine);
+        $value  = HeaderWrap::mimeDecodeValue($value);
+        $header = new static($name, $value);
+
         return $header;
+    }
+
+    /**
+     * Splits the header line in `name` and `value` parts.
+     *
+     * @param string $headerLine
+     * @return string[] `name` in the first index and `value` in the second.
+     * @throws Exception\InvalidArgumentException If header does not match with the format ``name:value``
+     */
+    public static function splitHeaderLine($headerLine)
+    {
+        $parts = explode(':', $headerLine, 2);
+        if (count($parts) !== 2) {
+            throw new Exception\InvalidArgumentException('Header must match with the format "name:value"');
+        }
+
+        if (! HeaderName::isValid($parts[0])) {
+            throw new Exception\InvalidArgumentException('Invalid header name detected');
+        }
+
+        if (! HeaderValue::isValid($parts[1])) {
+            throw new Exception\InvalidArgumentException('Invalid header value detected');
+        }
+
+        $parts[0] = $parts[0];
+        $parts[1] = ltrim($parts[1]);
+
+        return $parts;
     }
 
     /**
@@ -63,8 +88,8 @@ class GenericHeader implements HeaderInterface, UnstructuredInterface
      * Set header name
      *
      * @param  string $fieldName
-     * @throws Exception\InvalidArgumentException
      * @return GenericHeader
+     * @throws Exception\InvalidArgumentException;
      */
     public function setFieldName($fieldName)
     {
@@ -75,8 +100,7 @@ class GenericHeader implements HeaderInterface, UnstructuredInterface
         // Pre-filter to normalize valid characters, change underscore to dash
         $fieldName = str_replace(' ', '-', ucwords(str_replace(array('_', '-'), ' ', $fieldName)));
 
-        // Validate what we have
-        if (!preg_match('/^[\x21-\x39\x3B-\x7E]*$/i', $fieldName)) {
+        if (! HeaderName::isValid($fieldName)) {
             throw new Exception\InvalidArgumentException(
                 'Header name must be composed of printable US-ASCII characters, except colon.'
             );
@@ -96,16 +120,21 @@ class GenericHeader implements HeaderInterface, UnstructuredInterface
      *
      * @param  string $fieldValue
      * @return GenericHeader
+     * @throws Exception\InvalidArgumentException;
      */
     public function setFieldValue($fieldValue)
     {
         $fieldValue = (string) $fieldValue;
 
-        if (empty($fieldValue) || preg_match('/^\s+$/', $fieldValue)) {
-            $fieldValue = '';
+        if (! HeaderWrap::canBeEncoded($fieldValue)) {
+            throw new Exception\InvalidArgumentException(
+                'Header value must be composed of printable US-ASCII characters and valid folding sequences.'
+            );
         }
 
         $this->fieldValue = $fieldValue;
+        $this->encoding   = null;
+
         return $this;
     }
 
@@ -126,12 +155,19 @@ class GenericHeader implements HeaderInterface, UnstructuredInterface
 
     public function getEncoding()
     {
+        if (! $this->encoding) {
+            $this->encoding = Mime::isPrintable($this->fieldValue) ? 'ASCII' : 'UTF-8';
+        }
+
         return $this->encoding;
     }
 
     public function toString()
     {
-        $name  = $this->getFieldName();
+        $name = $this->getFieldName();
+        if (empty($name)) {
+            throw new Exception\RuntimeException('Header name is not set, use setFieldName()');
+        }
         $value = $this->getFieldValue(HeaderInterface::FORMAT_ENCODED);
 
         return $name . ': ' . $value;

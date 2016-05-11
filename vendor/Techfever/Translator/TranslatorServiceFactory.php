@@ -26,7 +26,6 @@ class TranslatorServiceFactory implements FactoryInterface {
 		
 		$cache = $serviceLocator->get ( 'cachestorage' );
 		$cacheoption = $config ['cachestorage'] ['filesystem'] ['options'];
-		$cacheoption ['namespace'] = 'translator';
 		$cache->setOptions ( $cacheoption );
 		
 		$locale = $config ['system'] ['SYSTEM_LANGUAGE'];
@@ -39,7 +38,10 @@ class TranslatorServiceFactory implements FactoryInterface {
 		} else {
 			$Container->offsetSet ( 'locale', $httpacceptlanguage );
 		}
-		
+		$verifyLocale = $translator->checkLocale ( $locale );
+		if (! $verifyLocale) {
+			$locale = SYSTEM_DEFAULT_LOCALE;
+		}
 		$translator->setCache ( $cache );
 		$translator->setLocale ( $httpacceptlanguage )->setFallbackLocale ( $locale );
 		

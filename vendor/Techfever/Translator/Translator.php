@@ -191,6 +191,76 @@ class Translator extends BaseTranslator implements TranslatorInterface {
 	}
 	
 	/**
+	 * Translate a message.
+	 *
+	 * @param string $message        	
+	 * @param string $textDomain        	
+	 * @param string $locale        	
+	 * @return string
+	 */
+	public function translate($message, $textDomain = 'default', $locale = null) {
+		$message = strtolower ( $message );
+		if (strtolower ( SYSTEM_LANGUAGE_DEFINATION_LOG ) == "true") {
+			$id = $this->getLocaleID ();
+			$hasKey = false;
+			$key_id = 0;
+			$key_count = 0;
+			
+			$QKey = $this->getDatabase ();
+			$QKey->select ();
+			$QKey->columns ( array (
+					'id' => 'system_language_defination_id',
+					'count' => 'system_language_defination_count' 
+			) );
+			$QKey->from ( array (
+					'sl' => 'system_language_defination' 
+			) );
+			$QKey->where ( array (
+					'system_language_id' => $id,
+					'system_language_defination_key' => $message 
+			) );
+			$QKey->limit ( 1 );
+			$QKey->execute ();
+			if ($QKey->hasResult ()) {
+				$hasKey = true;
+				$rawdata = $QKey->current ();
+				$key_id = $rawdata ['id'];
+				$key_count = $rawdata ['count'];
+			} else {
+				$IKey = $this->getDatabase ();
+				$IKey->insert ();
+				$IKey->into ( 'system_language_defination' );
+				$IKey->values ( array (
+						'system_language_id' => $id,
+						'system_language_defination_key' => $message,
+						'system_language_defination_value' => "" 
+				) );
+				$IKey->execute ();
+				if ($IKey->affectedRows ()) {
+					$hasKey = true;
+					$key_id = $IKey->getLastGeneratedValue ();
+				}
+			}
+			
+			if ($hasKey && $key_id > 0) {
+				$UCount = $this->getDatabase ();
+				$UCount->update ();
+				$UCount->table ( 'system_language_defination' );
+				$UCount->set ( array (
+						'system_language_defination_count' => ($key_count + 1) 
+				) );
+				$UCount->where ( array (
+						'system_language_defination_id' => $key_id 
+				) );
+				$UCount->setDisableCache(true);
+				$UCount->execute ();
+			}
+		}
+		
+		return parent::translate ( $message, $textDomain, $locale );
+	}
+	
+	/**
 	 * Add translations with a database.
 	 *
 	 * @param string $type        	
@@ -213,7 +283,7 @@ class Translator extends BaseTranslator implements TranslatorInterface {
 	 * Load messages for a given language and domain.
 	 *
 	 * @triggers loadMessages.no-messages-loaded
-	 * 
+	 *
 	 * @param string $textDomain        	
 	 * @param string $locale        	
 	 * @throws Exception\RuntimeException
@@ -276,70 +346,179 @@ class Translator extends BaseTranslator implements TranslatorInterface {
 		$messagesLoaded = false;
 		if (isset ( $this->loaddatabase [$textDomain] )) {
 			if ($this->loaddatabase [$textDomain] ['type'] == 'database') {
-				
-				$message = array ();
-				$QActive = $this->getDatabase ();
-				$QActive->select ();
-				$QActive->columns ( array (
-						'id' => 'system_language_id',
-						'name' => 'system_language_name',
-						'iso' => 'system_language_iso' 
-				) );
-				$QActive->from ( array (
-						'sl' => 'system_language' 
-				) );
-				$QActive->where ( array (
-						'sl.system_language_status = 1',
-						'sl.system_language_iso = "' . $locale . '"' 
-				) );
-				$QActive->order ( array (
-						'system_language_iso ASC' 
-				) );
-				$QActive->setCacheName ( 'system_language' );
-				$QActive->limit ( 1 );
-				$QActive->execute ();
-				if ($QActive->hasResult ()) {
-					$data = $QActive->current ();
+				$themelanguage = $this->getThemeLanguage ();
+				if (is_array ( $themelanguage ) && count ( $themelanguage ) > 0) {
+					$message = array ();
 					
-					$QDefination = $this->getDatabase ();
-					$QDefination->select ();
-					$QDefination->columns ( array (
-							'id' => 'system_language_defination_id',
-							'key' => 'system_language_defination_key',
-							'value' => 'system_language_defination_value' 
+					$QActive = $this->getDatabase ();
+					$QActive->select ();
+					$QActive->columns ( array (
+							'id' => 'system_language_id',
+							'name' => 'system_language_name',
+							'iso' => 'system_language_iso' 
 					) );
-					$QDefination->from ( array (
-							'sld' => 'system_language_defination' 
+					$QActive->from ( array (
+							'sl' => 'system_language' 
 					) );
-					$QDefination->where ( array (
-							'sld.system_language_id = ' . $data ['id'] 
+					$QActive->where ( array (
+							'sl.system_language_status = 1',
+							'sl.system_language_iso = "' . $locale . '"',
+							'sl.system_language_id in (' . implode ( ", ", $themelanguage ) . ')' 
 					) );
-					$QDefination->order ( array (
-							'system_language_defination_key ASC' 
+					$QActive->order ( array (
+							'system_language_iso ASC' 
 					) );
-					$QDefination->setCacheName ( 'system_language_defination_' . strtolower ( $locale ) );
-					$QDefination->execute ();
-					if ($QDefination->hasResult ()) {
-						$data = array ();
-						while ( $QDefination->valid () ) {
-							$search = "/U+([0-9A-F]{4})/";
-							$replace = "&#x\\1;";
-							$message [$QDefination->get ( 'key' )] = html_entity_decode ( preg_replace ( $search, $replace, $QDefination->get ( 'value' ) ), ENT_NOQUOTES, 'UTF-8' );
-							$QDefination->next ();
+					$QActive->limit ( 1 );
+					$QActive->execute ();
+					if ($QActive->hasResult ()) {
+						$data = $QActive->current ();
+						
+						$QDefination = $this->getDatabase ();
+						$QDefination->select ();
+						$QDefination->columns ( array (
+								'id' => 'system_language_defination_id',
+								'key' => 'system_language_defination_key',
+								'value' => 'system_language_defination_value' 
+						) );
+						$QDefination->from ( array (
+								'sld' => 'system_language_defination' 
+						) );
+						$QDefination->where ( array (
+								'sld.system_language_id = ' . $data ['id'] 
+						) );
+						$QDefination->order ( array (
+								'system_language_defination_key ASC' 
+						) );
+						$QDefination->execute ();
+						if ($QDefination->hasResult ()) {
+							while ( $QDefination->valid () ) {
+								$search = "/U+([0-9A-F]{4})/";
+								$replace = "&#x\\1;";
+								$message [$QDefination->get ( 'key' )] = html_entity_decode ( preg_replace ( $search, $replace, $QDefination->get ( 'value' ) ), ENT_NOQUOTES, 'UTF-8' );
+								$QDefination->next ();
+							}
+						}
+						
+						$QTDefination = $this->getDatabase ();
+						$QTDefination->select ();
+						$QTDefination->columns ( array (
+								'key' => 'theme_system_language_defination_key',
+								'value' => 'theme_system_language_defination_value' 
+						) );
+						$QTDefination->from ( array (
+								'tsld' => 'theme_system_language_defination' 
+						) );
+						$QTDefination->where ( array (
+								'tsld.system_language_id = ' . $data ['id'],
+								'tsld.theme_id = ' . THEME_ID 
+						) );
+						$QTDefination->order ( array (
+								'theme_system_language_defination_key ASC' 
+						) );
+						$QTDefination->execute ();
+						if ($QTDefination->hasResult ()) {
+							while ( $QTDefination->valid () ) {
+								$search = "/U+([0-9A-F]{4})/";
+								$replace = "&#x\\1;";
+								$message [$QTDefination->get ( 'key' )] = html_entity_decode ( preg_replace ( $search, $replace, $QTDefination->get ( 'value' ) ), ENT_NOQUOTES, 'UTF-8' );
+								$QTDefination->next ();
+							}
 						}
 					}
+					if (isset ( $this->messages [$textDomain] [$locale] )) {
+						$this->messages [$textDomain] [$locale]->merge ( $message );
+					} else {
+						$this->messages [$textDomain] [$locale] = $message;
+					}
+					
+					$messagesLoaded = true;
 				}
-				if (isset ( $this->messages [$textDomain] [$locale] )) {
-					$this->messages [$textDomain] [$locale]->merge ( $message );
-				} else {
-					$this->messages [$textDomain] [$locale] = $message;
-				}
-				
-				$messagesLoaded = true;
 			}
 		}
 		
 		return $messagesLoaded;
+	}
+	
+	/**
+	 * Get Locale from database.
+	 *
+	 * @param string $locale        	
+	 * @return bool
+	 */
+	public function getLocaleIDbyISO($locale) {
+		$existlocale = false;
+		$themelanguage = $this->getThemeLanguage ();
+		$id = 0;
+		if (is_array ( $themelanguage ) && count ( $themelanguage ) > 0) {
+			$QActive = $this->getDatabase ();
+			$QActive->select ();
+			$QActive->columns ( array (
+					'id' => 'system_language_id' 
+			) );
+			$QActive->from ( array (
+					'sl' => 'system_language' 
+			) );
+			$QActive->where ( array (
+					'sl.system_language_status = 1',
+					'sl.system_language_iso = "' . $locale . '"',
+					'sl.system_language_id in (' . implode ( ", ", $themelanguage ) . ')' 
+			) );
+			$QActive->order ( array (
+					'system_language_iso ASC' 
+			) );
+			$QActive->limit ( 1 );
+			$QActive->execute ();
+			if ($QActive->hasResult ()) {
+				while ( $QActive->valid () ) {
+					$rawdata = $QActive->current ();
+					$id = $rawdata ['id'];
+					$QActive->next ();
+				}
+			}
+		}
+		
+		return $id;
+	}
+	
+	/**
+	 * Get Locale from database.
+	 *
+	 * @param string $locale        	
+	 * @return bool
+	 */
+	public function getLocaleISObyID($id) {
+		$existlocale = false;
+		$themelanguage = $this->getThemeLanguage ();
+		$iso = 0;
+		if (is_array ( $themelanguage ) && count ( $themelanguage ) > 0) {
+			$QActive = $this->getDatabase ();
+			$QActive->select ();
+			$QActive->columns ( array (
+					'iso' => 'system_language_iso' 
+			) );
+			$QActive->from ( array (
+					'sl' => 'system_language' 
+			) );
+			$QActive->where ( array (
+					'sl.system_language_status = 1',
+					'sl.system_language_id = "' . $id . '"',
+					'sl.system_language_id in (' . implode ( ", ", $themelanguage ) . ')' 
+			) );
+			$QActive->order ( array (
+					'system_language_iso ASC' 
+			) );
+			$QActive->limit ( 1 );
+			$QActive->execute ();
+			if ($QActive->hasResult ()) {
+				while ( $QActive->valid () ) {
+					$rawdata = $QActive->current ();
+					$iso = $rawdata ['iso'];
+					$QActive->next ();
+				}
+			}
+		}
+		
+		return $iso;
 	}
 	
 	/**
@@ -350,29 +529,31 @@ class Translator extends BaseTranslator implements TranslatorInterface {
 	 */
 	public function checkLocale($locale) {
 		$existlocale = false;
-		
-		$QActive = $this->getDatabase ();
-		$QActive->select ();
-		$QActive->columns ( array (
-				'id' => 'system_language_id',
-				'name' => 'system_language_name',
-				'iso' => 'system_language_iso' 
-		) );
-		$QActive->from ( array (
-				'sl' => 'system_language' 
-		) );
-		$QActive->where ( array (
-				'sl.system_language_status = 1',
-				'sl.system_language_iso = "' . $locale . '"' 
-		) );
-		$QActive->order ( array (
-				'system_language_iso ASC' 
-		) );
-		$QActive->setCacheName ( 'system_language' );
-		$QActive->limit ( 1 );
-		$QActive->execute ();
-		if ($QActive->hasResult ()) {
-			$existlocale = true;
+		$themelanguage = $this->getThemeLanguage ();
+		if (is_array ( $themelanguage ) && count ( $themelanguage ) > 0) {
+			$QActive = $this->getDatabase ();
+			$QActive->select ();
+			$QActive->columns ( array (
+					'id' => 'system_language_id',
+					'name' => 'system_language_name',
+					'iso' => 'system_language_iso' 
+			) );
+			$QActive->from ( array (
+					'sl' => 'system_language' 
+			) );
+			$QActive->where ( array (
+					'sl.system_language_status = 1',
+					'sl.system_language_iso = "' . $locale . '"',
+					'sl.system_language_id in (' . implode ( ", ", $themelanguage ) . ')' 
+			) );
+			$QActive->order ( array (
+					'system_language_iso ASC' 
+			) );
+			$QActive->limit ( 1 );
+			$QActive->execute ();
+			if ($QActive->hasResult ()) {
+				$existlocale = true;
+			}
 		}
 		
 		return $existlocale;
@@ -386,29 +567,102 @@ class Translator extends BaseTranslator implements TranslatorInterface {
 	 */
 	public function getAllLocale() {
 		$data = array ();
+		$themelanguage = $this->getThemeLanguage ();
+		if (is_array ( $themelanguage ) && count ( $themelanguage ) > 0) {
+			$QActive = $this->getDatabase ();
+			$QActive->select ();
+			$QActive->columns ( array (
+					'id' => 'system_language_id',
+					'name' => 'system_language_name',
+					'iso' => 'system_language_iso' 
+			) );
+			$QActive->from ( array (
+					'sl' => 'system_language' 
+			) );
+			$QActive->where ( array (
+					'sl.system_language_status = 1',
+					'sl.system_language_id in (' . implode ( ", ", $themelanguage ) . ')' 
+			) );
+			$QActive->order ( array (
+					'system_language_iso ASC' 
+			) );
+			$QActive->execute ();
+			if ($QActive->hasResult ()) {
+				$data = array ();
+				while ( $QActive->valid () ) {
+					$data [] = $QActive->current ();
+					$QActive->next ();
+				}
+			}
+		}
+		
+		return $data;
+	}
+	
+	/**
+	 * Get Locale ID.
+	 *
+	 * @return array
+	 */
+	public function getLocaleID() {
+		$locale = $this->getLocale ();
+		$id = 0;
+		$themelanguage = $this->getThemeLanguage ();
+		if (is_array ( $themelanguage ) && count ( $themelanguage ) > 0) {
+			$QActive = $this->getDatabase ();
+			$QActive->select ();
+			$QActive->columns ( array (
+					'id' => 'system_language_id',
+					'name' => 'system_language_name',
+					'iso' => 'system_language_iso' 
+			) );
+			$QActive->from ( array (
+					'sl' => 'system_language' 
+			) );
+			$QActive->where ( array (
+					'sl.system_language_status = 1',
+					'sl.system_language_iso = "' . $locale . '"',
+					'sl.system_language_id in (' . implode ( ", ", $themelanguage ) . ')' 
+			) );
+			$QActive->order ( array (
+					'system_language_iso ASC' 
+			) );
+			$QActive->limit ( 1 );
+			$QActive->execute ();
+			if ($QActive->hasResult ()) {
+				$rawdata = $QActive->current ();
+				$id = $rawdata ['id'];
+			}
+		}
+		
+		return $id;
+	}
+	
+	/**
+	 * Get Theme Language from database.
+	 *
+	 * @return array
+	 */
+	public function getThemeLanguage() {
+		$data = array ();
 		
 		$QActive = $this->getDatabase ();
 		$QActive->select ();
 		$QActive->columns ( array (
-				'id' => 'system_language_id',
-				'name' => 'system_language_name',
-				'iso' => 'system_language_iso' 
+				'id' => 'system_language_id' 
 		) );
 		$QActive->from ( array (
-				'sl' => 'system_language' 
+				'tsl' => 'theme_system_language' 
 		) );
 		$QActive->where ( array (
-				'sl.system_language_status = 1' 
+				'tsl.theme_id = ' . THEME_ID,
+				'tsl.theme_system_language_status = 1' 
 		) );
-		$QActive->order ( array (
-				'system_language_iso ASC' 
-		) );
-		$QActive->setCacheName ( 'system_language' );
 		$QActive->execute ();
 		if ($QActive->hasResult ()) {
-			$data = array ();
 			while ( $QActive->valid () ) {
-				$data [] = $QActive->current ();
+				$rawdata = $QActive->current ();
+				$data [] = $rawdata ['id'];
 				$QActive->next ();
 			}
 		}

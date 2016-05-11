@@ -34,7 +34,17 @@ class ViewDiv extends AbstractViewHelper {
 		$attributes ['name'] = $name;
 		$content = ( string ) $element->getContent ();
 		$escapeHtml = $this->getEscapeHtmlHelper ();
-		return sprintf ( '<div %s>%s</div>', $this->createAttributesString ( $attributes ), $escapeHtml ( $content ) );
+		
+		$label = $element->getLabel ();
+		if (empty ( $label )) {
+			throw new Exception\DomainException ( sprintf ( '%s expects either label content as the second argument, ' . 'or that the element provided has a label attribute; neither found', __METHOD__ ) );
+		}
+		
+		if (null !== ($translator = $this->getTranslator ())) {
+			$label = $translator->translate ( $label, $this->getTranslatorTextDomain () );
+		}
+		
+		return sprintf ( '<div %s><div class="label">%s :</div><div class="value">%s</div></div>', $this->createAttributesString ( $attributes ), $escapeHtml ( $label ), $escapeHtml ( $content ) );
 	}
 	
 	/**

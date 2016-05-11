@@ -131,7 +131,6 @@ class Form extends BaseZForm {
 		parent::__construct ( $id );
 		$ToUnderscore = new ToUnderscore ( '/' );
 		$this->setAttribute ( 'id', $ToUnderscore->filter ( $id ) );
-		// $this->setAttribute('class', 'steps');
 		
 		$this->elementFactory ();
 		
@@ -248,10 +247,28 @@ class Form extends BaseZForm {
 	 * @throws Exception\DomainException
 	 */
 	public function isValid() {
-		$getPost = $this->getRequest ()->getPost ();
+		$getPost = array_merge_recursive ( $this->getRequest ()->getPost ()->toArray (), $this->getRequest ()->getFiles ()->toArray () );
+		// $this->getLog ()->info ( $getPost );
 		$this->setData ( $getPost );
 		
 		return parent::isValid ();
+	}
+	
+	/**
+	 * Is this a POST method request?
+	 *
+	 * @return bool
+	 */
+	public function isSubmit() {
+		$status = false;
+		if ($this->isPost ()) {
+			if ($this->isValid ()) {
+				if ($this->getPost ( 'action', null ) == "submit") {
+					$status = true;
+				}
+			}
+		}
+		return $status;
 	}
 	
 	/**
@@ -399,7 +416,7 @@ class Form extends BaseZForm {
 				foreach ( $validatorChain as $validators ) {
 					$options = $validators ['instance']->getOptions ();
 					foreach ( $options as $option_key => $option_value ) {
-						if ($option_key == 'chain') {
+						if ($option_key == 'chain' && !empty($option_value)) {
 							$chain [] = $option_value;
 						}
 					}
@@ -430,6 +447,9 @@ class Form extends BaseZForm {
 		}
 		return $this->element;
 	}
+	public function getElementData() {
+		return $this->element->getElementData ();
+	}
 	private function elementFactory() {
 		if (! $this->inputForm) {
 			$Element = $this->getElement ();
@@ -439,6 +459,7 @@ class Form extends BaseZForm {
 					if ($Element->validElementByKey ( $element_key )) {
 						$element_config = $Element->getFormStuctureByKey ( $element_key );
 						if (strtolower ( $element_value ['class'] ) === "captcha") {
+							$element_config ['attributes'] ['type'] = 'captcha';
 							if (! array_key_exists ( "captcha", $element_config ['options'] )) {
 								$element_config ['options'] ['captcha'] = $this->generateCaptcha ();
 							}
@@ -450,6 +471,16 @@ class Form extends BaseZForm {
 		}
 		return $this->inputForm;
 	}
+	public function getCaptchaRefresh($elementName) {
+		$captcha_data = array ();
+		if ($this->has ( $elementName )) {
+			$captcha = parent::get ( $elementName )->getCaptcha ();
+			$captcha_data ['element'] = $elementName;
+			$captcha_data ['id'] = $captcha->generate ();
+			$captcha_data ['src'] = $captcha->getImgUrl () . $captcha->getId () . $captcha->getSuffix ();
+		}
+		return $captcha_data;
+	}
 	
 	/**
 	 * function generate captcha
@@ -458,18 +489,19 @@ class Form extends BaseZForm {
 		$BaseHref = new BaseHref ();
 		$captchaimg = $BaseHref->getURL ();
 		$captchaimg = $captchaimg . '/Image/Captcha';
-		$this->captcha = new CaptchaImage ( array (
-				'expiration' => '300',
-				'width' => 125,
-				'height' => 70,
-				'dotNoiseLevel' => 40,
-				'lineNoiseLevel' => 3,
-				'wordlen' => '6',
-				'font' => 'data/fonts/arial.ttf',
-				'fontSize' => '20',
-				'imgDir' => 'data/captcha',
+		$setting = array (
+				'expiration' => CAPTCHA_SIZE_EXPIRATION,
+				'width' => CAPTCHA_SIZE_WIDTH,
+				'height' => CAPTCHA_SIZE_HEIGHT,
+				'dotNoiseLevel' => CAPTCHA_DOT_NOISE,
+				'lineNoiseLevel' => CAPTCHA_LINE_NOISE,
+				'wordlen' => CAPTCHA_LENGTH,
+				'font' => CAPTCHA_FONT,
+				'fontSize' => CAPTCHA_FONT_SIZE,
+				'imgDir' => CAPTCHA_SAVE_PATH,
 				'imgUrl' => $captchaimg 
-		) );
+		);
+		$this->captcha = new CaptchaImage ( $setting );
 		return $this->captcha;
 	}
 	public function getVariables() {

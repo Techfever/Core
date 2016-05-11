@@ -8,6 +8,7 @@ use Zend\Loader\ClassMapAutoloader;
 use Zend\Validator\AbstractValidator;
 use Techfever\Functions\DirConvert;
 use Techfever\Template\Plugin\Filters\ToUnderscore;
+use Techfever\Template\InjectTemplateListener;
 
 class Module {
 	private $template = NULL;
@@ -16,7 +17,6 @@ class Module {
 		$serviceManager->get ( 'php' );
 		
 		$this->template = $serviceManager->get ( 'template' );
-		$this->getThemes ();
 		
 		$this->getClassMapAutoloaderConfig ();
 		
@@ -38,29 +38,76 @@ class Module {
 		$serviceManager->get ( 'snapshot' );
 		
 		$eventManager = $e->getApplication ()->getEventManager ();
+		/*
+		 * $eventManager->attach ( 'route', array ( $this, 'onRouteFinish' ), - 100 );
+		 */
 		
 		$moduleRouteListener = new ModuleRouteListener ();
 		$moduleRouteListener->attach ( $eventManager );
-		/*
-		 * $eventManager ->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, function ($e) { $flashMessenger = new \Zend\Mvc\Controller\Plugin\FlashMessenger(); $flashMessages = array( 'error' => array(), 'info' => array(), 'success' => array(), 'general' => array() ); if ($flashMessenger->hasErrorMessages()) { $flashMessages['error'] = $flashMessenger->getErrorMessages(); } if ($flashMessenger->hasInfoMessages()) { $flashMessages['info'] = $flashMessenger->getInfoMessage(); } if ($flashMessenger->hasSuccessMessages()) { $flashMessages['success'] = $flashMessenger->getSuccessMessage(); } if ($flashMessenger->hasMessages()) { $flashMessages['general'] = $flashMessenger->getMessages(); } $e->getViewModel()->setVariable('flashMessenges', $flashMessages); });
-		 */
+		
 		$sharedManager = $e->getApplication ()->getEventManager ()->getSharedManager ();
-		$sharedManager->attach ( 'Zend\Mvc\Controller\AbstractActionController', 'dispatch', function ($e) {
+		
+		$injectTemplateListener = new InjectTemplateListener ();
+		
+		$sharedManager->attach ( 'Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array (
+				$injectTemplateListener,
+				'injectTemplate' 
+		), - 81 );
+		
+		$ServiceListener = $serviceManager->get ( 'ServiceListener' );
+		$ServiceListener->addServiceManager ( 'ViewElementManager', 'view_elements', 'Techfever\View\ViewElementProviderInterface', 'getViewElementConfig' );
+		$eventManager->attach ( $ServiceListener );
+		
+		$sharedManager->attach ( 'Zend\Mvc\Controller\AbstractActionController', MvcEvent::EVENT_DISPATCH, function ($e) {
 			$serviceManager = $e->getApplication ()->getServiceManager ();
+			$controller = $e->getTarget ();
+			
+			$isBackend = $controller->isBackend ();
+			$system_theme = SYSTEM_THEME;
+			if ($isBackend) {
+				$e->getViewModel ()->setTemplate ( 'backend/layout' );
+				$system_theme = "Backend";
+			}
+			define ( 'SYSTEM_THEME_LOAD', $system_theme );
 			
 			$ToUnderscore = new ToUnderscore ( '\\' );
-			$controller = $e->getTarget ();
-			$controlleraction = strtolower ( $controller->getEvent ()->getRouteMatch ()->getParam ( 'action' ) );
-			$controllername = strtolower ( $controller->getEvent ()->getRouteMatch ()->getParam ( 'controller' ) );
+			$routematch = $controller->getEvent ()->getRouteMatch ();
+			$controlleraction = strtolower ( $routematch->getParam ( 'action' ) );
+			$controllername = strtolower ( $routematch->getParam ( 'controller' ) );
+			$controlleruri = strtolower ( $routematch->getMatchedRouteName () );
 			
-			$UserPermission = $serviceManager->get ( 'UserPermission' );
-			if (! $UserPermission->isAllow ( $controllername, $controlleraction )) {
+			$routeMatchParams = $routematch->getParams ();
+			if (isset ( $routeMatchParams ['controller'] )) {
+				unset ( $routeMatchParams ['controller'] );
+			}
+			if (isset ( $routeMatchParams ['action'] )) {
+				unset ( $routeMatchParams ['action'] );
+			}
+			$controllerquery = implode ( '/', $routeMatchParams );
+			
+			$e->getViewModel ()->setVariable ( 'controllerUri', $controlleruri );
+			$e->getViewModel ()->setVariable ( 'controllerName', $controllername );
+			$e->getViewModel ()->setVariable ( 'controllerAction', $controlleraction );
+			$e->getViewModel ()->setVariable ( 'controllerQuery', $controllerquery );
+			$e->getViewModel ()->setVariable ( 'controllerUriFull', $system_theme . '/' . $controlleruri . '/' . $controlleraction . '/' . $controllerquery );
+			
+			if ($controllername == "index\\controller\\action" && strtolower ( SYSTEM_BACKEND_ONLY ) == "true") {
 				$url = $e->getRouter ()->assemble ( array (), array (
-						'name' => 'Index' 
+						'name' => SYSTEM_BACKEND_URI 
 				) );
 				$response = $serviceManager->get ( 'Response' );
 				$response->getHeaders ()->addHeaderLine ( 'Location', $url );
 				$response->setStatusCode ( 302 );
+			} else {
+				$UserPermission = $serviceManager->get ( 'UserPermission' );
+				if (! $UserPermission->isAllow ( $controllername, $controlleraction )) {
+					$url = $e->getRouter ()->assemble ( array (), array (
+							'name' => 'Index' 
+					) );
+					$response = $serviceManager->get ( 'Response' );
+					$response->getHeaders ()->addHeaderLine ( 'Location', $url );
+					$response->setStatusCode ( 302 );
+				}
 			}
 			
 			$controlleraction = $ToUnderscore->filter ( $controlleraction );
@@ -68,10 +115,16 @@ class Module {
 			$e->getViewModel ()->setVariable ( 'moduleTitle', 'text_' . $controllername . '_' . $controlleraction . '_title' );
 			
 			$moduleLogin = False;
-			if ($controllername == "account_controller_loginaction") {
+			if ($controllername == "account_login_controller_action") {
 				$moduleLogin = True;
 			}
 			$e->getViewModel ()->setVariable ( 'moduleLogin', $moduleLogin );
+			
+			$moduleDashboard = False;
+			if ($controllername == "account_dashboard_controller_action") {
+				$moduleDashboard = True;
+			}
+			$e->getViewModel ()->setVariable ( 'moduleDashboard', $moduleDashboard );
 			
 			$isLogin = False;
 			$isAdminUser = False;
@@ -91,6 +144,10 @@ class Module {
 			$translator = $serviceManager->get ( 'translator' );
 			$Locale = $translator->getLocale ();
 			$AllLocale = $translator->getAllLocale ();
+			$verifyLocale = $translator->checkLocale ( $Locale );
+			if (! $verifyLocale) {
+				$Locale = SYSTEM_DEFAULT_LOCALE;
+			}
 			$e->getViewModel ()->setVariable ( 'translatorLocale', $AllLocale );
 			$e->getViewModel ()->setVariable ( 'Locale', $Locale );
 			
@@ -103,9 +160,32 @@ class Module {
 			$headTitleHelper->append ( 'text_system_title' );
 			
 			$headTitleHelper->append ( 'text_' . $controllername . '_' . $controlleraction . '_title' );
+			
+			$request = $serviceManager->get ( 'Request' );
+			
+			$addTheme = True;
+			if (substr ( $controllername, 0, 5 ) == 'theme') {
+				$addTheme = false;
+			} else if (substr ( $controllername, 0, 4 ) == 'ajax') {
+				$addTheme = false;
+			} else if (substr ( $controllername, 0, 5 ) == 'image') {
+				$addTheme = false;
+			} else if ($request->isXmlHttpRequest ()) {
+				$addTheme = false;
+			}
+			if ($addTheme) {
+				$this->getThemes ();
+			}
 		}, 100 );
+		$serviceManager->get ( 'UserLog' );
 		
 		AbstractValidator::setDefaultTranslator ( $serviceManager->get ( 'MvcTranslator' ) );
+	}
+	public function onRouteFinish($e) {
+		$matches = $e->getRouteMatch ();
+		$controller = $matches->getParam ( 'controller' );
+		var_dump ( $matches );
+		die ();
 	}
 	public function getAutoloaderConfig() {
 		return array (
@@ -213,6 +293,19 @@ class Module {
 	 *
 	 * @return array \Zend\ServiceManager\Config
 	 */
+	public function getViewElementConfig() {
+		$plugin = $this->getPlugin ( 'Views' );
+		return array (
+				'invokables' => $plugin 
+		);
+	}
+	
+	/**
+	 * Expected to return \Zend\ServiceManager\Config object or array to
+	 * seed such an object.
+	 *
+	 * @return array \Zend\ServiceManager\Config
+	 */
 	public function getControllerPluginConfig() {
 		$plugin = $this->getPlugin ( 'Controllers' );
 		return array (
@@ -220,31 +313,21 @@ class Module {
 		);
 	}
 	public function getThemes() {
-		// $this->getTemplate()->resetCSS();
-		$css = array (
-				'vendor/Techfever/Javascript/jquery/themes/ui-lightness/jquery-ui.css',
-				'vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/content.css',
-				'vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/footer.css',
-				'vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/header.css',
-				'vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/layout.css',
-				'vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/left.css',
-				'vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/right.css',
-				'vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/boxes.css',
-				'vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/breadcrumb.css',
-				'vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/form.css',
-				'vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/datatable.css',
-				'vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/preview.css',
-				'vendor/Techfever/Theme/' . SYSTEM_THEME . '/CSS/modern-menu.css' 
-		);
-		$this->getTemplate ()->addCSS ( $css );
-		// $this->getTemplate()->resetJavascript();
-		$javascript = array (
-				'vendor/Techfever/Javascript/jquery/jquery.js',
-				'vendor/Techfever/Javascript/jquery/ui/jquery-ui.js',
-				'vendor/Techfever/Javascript/jquery/ui/jquery.modern-menu.min.js',
-				'vendor/Techfever/Theme/' . SYSTEM_THEME . '/Js/main.js' 
-		);
-		$this->getTemplate ()->addJavascript ( $javascript );
+		$css = 'vendor/Techfever/Theme/' . SYSTEM_THEME_LOAD . '/css.php';
+		$javascript = 'vendor/Techfever/Theme/' . SYSTEM_THEME_LOAD . '/javascript.php';
+		if (file_exists ( $css )) {
+			$DirConvert = new DirConvert ( $css );
+			$css = $DirConvert->__toString ();
+			$css_content = include $css;
+			$this->getTemplate ()->addCSS ( $css_content );
+		}
+		
+		if (file_exists ( $javascript )) {
+			$DirConvert = new DirConvert ( $javascript );
+			$javascript = $DirConvert->__toString ();
+			$javascript_content = include $javascript;
+			$this->getTemplate ()->addJavascript ( $javascript_content );
+		}
 	}
 	public function getTemplate() {
 		return $this->template;

@@ -3,10 +3,9 @@
 namespace Techfever\Template\Plugin\Helpers;
 
 use Zend\Form\ElementInterface;
-use Zend\Form\View\Helper\AbstractHelper;
 use Techfever\Exception;
 
-class FormLabelDisplay extends AbstractHelper {
+class FormLabelDisplay extends AbstractFormHelper {
 	const APPEND = 'append';
 	const PREPEND = 'prepend';
 	

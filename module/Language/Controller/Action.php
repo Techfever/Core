@@ -2,7 +2,7 @@
 
 namespace Language\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Techfever\Template\Plugin\AbstractActionController;
 use Locale;
 
 class ActionController extends AbstractActionController {

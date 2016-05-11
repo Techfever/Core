@@ -27,10 +27,11 @@ class Validator extends GeneralBase {
 	
 	/**
 	 *
-	 * @var Validator Option Data
+	 * @var Validator Data
 	 *     
 	 */
 	private $validator_option_data = null;
+	
 	public function __construct($options = null) {
 		if (! is_array ( $options )) {
 			throw new Exception\RuntimeException ( 'Options has not been set or configured.' );
@@ -79,7 +80,6 @@ class Validator extends GeneralBase {
 				$QValidator->order ( array (
 						'fe.form_element_validators_key ASC' 
 				) );
-				$QValidator->setCacheName ( 'form_element_validators' );
 				$QValidator->execute ();
 				if ($QValidator->hasResult ()) {
 					while ( $QValidator->valid () ) {
@@ -126,7 +126,6 @@ class Validator extends GeneralBase {
 				$QValidator->order ( array (
 						'fe.form_element_validators_options_key ASC' 
 				) );
-				$QValidator->setCacheName ( 'form_element_validators_options' );
 				$QValidator->execute ();
 				if ($QValidator->hasResult ()) {
 					while ( $QValidator->valid () ) {
@@ -167,13 +166,16 @@ class Validator extends GeneralBase {
 	 * @return array
 	 *
 	 */
-	public function getValidatorsByID($id) {
+	public function getValidatorsByID($id, $default_value = null, $user_access_id = null, $user_profile_id = null) {
 		$data = $this->getValidatorsData ();
 		$validators = array ();
 		if (is_array ( $data ) && count ( $data ) > 0) {
 			foreach ( $data as $value ) {
 				if ($id == $value ['element']) {
 					$options = $this->getValidatorsOptions ( $value ['id'] );
+					$options ['user_access_id'] = (! empty ( $user_access_id ) ? $user_access_id : null);
+					$options ['user_profile_id'] = (! empty ( $user_profile_id ) ? $user_profile_id : null);
+					$options ['default_value'] = (! empty ( $default_value ) ? $default_value : null);
 					$options ['servicelocator'] = $this->getServiceLocator ();
 					$validators [] = array (
 							'name' => $value ['key'],

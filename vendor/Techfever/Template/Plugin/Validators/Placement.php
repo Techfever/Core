@@ -312,7 +312,6 @@ class Placement extends AbstractValidator {
 		$DBRank->order ( array (
 				'user_rank_key ASC' 
 		) );
-		$DBRank->setCacheName ( 'user_rank_' . implode ( '_', $rankcheck ) );
 		$DBRank->execute ();
 		$rank = array ();
 		if ($DBRank->hasResult ()) {
@@ -389,7 +388,8 @@ class Placement extends AbstractValidator {
 				'uh' => 'user_hierarchy' 
 		) );
 		$DBVerify->where ( array (
-				'uh.user_hierarchy_placement = "' . $placement . '"' 
+				'uh.user_hierarchy_placement = "' . $placement . '"',
+				'uh.user_hierarchy_placement_username = "' . strtoupper ( $value ) . '"' 
 		) );
 		$DBVerify->execute ();
 		if ($DBVerify->hasResult () || empty ( $placement )) {

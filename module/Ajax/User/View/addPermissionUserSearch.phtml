@@ -1,0 +1,11 @@
+<?php
+$userData = $this->userData;
+if (is_array ( $userData ) && count ( $userData ) > 0) {
+	foreach ( $userData as $userData_key => $userData_value ) {
+		$attributes ['id'] = $userData_value ['modify_id'];
+		$attributes ['name'] = $userData_value ['modify_id'];
+		$attributes ['class'] = 'addpermissionuser';
+		$attributes ['onclick'] = "$(this).addPermissionUser($(this));";
+		echo '		<div id="' . $attributes ['id'] . '" name="' . $attributes ['id'] . '"><span>' . $userData_value ['text'] . '</span>&nbsp;' . $this->htmlLink ( '#', '[&nbsp;' . $this->translate ( "text_add" ) . '&nbsp;]', $attributes ) . "</div>" . "\n";
+	}
+}

@@ -35,6 +35,7 @@ class SelectMonth extends SelectYear {
 		$this->monthElement = new Select ( $name . '[month]', $options );
 		parent::__construct ( $name, $options );
 		
+		$this->setOptions ( $options );
 		if (isset ( $options ['month_attributes'] )) {
 			$this->setMonthAttributes ( $options ['month_attributes'] );
 		}
@@ -118,9 +119,11 @@ class SelectMonth extends SelectYear {
 		$this->monthElement->setName ( $name . '[month]' );
 		$this->monthElement->setAttribute ( 'id', $name . '[month]' );
 		$this->monthElement->setAttribute ( 'class', 'selectmonth' );
-		$this->monthElement->setOptions ( array (
-				'empty_option' => '' 
-		) );
+		if ($this->shouldCreateEmptyOption ()) {
+			$this->monthElement->setOptions ( array (
+					'empty_option' => '' 
+			) );
+		}
 	}
 	
 	/**

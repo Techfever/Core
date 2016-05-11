@@ -383,7 +383,6 @@ class Img extends AbstractPlugin {
 			
 			$params = array_merge ( $routeMatchParams, $params );
 		}
-		
 		$options ['name'] = $route;
 		
 		/* Technation Added */

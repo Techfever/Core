@@ -1,6 +1,6 @@
 <?php
 
-namespace Techfever\Database\Sql;
+namespace Techfever\Database\SQL;
 
 use Zend\Db\Sql\SqlInterface;
 use Zend\Db\Sql\PreparableSqlInterface;

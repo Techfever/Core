@@ -1,48 +1,67 @@
 <?php
 
-namespace Wallet\Withdraw\Controller;
+namespace Wallet\Withdraw\Pending\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Techfever\Template\Plugin\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Json\Json;
 use Techfever\Datatable\Datatable;
 use Techfever\View\View as WalletView;
 
-class PendingActionController extends AbstractActionController {
-	protected $type = 'Wallet_Withdraw';
-	protected $module = 'pending';
+class ActionController extends AbstractActionController {
+	
+	/**
+	 *
+	 * @var Type
+	 *
+	 */
+	protected $type = 'wallet';
+	
+	/**
+	 *
+	 * @var Module
+	 *
+	 */
+	protected $module = 'withdraw_pending';
+	
+	/**
+	 *
+	 * @var Datatable
+	 *
+	 */
 	protected $datatable = null;
-	protected $datacolumn = null;
-	protected $datasearch = null;
+	
+	/**
+	 *
+	 * @var Variables
+	 *
+	 */
+	protected $variable = null;
+	
+	/**
+	 * Index Action
+	 *
+	 * @return ViewModel
+	 */
 	public function IndexAction() {
-		$this->datacolumn = $this->getDatatable ()->getColumnData ();
-		$this->datasearch = $this->getDatatable ()->getSearchData ();
-		$this->addCSS ( "vendor/Techfever/Javascript/jquery/themes/jtable/lightcolor/gray/jtable.css" );
-		$this->addJavascript ( 'vendor/Techfever/Javascript/jquery/ui/jquery.jtable.js' );
-		$this->addJavascript ( "vendor/Techfever/Theme/" . SYSTEM_THEME . "/Js/datatable.menu.js", array (
+		$this->addJavascript ( 'vendor/Techfever/Javascript/datatable/jquery.jtable.js' );
+		$this->addJavascript ( "vendor/Techfever/Theme/" . SYSTEM_THEME_LOAD . "/Js/datatable.menu.js", array (
+				'datatableformid' => $this->convertToUnderscore ( $this->getMatchedRouteName () . '/Index', '/' ),
+				'datatableformuri' => $this->url ()->fromRoute ( $this->getMatchedRouteName () ),
 				'datatableid' => $this->convertToUnderscore ( $this->getMatchedRouteName () . '/Datatable', '/' ),
-				'datalisturi' => $this->url ()->fromRoute ( ucfirst ( str_replace ( '_', '/', $this->type ) ) . '/Pending' ),
-				'datacolumn' => $this->datacolumn,
-				'datasearch' => $this->datasearch 
+				'datacolumn' => $this->getDatatable ()->getColumnData () 
 		) );
 		
 		return array (
-				'menumodel' => $this->MenuModel (),
-				'isAdminUser' => $this->isAdminUser () 
+				'menumodel' => $this->getDatatable () 
 		);
 	}
-	private function getDatatable() {
-		if (! is_object ( $this->datatable )) {
-			$options = array (
-					'route' => $this->getMatchedRouteName (),
-					'action' => 'Index',
-					'variable' => $this->getVariable (),
-					'servicelocator' => $this->getServiceLocator () 
-			);
-			$this->datatable = new Datatable ( $options );
-		}
-		return $this->datatable;
-	}
+	
+	/**
+	 * Get Action
+	 *
+	 * @return Json Response
+	 */
 	public function GetAction() {
 		$this->layout ( 'blank/layout' );
 		$Request = $this->getRequest ();
@@ -51,9 +70,9 @@ class PendingActionController extends AbstractActionController {
 		if ($Request->isXmlHttpRequest ()) {
 			$index = 0;
 			$perpage = 10;
-			$order = 'ua.user_access_id ASC';
-			
-			$routequery = ( string ) $this->params ()->fromRoute ( 'query', null );
+			$order = 'uwh.user_wallet_history_created_date ASC';
+			$routequery = ( string ) $_SERVER ['QUERY_STRING'];
+			// $routequery = ( string ) $this->params ()->fromRoute ( 'query', null );
 			$routequery = (substr ( $routequery, 0, 1 ) == '/' ? substr ( $routequery, 1 ) : $routequery);
 			$routequery = explode ( '&', $routequery );
 			if (is_array ( $routequery ) && count ( $routequery ) > 0) {
@@ -68,11 +87,6 @@ class PendingActionController extends AbstractActionController {
 					}
 				}
 			}
-			
-			$cache = $this->convertToUnderscore ( $order, ',' );
-			$cache = $this->convertToUnderscore ( $cache, ',' );
-			$cache = $this->convertToUnderscore ( $cache, ' ' );
-			$cache = $cache . '_' . $perpage . '_' . $index;
 			if (strpos ( $order, ',' ) !== false) {
 				$order = explode ( ',', $order );
 			} else {
@@ -88,12 +102,10 @@ class PendingActionController extends AbstractActionController {
 					$table = $this->getDatatable ()->getColumnTableByColumn ( $arrange [0] );
 					if ($table == 'user_wallet_history') {
 						$orderraw [] = 'uwh.' . $column . ' ' . $arrange [1];
-					} elseif ($table == 'user_wallet_history_bank') {
-						$orderraw [] = 'uwhb.' . $column . ' ' . $arrange [1];
-					} elseif ($table == 'user_access_from') {
-						$orderraw [] = 'uaf.' . $column . ' ' . $arrange [1];
 					} elseif ($table == 'user_access_to') {
 						$orderraw [] = 'uat.' . $column . ' ' . $arrange [1];
+					} elseif ($table == 'user_access_from') {
+						$orderraw [] = 'uaf.' . $column . ' ' . $arrange [1];
 					}
 				}
 				$order = $orderraw;
@@ -103,17 +115,48 @@ class PendingActionController extends AbstractActionController {
 			if (is_array ( $search ) && count ( $search ) > 0) {
 				$searchraw = array ();
 				foreach ( $search as $searchkey => $searchvalue ) {
+					$is_date = false;
+					if (is_array ( $searchvalue )) {
+						if (array_key_exists ( 'day', $searchvalue )) {
+							$date_day = $searchvalue ['day'];
+							if (! empty ( $date_day )) {
+								$date_day = $searchvalue ['day'];
+							}
+						}
+						if (array_key_exists ( 'month', $searchvalue )) {
+							$date_month = $searchvalue ['month'];
+							if (! empty ( $date_month )) {
+								$date_month = $searchvalue ['month'] . "-";
+							}
+						}
+						if (array_key_exists ( 'year', $searchvalue )) {
+							$date_year = $searchvalue ['year'];
+							if (! empty ( $date_year )) {
+								$date_year = $searchvalue ['year'] . "-";
+							}
+						}
+						$searchvalue = $date_year . $date_month . $date_day;
+						if (! empty ( $searchvalue )) {
+							$is_date = true;
+						}
+					}
 					$column = $this->getDatatable ()->getSearchFieldByColumn ( $searchkey );
 					$table = $this->getDatatable ()->getSearchTableByColumn ( $searchkey );
 					$pattern = $this->getDatatable ()->getSearchPatternByColumn ( $searchkey );
-					if ($table == 'user_wallet_history' && ! empty ( $searchvalue )) {
-						$searchraw [$table] [] = 'uwh.' . $column . ' ' . sprintf ( $pattern, $searchvalue );
-					} elseif ($table == 'user_wallet_history_bank' && ! empty ( $searchvalue )) {
-						$searchraw [$table] [] = 'uwhb.' . $column . ' ' . sprintf ( $pattern, $searchvalue );
-					} elseif ($table == 'user_access_from' && ! empty ( $searchvalue )) {
-						$searchraw [$table] [] = 'uaf.' . $column . ' ' . sprintf ( $pattern, $searchvalue );
-					} elseif ($table == 'user_access_to' && ! empty ( $searchvalue )) {
-						$searchraw [$table] [] = 'uat.' . $column . ' ' . sprintf ( $pattern, $searchvalue );
+					$tablealias = "";
+					if ($table == 'user_wallet_history') {
+						$tablealias = "uwh";
+					} elseif ($table == 'user_access_to') {
+						$tablealias = "uat";
+					} elseif ($table == 'user_access_from') {
+						$tablealias = "uaf";
+					}
+					if (! empty ( $searchvalue ) && ! empty ( $tablealias ) && ! empty ( $column )) {
+						if ($is_date) {
+							$searchraw [$table] [] = 'date(' . $tablealias . '.' . $column . ') ' . sprintf ( $pattern, $searchvalue );
+						} else {
+							$searchraw [$table] [] = $tablealias . '.' . $column . ' ' . sprintf ( $pattern, $searchvalue );
+						}
 					}
 				}
 				$search = $searchraw;
@@ -124,13 +167,13 @@ class PendingActionController extends AbstractActionController {
 			}
 			$search ['user_wallet_history'] [] = 'uwh.wallet_status_id = 1';
 			if (! $this->isAdminUser ()) {
-				$search ['user_wallet_history'] [] = 'uwh.user_access_id = ' . $this->getUserIDn ();
+				$search ['user_wallet_history'] [] = 'uwh.user_access_id = ' . $this->getUserID ();
 			}
-			$listdataraw = $this->getUserWallet ()->getWithdrawHistoryListing ( $search, $order, $index, $perpage, $cache, true );
+			$listdataraw = $this->getUserWallet ()->getWithdrawHistoryListing ( $search, $order, $index, $perpage, true );
 			$jsonData = array ();
 			$jsonData ['Result'] = "OK";
 			$jsonData ['Records'] = $listdataraw;
-			$jsonData ['TotalRecordCount'] = count ( $listdataraw );
+			$jsonData ['TotalRecordCount'] = $this->getUserWallet ()->getWithdrawHistoryListingTotal ( $search, true );
 			$Response->setContent ( Json::encode ( $jsonData ) );
 		}
 		return $Response;
@@ -205,6 +248,12 @@ class PendingActionController extends AbstractActionController {
 		}
 		return $Response;
 	}
+	
+	/**
+	 * Manage Action
+	 *
+	 * @return Json Response
+	 */
 	public function ManageAction() {
 		$this->layout ( 'blank/layout' );
 		$Request = $this->getRequest ();
@@ -294,79 +343,43 @@ class PendingActionController extends AbstractActionController {
 		}
 		return $Response;
 	}
-	private function MenuModel() {
-		$menu = array (
-				array (
-						'label' => $this->getTranslate ( 'text_search' ),
-						'tab' => 'tabs-search',
-						'istab' => True,
-						'content' => $this->SearchModel () 
-				),
-				array (
-						'label' => $this->getTranslate ( 'text_column' ),
-						'tab' => 'tabs-column',
-						'istab' => True,
-						'content' => $this->ColumnModel () 
-				) 
-		);
-		$MenuModel = new ViewModel ();
-		$MenuModel->setTerminal ( true );
-		$MenuModel->setTemplate ( 'share/datatable/menu' );
-		$MenuModel->setVariables ( array (
-				'menu' => $menu 
-		) );
-		
-		return $this->getServiceLocator ()->get ( 'viewrenderer' )->render ( $MenuModel );
+	
+	/**
+	 * Get Variable
+	 *
+	 * @return array
+	 */
+	private function getVariables() {
+		if (! is_array ( $this->variable ) && empty ( $this->variable )) {
+			$Status = $this->getUserWallet ()->StatusToForm ();
+			$Transaction = $this->getUserWallet ()->TransactionToForm ();
+			$Type_From = $this->getUserWallet ()->TypeToForm ();
+			$Type_To = $this->getUserWallet ()->TypeToForm ();
+			
+			$this->variable = array (
+					'wallet_status_id' => $Status,
+					'wallet_transaction_id' => $Transaction,
+					'wallet_type_id_from' => $Type_From,
+					'wallet_type_id_to' => $Type_To 
+			);
+		}
+		return $this->variable;
 	}
-	private function SearchModel() {
-		$SearchSimpleModel = new ViewModel ();
-		$SearchSimpleModel->setTerminal ( true );
-		$SearchSimpleModel->setTemplate ( 'share/wallet/searchsimple' );
-		$SearchSimpleModel->setVariables ( array (
-				'search' => $this->datasearch 
-		) );
-		$SearchSimpleModel = $this->getServiceLocator ()->get ( 'viewrenderer' )->render ( $SearchSimpleModel );
-		
-		$SearchAdvanceModel = new ViewModel ();
-		$SearchAdvanceModel->setTerminal ( true );
-		$SearchAdvanceModel->setTemplate ( 'share/wallet/searchadvance' );
-		$SearchAdvanceModel->setVariables ( array (
-				'search' => $this->datasearch 
-		) );
-		$SearchAdvanceModel = $this->getServiceLocator ()->get ( 'viewrenderer' )->render ( $SearchAdvanceModel );
-		
-		$SearchModel = new ViewModel ();
-		$SearchModel->setTerminal ( true );
-		$SearchModel->setTemplate ( 'share/datatable/menu/search' );
-		$SearchModel->setVariables ( array (
-				'simple' => $SearchSimpleModel,
-				'advance' => $SearchAdvanceModel 
-		) );
-		return $this->getServiceLocator ()->get ( 'viewrenderer' )->render ( $SearchModel );
-	}
-	private function ColumnModel() {
-		$ColumnModel = new ViewModel ();
-		$ColumnModel->setTerminal ( true );
-		$ColumnModel->setTemplate ( 'share/datatable/menu/column' );
-		$ColumnModel->setVariables ( array (
-				'column' => $this->datacolumn 
-		) );
-		return $this->getServiceLocator ()->get ( 'viewrenderer' )->render ( $ColumnModel );
-	}
-	private function getVariable() {
-		$Status = $this->getUserWallet ()->StatusToForm ();
-		;
-		$Transaction = $this->getUserWallet ()->TransactionToForm ();
-		;
-		$Type_From = $this->getUserWallet ()->TypeToForm ();
-		;
-		$Type_To = $this->getUserWallet ()->TypeToForm ();
-		;
-		return array (
-				'user_wallet_status_text' => $Status,
-				'user_wallet_transaction_text' => $Transaction,
-				'user_wallet_type_from_text' => $Type_From,
-				'user_wallet_type_to_text' => $Type_To 
-		);
+	
+	/**
+	 * Get Datatable
+	 *
+	 * @return datatable
+	 */
+	private function getDatatable() {
+		if (! is_object ( $this->datatable )) {
+			$options = array (
+					'servicelocator' => $this->getServiceLocator (),
+					'action' => 'Index',
+					'variable' => $this->getVariables () 
+			);
+			$this->datatable = new Datatable ( $options );
+		}
+		return $this->datatable;
 	}
 }

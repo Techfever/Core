@@ -1,0 +1,112 @@
+<div class="layoutBoxes"><?php
+$success = $this->success;
+if ($success) {
+	$content = $this->content;
+	?><div class="body">
+		<div class="bodyheader">
+			<div class="more"><?php
+	echo $this->htmlLink ( $this->serverUrl ( $this->baseHref () . '/' . $this->route ), $this->translate ( 'text_more' ) );
+	?></div>
+			<div><?php
+	echo $this->title;
+	?></div>
+		</div>
+		<div class="widgetTable"><?php
+	if (is_array ( $content ) && count ( $content ) > 0) {
+		?><div class="datatablecontent">
+				<div class="list">
+					<div id="datatable">
+						<div class="jtable-main-container">
+							<table class="jtable">
+								<thead>
+									<tr>
+										<th style="width: 20px;" class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_no'); ?></span>
+										</th>
+										<?php if(WIDGET_WALLET_LISTING_USERNAME_FROM == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_wallet_username_from'); ?></span></th>
+										<?php } if(WIDGET_WALLET_LISTING_USERNAME_TO == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_wallet_username_to'); ?></span></th>
+										<?php } if(WIDGET_WALLET_LISTING_TYPE_FROM == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_wallet_type_from'); ?></span></th>
+										<?php } if(WIDGET_WALLET_LISTING_TYPE_TO == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_wallet_type_to'); ?></span></th>
+										<?php } if(WIDGET_WALLET_LISTING_STATUS == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_wallet_status'); ?></span></th>
+										<?php } if(WIDGET_WALLET_LISTING_TRANSACTION == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_wallet_transaction'); ?></span></th>
+										<?php } if(WIDGET_WALLET_LISTING_AMOUNT_IN == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_wallet_history_amount_in'); ?></span></th>
+										<?php } if(WIDGET_WALLET_LISTING_AMOUNT_OUT == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_wallet_history_amount_out'); ?></span></th>
+										<?php } if(WIDGET_WALLET_LISTING_REF_NO == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_wallet_history_ref_no'); ?></span></th>
+										<?php } if(WIDGET_WALLET_LISTING_COMMENT == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_wallet_history_comment'); ?></span></th>
+										<?php } if(WIDGET_WALLET_LISTING_APPROVED_BY == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_wallet_history_approved_by'); ?></span></th>
+										<?php } if(WIDGET_WALLET_LISTING_APPROVED_DATE == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_wallet_history_approved_date'); ?></span></th>
+										<?php } if(WIDGET_WALLET_LISTING_CREATED_BY == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_wallet_history_created_by'); ?></span></th>
+										<?php } if(WIDGET_WALLET_LISTING_CREATED_DATE == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_wallet_history_created_date'); ?></span></th>
+										<?php } if(WIDGET_WALLET_LISTING_MODIFIED_BY == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_wallet_history_modified_by'); ?></span></th>
+										<?php } if(WIDGET_WALLET_LISTING_MODIFIED_DATE == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_wallet_history_modified_date'); ?></span></th><?php } ?>
+										</tr>
+								</thead>
+								<tbody><?php
+		$count = 1;
+		foreach ( $content as $content_value ) {
+			?><tr
+										class="jtable-data-row jtable-row-<?php echo ((boolean) ($count % 2) ? "odd" : "even"); ?>">
+										<td><?php echo $count; ?></td>
+										<?php if(WIDGET_WALLET_LISTING_USERNAME_FROM == "True"){ ?><td><?php echo $content_value ['user_username_from'];?></td>
+										<?php } if(WIDGET_WALLET_LISTING_USERNAME_TO == "True"){ ?><td><?php echo $content_value ['user_username_to'];?></td>
+										<?php } if(WIDGET_WALLET_LISTING_TYPE_FROM == "True"){ ?><td><?php echo $content_value ['user_wallet_type_from_text'];?></td>
+										<?php } if(WIDGET_WALLET_LISTING_TYPE_TO == "True"){ ?><td><?php echo $content_value ['user_wallet_type_to_text'];?></td>
+										<?php } if(WIDGET_WALLET_LISTING_STATUS == "True"){ ?><td><?php echo $content_value ['user_wallet_status_text'];?></td>
+										<?php } if(WIDGET_WALLET_LISTING_TRANSACTION == "True"){ ?><td><?php echo $content_value ['user_wallet_transaction_text'];?></td>
+										<?php } if(WIDGET_WALLET_LISTING_AMOUNT_IN == "True"){ ?><td><?php echo $content_value ['user_wallet_history_amount_in'];?></td>
+										<?php } if(WIDGET_WALLET_LISTING_AMOUNT_OUT == "True"){ ?><td><?php echo $content_value ['user_wallet_history_amount_out'];?></td>
+										<?php } if(WIDGET_WALLET_LISTING_REF_NO == "True"){ ?><td><?php echo $content_value ['user_wallet_history_ref_no'];?></td>
+										<?php } if(WIDGET_WALLET_LISTING_COMMENT == "True"){ ?><td><?php echo $content_value ['user_wallet_history_comment'];?></td>
+										<?php } if(WIDGET_WALLET_LISTING_APPROVED_BY == "True"){ ?><td><?php echo $content_value ['user_wallet_history_approved_by'];?></td>
+										<?php } if(WIDGET_WALLET_LISTING_APPROVED_DATE == "True"){ ?><td><?php echo $content_value ['user_wallet_history_approved_date_format'];?></td>
+										<?php } if(WIDGET_WALLET_LISTING_CREATED_BY == "True"){ ?><td><?php echo $content_value ['user_wallet_history_created_by'];?></td>
+										<?php } if(WIDGET_WALLET_LISTING_CREATED_DATE == "True"){ ?><td><?php echo $content_value ['user_wallet_history_created_date_format'];?></td>
+										<?php } if(WIDGET_WALLET_LISTING_MODIFIED_BY == "True"){ ?><td><?php echo $content_value ['user_wallet_history_modified_by'];?></td>
+										<?php } if(WIDGET_WALLET_LISTING_MODIFIED_DATE == "True"){ ?><td><?php echo $content_value ['user_wallet_history_modified_date_format'];?></td><?php } ?>
+									</tr><?php
+			$count ++;
+		}
+		?></tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div><?php
+	}
+	?></div>
+	</div><?php
+}
+?>
+</div>

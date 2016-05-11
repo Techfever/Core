@@ -1,0 +1,109 @@
+<?php
+$content = $this->details;
+$summary = $content ['summary'];
+$details = $content ['details'];
+?><div class="seperator"></div>
+<div class="review_summary">
+	<div class="datatablecontent">
+		<div class="list">
+			<div id="datatable">
+				<div class="jtable-main-container">
+					<table class="jtable" style="width: 40%;">
+						<thead>
+							<tr>
+								<th class="jtable-column-header" colspan="2"><span
+									class="jtable-column-header-text"><?php echo $this->translate('text_summary'); ?></span>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="jtable-data-row jtable-row-even">
+								<td style="white-space: nowrap; width: 50%;"><?php echo $this->translate('text_filter_date_from'); ?>&nbsp;:</td>
+								<td><?php echo $summary['start_date']; ?></td>
+							</tr>
+							<tr class="jtable-data-row jtable-row-odd">
+								<td style="white-space: nowrap;"><?php echo $this->translate('text_filter_date_to'); ?>&nbsp;:</td>
+								<td><?php echo $summary['end_date']; ?></td>
+							</tr>
+							<tr class="jtable-data-row jtable-row-even">
+								<td style="white-space: nowrap;"><?php echo $this->translate('text_total_user'); ?>&nbsp;:</td>
+								<td><?php echo $summary['total_user']; ?></td>
+							</tr>
+							<tr class="jtable-data-row jtable-row-odd">
+								<td style="white-space: nowrap;"><?php echo $this->translate('text_total_amount'); ?>&nbsp;:</td>
+								<td><?php echo number_format($summary['total_amount'],2); ?></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="review_details">
+	<div class="datatablecontent">
+		<div class="list">
+			<div id="datatable">
+				<div class="jtable-main-container"><?php
+				if (is_array ( $details ) && count ( $details ) > 0) {
+					$summary_rank = $summary ['rank'];
+					foreach ( $details as $details_key => $details_value ) {
+						$rank_text = "";
+						$total_user = "";
+						$total_amount = "";
+						if (array_key_exists ( $details_key, $summary_rank )) {
+							$rank_text = $summary_rank [$details_key] ['rank'];
+							$total_user = $summary_rank [$details_key] ['total_user'];
+							$total_amount = number_format ( $summary_rank [$details_key] ['total_amount'], 2 );
+						}
+						echo '<br>' . $this->translate ( 'text_user_rank' ) . '&nbsp;:<b>' . $rank_text . '</b>&nbsp;&nbsp;' . $this->translate ( 'text_total_user' ) . '&nbsp;:<b>' . $total_user . '</b>&nbsp;&nbsp;' . $this->translate ( 'text_total_amount' ) . '&nbsp;:<b>' . $total_amount . '</b>';
+						?>
+					<table class="jtable">
+						<thead>
+							<tr>
+								<th class="jtable-column-header"><span
+									class="jtable-column-header-text"><?php
+						echo $this->translate ( 'text_no' );
+						?></span></th>
+								<th class="jtable-column-header"><span
+									class="jtable-column-header-text"><?php
+						echo $this->translate ( 'text_user_username_from' );
+						?></span></th>
+								<th class="jtable-column-header"><span
+									class="jtable-column-header-text"><?php
+						echo $this->translate ( 'text_user_wallet_amount' );
+						?></span></th>
+								<th class="jtable-column-header"><span
+									class="jtable-column-header-text"><?php
+						echo $this->translate ( 'text_rebate' );
+						?></span></th>
+								<th class="jtable-column-header"><span
+									class="jtable-column-header-text"><?php
+						echo $this->translate ( 'text_created_date' );
+						?></span></th>
+							</tr>
+						</thead>
+						<tbody><?php
+						if (is_array ( $details_value ) && count ( $details_value ) > 0) {
+							$count = 1;
+							foreach ( $details_value as $data ) {
+								?><tr
+								class="jtable-data-row jtable-row-<?php echo ((boolean) ($count % 2) ? "odd" : "even"); ?>">
+								<td><?php echo $count; ?></td>
+								<td><?php echo $data['username_from']; ?></td>
+								<td><?php echo number_format($data['amount'],2); ?></td>
+								<td><?php echo number_format($data['profit'],2); ?></td>
+								<td><?php echo $data['created_date_format']; ?></td>
+							</tr><?php
+								$count ++;
+							}
+						}
+						?></tbody>
+					</table><?php
+					}
+				}
+				?></div>
+			</div>
+		</div>
+	</div>
+</div>

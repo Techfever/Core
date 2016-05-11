@@ -1,0 +1,9 @@
+<?php
+$container = $this->navigation ( 'navigator' )->getContainer ();
+$menucontainer = clone $container;
+echo $this->navigation ( $menucontainer )->menu ()->renderMenu ( null, array (
+		'ulClass' => "navigation",
+		'escapeLabels' => false,
+		'addClassToListItem' => true 
+) );
+?><script type="text/javascript">$("ul.navigation").navigation();</script>

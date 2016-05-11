@@ -1,12 +1,18 @@
 <?php
 
-namespace Wallet\Controller;
+namespace Wallet\Logout\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Techfever\Template\Plugin\AbstractActionController;
 
-class LogoutActionController extends AbstractActionController {
+class ActionController extends AbstractActionController {
 	protected $type = 'wallet';
 	protected $module = 'logout';
+	
+	/**
+	 * Index Action
+	 *
+	 * @return ViewModel
+	 */
 	public function IndexAction() {
 		$this->getUserAccess ()->setLogoutWallet ();
 		return $this->redirect ()->toRoute ( 'Wallet/Login', array (

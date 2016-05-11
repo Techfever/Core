@@ -3,7 +3,7 @@
  * Zend Framework (http://framework.zend.com/)
  *
  * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
@@ -18,7 +18,8 @@ class MimeVersion implements HeaderInterface
 
     public static function fromString($headerLine)
     {
-        list($name, $value) = explode(': ', $headerLine, 2);
+        list($name, $value) = GenericHeader::splitHeaderLine($headerLine);
+        $value = HeaderWrap::mimeDecodeValue($value);
 
         // check to ensure proper header type for this factory
         if (strtolower($name) !== 'mime-version') {
@@ -28,7 +29,7 @@ class MimeVersion implements HeaderInterface
         // Check for version, and set if found
         $header = new static();
         if (preg_match('/^(?P<version>\d+\.\d+)$/', $value, $matches)) {
-            $header->version = $matches['version'];
+            $header->setVersion($matches['version']);
         }
 
         return $header;
@@ -68,6 +69,9 @@ class MimeVersion implements HeaderInterface
      */
     public function setVersion($version)
     {
+        if (! preg_match('/^[1-9]\d*\.\d+$/', $version)) {
+            throw new Exception\InvalidArgumentException('Invalid MIME-Version value detected');
+        }
         $this->version = $version;
         return $this;
     }

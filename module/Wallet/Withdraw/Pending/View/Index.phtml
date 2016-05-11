@@ -1,6 +1,7 @@
 <div class="menu">
 <?php
-echo $this->menumodel;
+$menumodel = $this->menumodel;
+echo $this->FormFactory ( $menumodel );
 ?></div>
 <div class="datatablecontent">
 	<div class="list">

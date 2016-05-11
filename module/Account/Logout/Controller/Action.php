@@ -1,16 +1,18 @@
 <?php
 
-namespace Account\Controller;
+namespace Account\Logout\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Techfever\Template\Plugin\AbstractActionController;
 
-class LogoutActionController extends AbstractActionController {
-	protected $type = 'account';
-	protected $module = 'logout';
+class ActionController extends AbstractActionController {
+	/**
+	 * Index Action
+	 *
+	 * @return ViewModel
+	 */
 	public function IndexAction() {
 		$this->getUserAccess ()->setLogout ();
-		return $this->redirect ()->toRoute ( 'Account/Login', array (
-				'action' => 'Index' 
-		) );
+		$this->getUserAccess ()->setLogoutWallet ();
+		$this->redirectHome ();
 	}
 }

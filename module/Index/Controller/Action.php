@@ -2,14 +2,14 @@
 
 namespace Index\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Techfever\Template\Plugin\AbstractActionController;
 
 class ActionController extends AbstractActionController {
-	public function __construct() {
-	}
+	/**
+	 * Index Action
+	 *
+	 * @return ViewModel
+	 */
 	public function IndexAction() {
-		return $this->redirect ()->toRoute ( 'Account/Login', array (
-				'action' => 'Index' 
-		) );
 	}
 }

@@ -1,0 +1,149 @@
+<div class="layoutBoxes"><?php
+$success = $this->success;
+if ($success) {
+	$content = $this->content;
+	?><div class="body">
+		<div class="bodyheader">
+			<div class="more"><?php
+	echo $this->htmlLink ( $this->serverUrl ( $this->baseHref () . '/' . $this->route ), $this->translate ( 'text_more' ) );
+	?></div>
+			<div><?php
+	echo $this->title;
+	?></div>
+		</div>
+		<div class="widgetTable"><?php
+	if (is_array ( $content ) && count ( $content ) > 0) {
+		?><div class="datatablecontent">
+				<div class="list">
+					<div id="datatable">
+						<div class="jtable-main-container">
+							<table class="jtable">
+								<thead>
+									<tr>
+										<th style="width: 20px;" class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_no'); ?></span>
+										</th>
+										<?php if(WIDGET_MEMBER_LISTING_USER_ACCESS_USERNAME == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_access_username'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_ACCESS_STATUS == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_access_status'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_RANK == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_rank'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_FULLNAME == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_profile_fullname'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_HIERARCHY_SPONSOR == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_hierarchy_sponsor_username'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_HIERARCHY_PLACEMENT == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_hierarchy_placement_username'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_DESIGNATION== "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_profile_designation'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_DOB == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_profile_dob'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_EMAIL_ADDRESS == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_profile_email_address'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_FAX_NO == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_profile_fax_no'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_GENDER == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_profile_gender'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_NATIONALITY == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_profile_nationality'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_NRIC_PASSPORT == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_profile_nric_passport'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_OFFICE_NO == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_profile_office_no'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_TELEPHONE_NO == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_profile_telephone_no'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_MOBILE_NO == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_profile_mobile_no'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_ACCESS_LAST_LOGIN_IP == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_access_last_login_ip'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_ACCESS_LAST_LOGIN_DATE == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_access_last_login_date'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_ACCESS_NO_OF_LOGIN == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_access_no_of_login'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_ACCESS_CREATED_BY == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_access_created_by'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_ACCESS_CREATED_DATE == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_access_created_date'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_MODIFIED_BY == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_profile_modified_by'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_MODIFIED_DATE == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_profile_modified_date'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_CREATED_BY == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_profile_created_by'); ?></span></th>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_CREATED_DATE == "True"){ ?><th
+											class="jtable-column-header"><span
+											class="jtable-column-header-text"><?php echo $this->translate('text_user_profile_created_date'); ?></span></th>
+											<?php } ?>
+									</tr>
+								</thead>
+								<tbody><?php
+		$count = 1;
+		foreach ( $content as $content_value ) {
+			?><tr
+										class="jtable-data-row jtable-row-<?php echo ((boolean) ($count % 2) ? "odd" : "even"); ?>">
+										<td><?php echo $count; ?></td>
+										<?php if(WIDGET_MEMBER_LISTING_USER_ACCESS_USERNAME == "True"){ ?><td><?php echo $content_value ['user_access_username'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_ACCESS_STATUS == "True"){ ?><td><?php echo $content_value ['user_access_status_text'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_RANK == "True"){ ?><td><?php echo $content_value ['user_rank_text'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_FULLNAME == "True"){ ?><td><?php echo $content_value ['user_profile_fullname'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_HIERARCHY_SPONSOR == "True"){ ?><td><?php echo $content_value ['user_hierarchy_sponsor_username'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_HIERARCHY_PLACEMENT == "True"){ ?><td><?php echo $content_value ['user_hierarchy_placement_username'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_DESIGNATION== "True"){ ?><td><?php echo $content_value ['user_profile_designation_text'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_DOB == "True"){ ?><td><?php echo $content_value ['user_profile_dob_format'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_EMAIL_ADDRESS == "True"){ ?><td><?php echo $content_value ['user_profile_email_address'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_FAX_NO == "True"){ ?><td><?php echo $content_value ['user_profile_fax_no'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_GENDER == "True"){ ?><td><?php echo $content_value ['user_profile_gender_text'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_NATIONALITY == "True"){ ?><td><?php echo $content_value ['user_profile_nationality_text'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_NRIC_PASSPORT == "True"){ ?><td><?php echo $content_value ['user_profile_nric_passport'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_OFFICE_NO == "True"){ ?><td><?php echo $content_value ['user_profile_office_no'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_TELEPHONE_NO == "True"){ ?><td><?php echo $content_value ['user_profile_telephone_no'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_MOBILE_NO == "True"){ ?><td><?php echo $content_value ['user_profile_mobile_no'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_ACCESS_LAST_LOGIN_IP == "True"){ ?><td><?php echo $content_value ['user_access_last_login_ip'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_ACCESS_LAST_LOGIN_DATE == "True"){ ?><td><?php echo $content_value ['user_access_last_login_date_format'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_ACCESS_NO_OF_LOGIN == "True"){ ?><td><?php echo $content_value ['user_access_no_of_login'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_ACCESS_CREATED_BY == "True"){ ?><td><?php echo $content_value ['user_access_created_by'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_ACCESS_CREATED_DATE == "True"){ ?><td><?php echo $content_value ['user_access_created_date_format'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_MODIFIED_BY == "True"){ ?><td><?php echo $content_value ['user_profile_modified_by'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_MODIFIED_DATE == "True"){ ?><td><?php echo $content_value ['user_profile_modified_date_format'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_CREATED_BY == "True"){ ?><td><?php echo $content_value ['user_profile_created_by'];?></td>
+										<?php } if(WIDGET_MEMBER_LISTING_USER_PROFILE_CREATED_DATE == "True"){ ?><td><?php echo $content_value ['user_profile_created_date_format'];?></td><?php } ?>
+									</tr><?php
+			$count ++;
+		}
+		?></tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div><?php
+	}
+	?></div>
+	</div><?php
+}
+?>
+</div>

@@ -112,11 +112,13 @@ class Controller {
 			$QControllers = $this->getDatabase ();
 			$QControllers->select ();
 			$QControllers->columns ( array (
+					'id' => 'module_controllers_id',
+					'key' => 'module_controllers_key',
 					'config' => 'module_controllers_config',
 					'class' => 'module_controllers_class',
 					'alias' => 'module_controllers_alias',
 					'path' => 'module_controllers_path',
-					'file' => 'module_controllers_file' 
+					'file' => 'module_controllers_file',
 			) );
 			$QControllers->from ( array (
 					'm' => 'module_controllers' 
@@ -126,7 +128,6 @@ class Controller {
 					'module_controllers_priority ASC',
 					'module_controllers_alias ASC' 
 			) );
-			$QControllers->setCacheName ( 'module_controllers' );
 			$QControllers->execute ();
 			if ($QControllers->hasResult ()) {
 				$this->controller = $QControllers->toArray ();
@@ -182,5 +183,44 @@ class Controller {
 			$this->structure = $structure;
 		}
 		return $this->structure;
+	}
+	
+	/**
+	 * Get Controller ID
+	 *
+	 * @param string $controller        	
+	 * @return int
+	 */
+	public function getControllerID($controller) {
+		$data = $this->getController ();
+		if (is_array ( $data ) && count ( $data ) > 0) {
+			foreach ( $data as $controller_value ) {
+				if ($controller_value ['alias'] == $controller) {
+					return $controller_value ['id'];
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Verify Controller
+	 *
+	 * @param string $controller        	
+	 * @return int
+	 */
+	public function verifyController($controller) {
+		$status = false;
+		$data = $this->getController ();
+		if (is_array ( $data ) && count ( $data ) > 0) {
+			foreach ( $data as $controller_value ) {
+				echo $controller_value ['alias'] == $controller . '<br>';
+				if ($controller_value ['alias'] == $controller) {
+					$status = true;
+					break;
+				}
+			}
+		}
+		return $status;
 	}
 }

@@ -64,7 +64,6 @@ class Status extends GeneralBase {
 			$QStatus->from ( array (
 					'ws' => 'wallet_status' 
 			) );
-			$QStatus->setCacheName ( 'wallet_status' );
 			$QStatus->execute ();
 			if ($QStatus->hasResult ()) {
 				while ( $QStatus->valid () ) {

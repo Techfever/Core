@@ -2,7 +2,7 @@
 
 namespace Captcha\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Techfever\Template\Plugin\AbstractActionController;
 
 class ActionController extends AbstractActionController {
 	protected $_path = null;

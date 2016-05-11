@@ -1,17 +1,16 @@
 <?php
 $isAdminUser = $this->isAdminUser;
 if ($isAdminUser) {
+	$form = $this->form;
+	echo $this->FormFactory ( $form );
 	?>
-<div class="search"><?php
-	echo $this->inputmodel;
-	?></div>
 <div class="seperator"></div>
 <div class="form" style="display: none;"></div>
 <?php
 } else {
 	?>
 <div class="form"><?php
-	echo $this->inputmodel;
+	echo $this->form;
 	?></div>
 <?php
 }

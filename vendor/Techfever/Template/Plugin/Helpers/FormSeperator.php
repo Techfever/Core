@@ -3,10 +3,9 @@
 namespace Techfever\Template\Plugin\Helpers;
 
 use Zend\Form\ElementInterface;
-use Zend\Form\View\Helper\AbstractHelper;
 use Techfever\Exception;
 
-class FormSeperator extends AbstractHelper {
+class FormSeperator extends AbstractFormHelper {
 	/**
 	 * Attributes valid for the input tag
 	 *
@@ -30,11 +29,10 @@ class FormSeperator extends AbstractHelper {
 		}
 		
 		$attributes = $element->getAttributes ();
-		$attributes ['name'] = $name;
-		$content = ( string ) $element->getValue ();
+		$attributes ['class'] = 'seperator';
 		$escapeHtml = $this->getEscapeHtmlHelper ();
 		
-		return sprintf ( '<div %s>%s</div>', $this->createAttributesString ( $attributes ), $escapeHtml ( $content ) );
+		return sprintf ( '<div %s></div>', $this->createAttributesString ( $attributes ) );
 	}
 	
 	/**

@@ -137,7 +137,6 @@ class Router {
 					'system_routes_order ASC',
 					'system_routes_uri ASC' 
 			) );
-			$QRoutes->setCacheName ( 'system_routes' );
 			$QRoutes->execute ();
 			if ($QRoutes->hasResult ()) {
 				$this->routes = $QRoutes->toArray ();
@@ -168,7 +167,6 @@ class Router {
 			$QConstraints->order ( array (
 					'system_routes_constraints_order ASC' 
 			) );
-			$QConstraints->setCacheName ( 'system_routes_constraints' );
 			$QConstraints->execute ();
 			if ($QConstraints->hasResult ()) {
 				$this->constraints = $QConstraints->toArray ();
@@ -199,7 +197,6 @@ class Router {
 			$QDefaults->order ( array (
 					'system_routes_defaults_order ASC' 
 			) );
-			$QDefaults->setCacheName ( 'system_routes_defaults' );
 			$QDefaults->execute ();
 			if ($QDefaults->hasResult ()) {
 				$this->defaults = $QDefaults->toArray ();

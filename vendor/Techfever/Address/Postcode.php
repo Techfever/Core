@@ -59,7 +59,6 @@ class Postcode extends GeneralBase {
 				$DBPostcode->where ( array (
 						'cp.country_id = ' . $this->getOption ( 'country' ) 
 				) );
-				$DBPostcode->setCacheName ( 'country_postcode_' . $this->getOption ( 'country' ) );
 				$DBPostcode->execute ();
 				if ($DBPostcode->hasResult ()) {
 					$data = $DBPostcode->current ();

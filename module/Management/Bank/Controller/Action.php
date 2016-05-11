@@ -1,28 +1,70 @@
 <?php
 
-namespace Management\Controller;
+namespace Management\Bank\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Techfever\Template\Plugin\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Json\Json;
 use Techfever\User\Form\Defined as UserUpdateForm;
 
-class BankActionController extends AbstractActionController {
+class ActionController extends AbstractActionController {
+	
+	/**
+	 *
+	 * @var Rank Group
+	 *     
+	 */
 	protected $rankgroup = 88888;
+	/**
+	 *
+	 * @var Type
+	 *
+	 */
 	protected $type = 'management';
+	/**
+	 *
+	 * @var Module
+	 *
+	 */
 	protected $module = 'bank';
+	/**
+	 *
+	 * @var Input Form
+	 *     
+	 */
 	protected $inputform = null;
+	/**
+	 *
+	 * @var Search Form
+	 *     
+	 */
 	protected $searchform = null;
+	/**
+	 *
+	 * @var Username
+	 *
+	 */
 	protected $search_username = null;
+	
+	/**
+	 * Index Action
+	 *
+	 * @return ViewModel
+	 */
 	public function IndexAction() {
 		return $this->redirect ()->toRoute ( $this->getMatchedRouteName (), array (
 				'action' => 'Update' 
 		) );
 	}
+	
+	/**
+	 * Update Action
+	 *
+	 * @return ViewModel
+	 */
 	public function UpdateAction() {
-		$this->addCSS ( "ui-lightness/jquery-ui.css", "jquery" );
-		$this->addCSS ( "vendor/Techfever/Theme/" . SYSTEM_THEME . "/CSS/tooltip.css" );
-		$this->addCSS ( "vendor/Techfever/Theme/" . SYSTEM_THEME . "/CSS/steps.css" );
+		$this->addCSS ( "vendor/Techfever/Theme/" . SYSTEM_THEME_LOAD . "/CSS/tooltip.css" );
+		$this->addCSS ( "vendor/Techfever/Theme/" . SYSTEM_THEME_LOAD . "/CSS/steps.css" );
 		
 		$cryptId = ( string ) $this->params ()->fromRoute ( 'crypt', null );
 		if (! empty ( $cryptId ) && strlen ( $cryptId ) > 0) {
@@ -31,7 +73,7 @@ class BankActionController extends AbstractActionController {
 			$this->search_username = $this->getUserManagement ()->getUsername ( $userID );
 		}
 		
-		$this->addJavascript ( "vendor/Techfever/Theme/" . SYSTEM_THEME . "/Js/user.search.js", array (
+		$this->addJavascript ( "vendor/Techfever/Theme/" . SYSTEM_THEME_LOAD . "/Js/user.search.js", array (
 				'updateformid' => $this->convertToUnderscore ( $this->getMatchedRouteName () . '/Update', '/' ),
 				'searchformid' => $this->convertToUnderscore ( $this->getMatchedRouteName () . '/Search', '/' ),
 				'searchformuri' => $this->url ()->fromRoute ( $this->getMatchedRouteName (), array (
@@ -39,14 +81,28 @@ class BankActionController extends AbstractActionController {
 				) ),
 				'searchformusername' => $this->search_username 
 		) );
-		$this->addJavascript ( "vendor/Techfever/Theme/" . SYSTEM_THEME . "/Js/steps.js" );
-		$this->addJavascript ( "vendor/Techfever/Theme/" . SYSTEM_THEME . "/Js/user.bank.js", array (
-				'bankformid' => $this->convertToUnderscore ( $this->getMatchedRouteName () . '/Update', '/' ) 
+		$this->addJavascript ( "vendor/Techfever/Theme/" . SYSTEM_THEME_LOAD . "/Js/steps.js", array (
+				'stepsformid' => $this->convertToUnderscore ( $this->getMatchedRouteName () . '/Update', '/' ),
+				'stepsformuri' => $this->url ()->fromRoute ( $this->getMatchedRouteName (), array (
+						'action' => 'Update' 
+				) ) 
+		) );
+		$this->addJavascript ( "vendor/Techfever/Theme/" . SYSTEM_THEME_LOAD . "/Js/user.update.js", array (
+				'updateformid' => $this->convertToUnderscore ( $this->getMatchedRouteName () . '/Update', '/' ),
+				'updateformuri' => $this->url ()->fromRoute ( $this->getMatchedRouteName (), array (
+						'action' => 'update' 
+				) ),
+				'updateformdialogtitle' => $this->getTranslate ( "text_dialog_user_update_" . $this->module . "_title" ),
+				'updateformdialogcontent' => $this->getTranslate ( "text_dialog_user_update_" . $this->module . "_content" ) 
 		) );
 		
-		$InputForm = $this->InputForm ();
 		if ($this->isXmlHttpRequest ()) {
 			$id = 0;
+			$encoded_id = $this->getPost ( 'modify_value' );
+			if (! empty ( $encoded_id ) && strlen ( $encoded_id ) > 0) {
+				$id = $this->Decrypt ( $encoded_id );
+			}
+			$InputForm = $this->InputForm ( $id );
 			$action = strtolower ( $this->getPost ( 'submit', 'preview' ) );
 			$subaction = null;
 			$js = null;
@@ -55,7 +111,7 @@ class BankActionController extends AbstractActionController {
 			$flashmessages = null;
 			if ($InputForm->isPost () && $InputForm->isValid () && $action == 'submit') {
 				$valid = true;
-				$id = $this->Decrypt ( $InputForm->getPost ( 'user_modify' ) );
+				$id = $this->Decrypt ( $InputForm->getPost ( 'modify_value' ) );
 				
 				$data = $InputForm->getData ();
 				$profile = $this->getUserManagement ()->getProfileID ( $id );
@@ -84,16 +140,21 @@ class BankActionController extends AbstractActionController {
 			return $InputForm->getResponse ();
 		} else {
 			return array (
-					'searchmodel' => $this->ViewModel ( 'search' ) 
+					'search' => $this->SearchForm () 
 			);
 		}
 	}
+	
+	/**
+	 * Search Action
+	 *
+	 * @return ViewModel
+	 */
 	public function SearchAction() {
 		$valid = false;
 		$id = 0;
 		$username = null;
 		$messages = array ();
-		$InputModel = null;
 		
 		$SearchForm = $this->SearchForm ();
 		if ($SearchForm->isXmlHttpRequest ()) {
@@ -101,10 +162,8 @@ class BankActionController extends AbstractActionController {
 			$id = $this->getUserManagement ()->getID ( $username, $this->rankgroup, null );
 			if ($id > 0) {
 				$valid = true;
-				
-				$this->InputForm ( $id );
-				$InputModel = $this->ViewModel ( 'update' );
 			} else {
+				$id = 0;
 				$messages = $this->getTranslate ( 'text_error_' . $this->type . '_username_not_exist' );
 				$messages = sprintf ( $messages, $username );
 			}
@@ -113,43 +172,41 @@ class BankActionController extends AbstractActionController {
 					'action' => 'Update' 
 			) );
 		}
+		
 		$SearchForm->getResponse ()->setContent ( Json::encode ( array (
-				'inputmodel' => $InputModel,
+				'inputmodel' => $this->ViewModelUpdate ( $id ),
 				'messages' => $messages,
 				'id' => $id,
 				'username' => $username,
 				'valid' => $valid,
-				'js' => '$(this).Steps({
-							formname : "' . $this->convertToUnderscore ( $this->getMatchedRouteName () . '/Update', '/' ) . '",
-							formuri : "' . $this->url ()->fromRoute ( $this->getMatchedRouteName (), array (
-						'action' => 'Update' 
-				) ) . '",
-							dialogtitle : "' . $this->getTranslate ( "text_dialog_user_update_" . $this->module . "_title" ) . '",
-							dialogcontent : "' . $this->getTranslate ( "text_dialog_user_update_" . $this->module . "_content" ) . '",
-						});
-										$(this).Bank();' 
+				'js' => '$(this).UserUpdate();' 
 		) ) );
 		
 		return $SearchForm->getResponse ();
 	}
-	private function ViewModel($action) {
+	
+	/**
+	 * Search Action
+	 *
+	 * @return ViewModel
+	 */
+	private function ViewModelUpdate($id = null) {
 		$ViewModel = new ViewModel ();
 		$ViewModel->setTerminal ( true );
-		if ($action === 'search') {
-			$ViewModel->setTemplate ( 'share/user/searchupdate' );
-			$ViewModel->setVariables ( array (
-					'searchform' => $this->SearchForm () 
-			) );
-		} elseif ($action === 'update') {
-			$ViewModel->setTemplate ( 'share/form/update' );
-			$ViewModel->setVariables ( array (
-					'form' => $this->InputForm () 
-			) );
-		}
+		$ViewModel->setTemplate ( 'share/form/update' );
+		$ViewModel->setVariables ( array (
+				'form' => $this->InputForm ( $id ) 
+		) );
 		return $this->getServiceLocator ()->get ( 'viewrenderer' )->render ( $ViewModel );
 	}
-	private function SearchForm() {
-		if (! is_object ( $this->searchform )) {
+	
+	/**
+	 * Form Search
+	 *
+	 * @return Form
+	 */
+	protected function SearchForm() {
+		if (! is_object ( $this->searchform ) && empty ( $this->searchform )) {
 			$options = array (
 					'servicelocator' => $this->getServiceLocator (),
 					'rank' => $this->rankgroup,
@@ -159,8 +216,14 @@ class BankActionController extends AbstractActionController {
 		}
 		return $this->searchform;
 	}
-	private function InputForm($id = null) {
-		if (! is_object ( $this->inputform ) || ! empty ( $id )) {
+	
+	/**
+	 * Form Input
+	 *
+	 * @return Form
+	 */
+	protected function InputForm($id = null) {
+		if ((! is_object ( $this->inputform ) && empty ( $this->inputform )) || ! empty ( $id )) {
 			$options = array (
 					'servicelocator' => $this->getServiceLocator (),
 					'rank' => $this->rankgroup,

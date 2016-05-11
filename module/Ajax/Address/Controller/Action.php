@@ -1,54 +1,41 @@
 <?php
 
-namespace Ajax\Controller;
+namespace Ajax\Address\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Techfever\Template\Plugin\AbstractActionController;
 use Zend\Json\Json;
 
-class AddressActionController extends AbstractActionController {
+class ActionController extends AbstractActionController {
 	public function getStateAction() {
 		$request = $this->getRequest ();
 		$response = $this->getResponse ();
-		$success = 0;
-		$valid = 0;
-		$country = $request->getPost ( 'country' );
 		$address_data = array ();
+		$country = $this->params ()->fromQuery ( 'country' );
+		$state = $this->params ()->fromQuery ( 'state' );
+		$this->getLog()->info($country);
+		$this->getLog()->info($state);
 		if ($request->isXmlHttpRequest ()) {
-			$address_data [] = array (
-					'id' => '',
-					'value' => '' 
-			);
-			if (isset ( $country ) && $country > 0) {
-				$address_state = array ();
-				
-				$this->getUserAddress ()->setOption ( 'country', $country );
-				$this->getUserAddress ()->clearUserAddressData ();
-				$address_state = $this->getUserAddress ()->stateToForm ();
-				
-				if (is_array ( $address_state )) {
-					foreach ( $address_state as $address_key => $address_value ) {
-						$address_data [] = array (
-								'id' => $address_key,
-								'value' => $this->getTranslate ( $address_value ) 
-						);
-						$valid = 1;
-					}
-				}
-				$success = 1;
-			}
-			$address_data [] = array (
-					'id' => '0',
-					'value' => $this->getTranslate ( 'text_not_listed' ) 
-			);
+			$country = $this->getUserAddress ()->getCountryID($country);
+			$this->getUserAddress ()->setOption ( 'country', $country );
+			$this->getUserAddress ()->clearUserAddressData ();
+			$address_data = $this->getUserAddress ()->getStateByExpr ( $state );
 		} else {
 			return $this->redirect ()->toRoute ( 'Index' );
 		}
-		$response->setContent ( Json::encode ( array (
-				'success' => $success,
-				'valid' => $valid,
-				'country' => $country,
-				'data' => $address_data 
-		) ) );
+		$response->setContent ( Json::encode ( $address_data ) );
+		return $response;
+	}
+	public function getCountryAction() {
+		$request = $this->getRequest ();
+		$response = $this->getResponse ();
+		$address_data = array ();
+		$country = $this->params ()->fromQuery ( 'country' );
+		if ($request->isXmlHttpRequest ()) {
+			$address_data = $this->getUserAddress ()->getCountryByExpr ( $country );
+		} else {
+			return $this->redirect ()->toRoute ( 'Index' );
+		}
+		$response->setContent ( Json::encode ( $address_data ) );
 		return $response;
 	}
 	public function getUserAction() {
@@ -70,12 +57,12 @@ class AddressActionController extends AbstractActionController {
 				$data ['user_address_created_date_format'] = "";
 				if ($data ['user_address_created_date'] != '0000-00-00 00:00:00') {
 					$datetime = new \DateTime ( $data ['user_address_created_date'] );
-					$data ['user_address_created_date_format'] = $datetime->format ( 'H:i:s d-m-Y' );
+					$data ['user_address_created_date_format'] = $datetime->format ( 'H:i:s d-F-Y' );
 				}
 				$data ['user_address_modified_date_format'] = "";
 				if ($data ['user_address_modified_date'] != '0000-00-00 00:00:00') {
 					$datetime = new \DateTime ( $data ['user_address_modified_date'] );
-					$data ['user_address_modified_date_format'] = $datetime->format ( 'H:i:s d-m-Y' );
+					$data ['user_address_modified_date_format'] = $datetime->format ( 'H:i:s d-F-Y' );
 				}
 				$success = 1;
 			}

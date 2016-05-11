@@ -23,6 +23,30 @@ class Element implements ElementAttributeRemovalInterface, ElementInterface, Ini
 	
 	/**
 	 *
+	 * @var string
+	 */
+	protected $title;
+	
+	/**
+	 *
+	 * @var integer
+	 */
+	protected $node;
+	
+	/**
+	 *
+	 * @var integer
+	 */
+	protected $parent;
+	
+	/**
+	 *
+	 * @var boolean
+	 */
+	protected $ispassword;
+	
+	/**
+	 *
 	 * @var array
 	 */
 	protected $labelAttributes;
@@ -47,6 +71,12 @@ class Element implements ElementAttributeRemovalInterface, ElementInterface, Ini
 	 * @var mixed
 	 */
 	protected $content;
+	
+	/**
+	 *
+	 * @var mixed
+	 */
+	protected $tab;
 	
 	/**
 	 *
@@ -160,6 +190,48 @@ class Element implements ElementAttributeRemovalInterface, ElementInterface, Ini
 			$this->setLabel ( $options ['label'] );
 		}
 		
+		if (isset ( $options ['title'] )) {
+			$this->setTitle ( $options ['label'] );
+		}
+		
+		if (isset ( $options ['node'] )) {
+			if (! array_key_exists ( 'node', $options )) {
+				$options ['node'] = 0;
+			} else {
+				if (is_int ( $options ['node'] )) {
+					$options ['node'] = ( int ) $options ['node'];
+				}
+			}
+			$this->setNode ( $options ['node'] );
+		}
+		
+		if (isset ( $options ['parent'] )) {
+			if (! array_key_exists ( 'parent', $options )) {
+				$options ['parent'] = 0;
+			} else {
+				if (is_int ( $options ['parent'] )) {
+					$options ['parent'] = ( int ) $options ['parent'];
+				}
+			}
+			$this->setParent ( $options ['parent'] );
+		}
+		
+		if (isset ( $options ['ispassword'] )) {
+			if (! array_key_exists ( 'ispassword', $options )) {
+				$options ['ispassword'] = "False";
+			} else {
+				if (is_bool ( $options ['ispassword'] )) {
+					if ($options ['ispassword']) {
+						$options ['ispassword'] = True;
+					} else {
+						$options ['ispassword'] = False;
+					}
+				}
+			}
+			$options ['ispassword'] = ($options ['ispassword'] == "True" ? True : False);
+			$this->setisPassword ( $options ['ispassword'] );
+		}
+		
 		if (isset ( $options ['label_attributes'] )) {
 			$this->setLabelAttributes ( $options ['label_attributes'] );
 		}
@@ -224,6 +296,26 @@ class Element implements ElementAttributeRemovalInterface, ElementInterface, Ini
 	}
 	
 	/**
+	 * Set the element tab
+	 *
+	 * @param mixed $tab        	
+	 * @return Element
+	 */
+	public function setTab($value) {
+		$this->tab = $value;
+		return $this;
+	}
+	
+	/**
+	 * Retrieve the element tab
+	 *
+	 * @return mixed
+	 */
+	public function getTab() {
+		return $this->tab;
+	}
+	
+	/**
 	 * Set the label used for this element
 	 *
 	 * @param
@@ -268,15 +360,90 @@ class Element implements ElementAttributeRemovalInterface, ElementInterface, Ini
 	}
 	
 	/**
+	 * Set the Title used for this element
+	 *
+	 * @param
+	 *        	$title
+	 * @return Element ElementInterface
+	 */
+	public function setTitle($title) {
+		if (is_string ( $title )) {
+			$this->title = $title;
+		}
+		
+		return $this;
+	}
+	
+	/**
 	 * Retrieve the title used for this element
 	 *
 	 * @return string
 	 */
 	public function getTitle() {
-		if (! isset ( $this->options ['title'] )) {
-			return null;
+		return $this->title;
+	}
+	
+	/**
+	 * Set the Node used for this element
+	 *
+	 * @param
+	 *        	$node
+	 * @return Element ElementInterface
+	 */
+	public function setNode($node) {
+		if (is_int ( $node )) {
+			$this->node = $node;
 		}
-		return $this->options ['title'];
+		
+		return $this;
+	}
+	
+	/**
+	 * Retrieve the node used for this element
+	 *
+	 * @return interger
+	 */
+	public function getNode() {
+		return $this->node;
+	}
+	
+	/**
+	 * Set the Parent used for this element
+	 *
+	 * @param
+	 *        	$parent
+	 * @return Element ElementInterface
+	 */
+	public function setParent($parent) {
+		if (is_int ( $parent )) {
+			$this->parent = $parent;
+		}
+		
+		return $this;
+	}
+	
+	/**
+	 * Retrieve the parent used for this element
+	 *
+	 * @return interger
+	 */
+	public function getParent() {
+		return $this->parent;
+	}
+	
+	/**
+	 * Set the is Password used for this element
+	 *
+	 * @param
+	 *        	$ispassword
+	 * @return Element ElementInterface
+	 */
+	public function setisPassword($ispassword) {
+		if (is_bool ( $ispassword )) {
+			$this->ispassword = $ispassword;
+		}
+		
+		return $this;
 	}
 	
 	/**
@@ -285,14 +452,7 @@ class Element implements ElementAttributeRemovalInterface, ElementInterface, Ini
 	 * @return boolean
 	 */
 	public function isPassword() {
-		$options = $this->getOption ( 'options' );
-		if (isset ( $options ['isPassword'] )) {
-			if ($options ['isPassword'] == 'True') {
-				$options ['isPassword'] = True;
-			}
-			return $options ['isPassword'];
-		}
-		return false;
+		return $this->ispassword;
 	}
 	
 	/**

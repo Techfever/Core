@@ -1,16 +1,24 @@
 <?php
 
-namespace Account\Controller;
+namespace Account\Dashboard\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Techfever\Template\Plugin\AbstractActionController;
 
-class DashboardActionController extends AbstractActionController {
+class ActionController extends AbstractActionController {
 	protected $type = 'account';
 	protected $module = 'dashboard';
 	protected $inputform = null;
+	
+	/**
+	 * Index Action
+	 *
+	 * @return ViewModel
+	 */
 	public function IndexAction() {
-		return array (
-				'dashboard' => "" 
-		);
+		if (! $this->getUserAccess ()->isLogin ()) {
+			return $this->redirect ()->toRoute ( 'Account/Login', array (
+					'action' => 'Index' 
+			) );
+		}
 	}
 }

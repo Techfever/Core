@@ -1,0 +1,23 @@
+<div class="layoutBoxes"><?php
+$success = $this->success;
+if ($success) {
+	$content = $this->content;
+	?><div class="body">
+		<div class="bodyheader">
+			<div><?php
+	echo $this->title;
+	?></div>
+		</div>
+		<div class="bodycontent">
+			<div class="widgetTable"><?php
+	if (is_array ( $content ) && count ( $content ) > 0) {
+		foreach ( $content as $content_value ) {
+			echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $content_value ['title'] . ':</p></div><div class="widgetCellData"><p>' . $content_value ['amount'] . '</p></div></div>';
+		}
+	}
+	?></div>
+		</div>
+	</div><?php
+}
+?>
+</div>

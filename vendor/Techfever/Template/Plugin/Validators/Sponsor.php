@@ -294,7 +294,6 @@ class Sponsor extends AbstractValidator {
 		$DBRank->order ( array (
 				'user_rank_key ASC' 
 		) );
-		$DBRank->setCacheName ( 'user_rank_' . implode ( '_', $rankcheck ) );
 		$DBRank->execute ();
 		$rank = array ();
 		if ($DBRank->hasResult ()) {

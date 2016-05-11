@@ -1,26 +1,52 @@
 <?php
 
-namespace Wallet\Controller;
+namespace Wallet\Transfer\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Techfever\Template\Plugin\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Json\Json;
 use Techfever\Wallet\Form\Defined as WalletForm;
 
-class TransferActionController extends AbstractActionController {
+class ActionController extends AbstractActionController {
+	/**
+	 *
+	 * @var Type
+	 *
+	 */
 	protected $type = 'wallet';
+	/**
+	 *
+	 * @var Module
+	 *
+	 */
 	protected $module = 'transfer';
+	/**
+	 *
+	 * @var Input Form
+	 *     
+	 */
 	protected $inputform = array ();
+	/**
+	 *
+	 * @var Username
+	 *
+	 */
 	protected $search_username = null;
 	private $action = '';
 	private $from_user = 1;
 	private $to_user = null;
-	private $from_wallet_type = 'val{to_wallet_type}';
+	private $from_wallet_type = null;
 	private $to_wallet_type = null;
 	private $from_user_rank = 8888;
 	private $to_user_rank = null;
 	private $transaction_status = 3;
 	private $transaction = 4000;
+	
+	/**
+	 * Index Action
+	 *
+	 * @return ViewModel
+	 */
 	public function IndexAction() {
 		$this->action = $this->module;
 		
@@ -30,10 +56,18 @@ class TransferActionController extends AbstractActionController {
 			) );
 		}
 		
-		$this->addCSS ( "ui-lightness/jquery-ui.css", "jquery" );
-		$this->addCSS ( "vendor/Techfever/Theme/" . SYSTEM_THEME . "/CSS/tooltip.css" );
+		$this->addCSS ( "vendor/Techfever/Theme/" . SYSTEM_THEME_LOAD . "/CSS/tooltip.css" );
 		
-		$viewModel = '';
+		$this->addJavascript ( "vendor/Techfever/Theme/" . SYSTEM_THEME_LOAD . "/Js/user.wallet.js", array (
+				'walletformid' => $this->convertToUnderscore ( $this->getMatchedRouteName () . '/Index', '/' ),
+				'walletformuri' => $this->url ()->fromRoute ( $this->getMatchedRouteName (), array (
+						'action' => 'Index' 
+				) ),
+				'walletformdialogtitle' => $this->getTranslate ( "text_dialog_wallet_update_" . $this->module . "_title" ),
+				'walletformdialogcontent' => $this->getTranslate ( "text_dialog_wallet_update_" . $this->module . "_content" ) 
+		) );
+		
+		$formModel = '';
 		$userID = $this->getUserIDAction ();
 		if ($this->isAdminUser ()) {
 			$cryptId = ( string ) $this->params ()->fromRoute ( 'crypt', null );
@@ -42,8 +76,8 @@ class TransferActionController extends AbstractActionController {
 				$this->search_username = $this->getUserManagement ()->getUsername ( $userID );
 			}
 			
-			$this->addCSS ( "vendor/Techfever/Theme/" . SYSTEM_THEME . "/CSS/steps.css" );
-			$this->addJavascript ( "vendor/Techfever/Theme/" . SYSTEM_THEME . "/Js/user.search.js", array (
+			$this->addCSS ( "vendor/Techfever/Theme/" . SYSTEM_THEME_LOAD . "/CSS/steps.css" );
+			$this->addJavascript ( "vendor/Techfever/Theme/" . SYSTEM_THEME_LOAD . "/Js/user.search.js", array (
 					'updateformid' => $this->convertToUnderscore ( $this->getMatchedRouteName () . '/Index', '/' ),
 					'searchformid' => $this->convertToUnderscore ( $this->getMatchedRouteName () . '/Search', '/' ),
 					'searchformuri' => $this->url ()->fromRoute ( $this->getMatchedRouteName (), array (
@@ -51,52 +85,64 @@ class TransferActionController extends AbstractActionController {
 					) ),
 					'searchformusername' => $this->search_username 
 			) );
-			$this->addJavascript ( "vendor/Techfever/Theme/" . SYSTEM_THEME . "/Js/steps.js" );
-			$viewModel = 'Search';
+			
+			$this->addJavascript ( "vendor/Techfever/Theme/" . SYSTEM_THEME_LOAD . "/Js/steps.js", array (
+					'stepsformid' => $this->convertToUnderscore ( $this->getMatchedRouteName () . '/Index', '/' ),
+					'stepsformuri' => $this->url ()->fromRoute ( $this->getMatchedRouteName (), array (
+							'action' => 'Index' 
+					) ) 
+			) );
+			$formModel = $this->ViewModel ( 'Search' );
 		} else {
-			$viewModel = 'User';
+			$formModel = $this->ViewModel ( 'User', $userID );
 		}
-		$this->addJavascript ( "vendor/Techfever/Theme/" . SYSTEM_THEME . "/Js/user.wallet.js", array (
-				'walletformid' => $this->convertToUnderscore ( $this->getMatchedRouteName () . '/Index', '/' ),
-				'walletformuri' => $this->url ()->fromRoute ( $this->getMatchedRouteName (), array (
-						'action' => 'Index' 
-				) ),
-				'walletcallback' => '' 
-		) );
 		
 		if ($this->isXmlHttpRequest ()) {
-			$id = 0;
+			$encoded_id = $this->getPost ( 'modify_value' );
+			if (! empty ( $encoded_id ) && strlen ( $encoded_id ) > 0) {
+				$userID = $this->Decrypt ( $encoded_id );
+			}
+			if (! $this->isAdminUser ()) {
+				$userID = $this->getUserIDAction ();
+			}
 			$subaction = null;
 			$js = null;
 			$valid = false;
 			$redirect = null;
 			$flashmessages = null;
-			$InputForm = $this->InputForm ( 'Index', $id );
+			$InputForm = $this->InputForm ( 'Index', $userID );
 			if ($InputForm->isPost () && $InputForm->isValid ()) {
 				$submit = strtolower ( $InputForm->getPost ( 'submit', 'preview' ) );
-				$id = $this->Decrypt ( $this->getPost ( 'user_modify', 0 ) );
 				if ($submit == 'submit') {
 					$data = $InputForm->getData ();
 					
 					$username = $InputForm->getDataValue ( 'user_access_username' );
 					$rank_group = $InputForm->getDataValue ( 'user_rank_group_id' );
-					$to_user = $InputForm->getDataValue ( 'user_access_id' );
-					$to_rank = $InputForm->getDataValue ( 'user_rank_id' );
+					
+					$to_user_username = $InputForm->getPost ( 'user_wallet_username_to' );
+					$to_user_id = $this->getUserManagement ()->getID ( $to_user_username );
+					$to_user = $to_user_id;
+					$to_rank = $this->getUserManagement ()->getRankID ( $to_user_id );
 					$to_wallet_type = $InputForm->getPost ( 'user_wallet_type_to' );
+					$to_rank_group = $this->getUserRank ()->getRankGroup ( $to_rank );
+					
+					$from_user = $InputForm->getDataValue ( 'user_access_id' );
+					$from_rank = $InputForm->getDataValue ( 'user_rank_id' );
+					$from_wallet_type = $InputForm->getPost ( 'user_wallet_type_from' );
 					
 					$walletoption = array (
 							'action' => $this->action,
-							'from_user' => $this->from_user,
+							'from_user' => $from_user,
 							'to_user' => $to_user,
-							'from_wallet_type' => $to_wallet_type,
+							'from_wallet_type' => $from_wallet_type,
 							'to_wallet_type' => $to_wallet_type,
-							'from_user_rank' => $this->from_user_rank,
+							'from_user_rank' => $from_rank,
 							'to_user_rank' => $to_rank,
 							'transaction_status' => $this->transaction_status,
 							'transaction' => $this->transaction 
 					);
 					$this->getUserWallet ()->setOptions ( $walletoption );
-					if (! $this->getUserManagement ()->verifyID ( $to_user, $rank_group, 1 )) {
+					if (! $this->getUserManagement ()->verifyID ( $to_user, $to_rank_group, 1 )) {
 						$msg = $this->getTranslate ( 'text_error_user_username_not_exist' );
 						$flashmessages = sprintf ( $msg, $this->getUserManagement ()->getUsername ( $walletoption ['to_user'] ) );
 						$messagescount = 1;
@@ -112,6 +158,10 @@ class TransferActionController extends AbstractActionController {
 						$msg = $this->getTranslate ( 'text_error_user_wallet_type_not_allow' );
 						$flashmessages = sprintf ( $msg, $this->getUserWallet ()->getTypeMessage ( $walletoption ['from_wallet_type'] ), $this->getUserWallet ()->getTypeMessage ( $walletoption ['to_wallet_type'] ) );
 						$messagescount = 1;
+					} elseif ($walletoption ['from_user'] == $walletoption ['to_user']) {
+						$msg = $this->getTranslate ( 'text_error_user_wallet_to_own_not_allow' );
+						$flashmessages = sprintf ( $msg, $this->getUserManagement ()->getUsername ( $walletoption ['from_user'] ), $this->getUserManagement ()->getUsername ( $walletoption ['to_user'] ) );
+						$messagescount = 1;
 					} elseif ($this->getUserWallet ()->createUserHistory ( $data )) {
 						$valid = true;
 						$this->FlashMessenger ()->addMessage ( $this->getTranslate ( 'text_success_msg_wallet_update_' . $this->module ) );
@@ -125,7 +175,7 @@ class TransferActionController extends AbstractActionController {
 			}
 			$Input = $InputForm->getPost ( 'Input', null );
 			$InputForm->getResponse ()->setContent ( Json::encode ( array (
-					'id' => $id,
+					'id' => $userID,
 					'subaction' => $subaction,
 					'valid' => $valid,
 					'redirect' => $redirect,
@@ -139,83 +189,90 @@ class TransferActionController extends AbstractActionController {
 			return $InputForm->getResponse ();
 		} else {
 			return array (
-					'inputmodel' => $this->ViewModel ( $viewModel, $userID ),
+					'form' => $formModel,
 					'isAdminUser' => $this->isAdminUser () 
 			);
 		}
 	}
+	
+	/**
+	 * Search Action
+	 *
+	 * @return ViewModel
+	 */
 	public function SearchAction() {
 		$valid = false;
 		$id = 0;
 		$username = null;
 		$messages = array ();
-		$InputModel = null;
-		
-		$SearchForm = $this->InputForm ( 'Search' );
-		if ($SearchForm->isXmlHttpRequest ()) {
-			$username = strtoupper ( $SearchForm->getPost ( 'search_username', null ) );
-			$userID = $this->getUserManagement ()->getID ( $username );
-			if ($userID > 0) {
+		$redirect = null;
+		$InputForm = $this->InputForm ( 'Search' );
+		if ($InputForm->isXmlHttpRequest ()) {
+			$username = strtoupper ( $InputForm->getPost ( 'search_username', null ) );
+			$id = $this->getUserManagement ()->getID ( $username );
+			if ($id > 0) {
 				$valid = true;
-				
-				$this->InputForm ( 'Index', $userID );
-				$InputModel = $this->ViewModel ( 'Index' );
 			} else {
+				$id = 0;
 				$messages = $this->getTranslate ( 'text_error_user_username_not_exist' );
 				$messages = sprintf ( $messages, $username );
 			}
 		} else {
 			return $this->redirect ()->toRoute ( $this->getMatchedRouteName (), array (
-					'action' => 'Update' 
+					'action' => 'Index' 
 			) );
 		}
-		$SearchForm->getResponse ()->setContent ( Json::encode ( array (
-				'inputmodel' => $InputModel,
+		
+		$InputForm->getResponse ()->setContent ( Json::encode ( array (
+				'inputmodel' => $this->ViewModel ( 'Index', $id ),
 				'messages' => $messages,
-				'id' => $userID,
+				'id' => $id,
 				'username' => $username,
 				'valid' => $valid,
-				'js' => '$(this).Steps({
-							formname : "' . $this->convertToUnderscore ( $this->getMatchedRouteName () . '/Index', '/' ) . '",
-							formuri : "' . $this->url ()->fromRoute ( $this->getMatchedRouteName (), array (
-						'action' => 'Index' 
-				) ) . '",
-							dialogtitle : "' . $this->getTranslate ( "text_dialog_wallet_update_" . $this->module . "_title" ) . '",
-							dialogcontent : "' . $this->getTranslate ( "text_dialog_wallet_update_" . $this->module . "_content" ) . '",
-						});
-										$(this).Wallet()' 
+				'js' => '' 
 		) ) );
 		
-		return $SearchForm->getResponse ();
+		return $InputForm->getResponse ();
 	}
-	private function ViewModel($action = 'Index', $id = null) {
-		$ViewModel = new ViewModel ();
-		$ViewModel->setTerminal ( true );
-		if ($action === 'Search') {
-			$ViewModel->setTemplate ( 'share/user/searchupdate' );
-			$ViewModel->setVariables ( array (
-					'searchform' => $this->InputForm ( $action ) 
-			) );
-		} elseif ($action === 'Index') {
-			$ViewModel->setTemplate ( 'share/form/update' );
-			$ViewModel->setVariables ( array (
-					'form' => $this->InputForm ( $action, $id ) 
-			) );
-		} elseif ($action === 'User') {
-			$ViewModel->setTemplate ( 'share/wallet/update' );
-			$ViewModel->setVariables ( array (
-					'form' => $this->InputForm ( $action, $id ) 
-			) );
+	
+	/**
+	 * Form ViewModel
+	 *
+	 * @return ViewModel
+	 */
+	private function ViewModel($action = null, $id = null) {
+		switch ($action) {
+			case 'Index' :
+			case 'User' :
+				$ViewModel = new ViewModel ();
+				$ViewModel->setTerminal ( true );
+				$ViewModel->setTemplate ( 'share/form/update' );
+				$ViewModel->setVariables ( array (
+						'form' => $this->InputForm ( $action, $id ),
+						'js' => '<script type="text/javascript">$(document).ready(function() {  $(this).Wallet();  });</script>' 
+				) );
+				return $this->getServiceLocator ()->get ( 'viewrenderer' )->render ( $ViewModel );
+				break;
+			default :
+				return $this->InputForm ( $action, $id );
+				break;
 		}
-		return $this->getServiceLocator ()->get ( 'viewrenderer' )->render ( $ViewModel );
 	}
-	private function InputForm($action = 'Index', $id = null) {
-		if (! array_key_exists ( $action, $this->inputform ) || ! is_object ( $this->inputform [$action] )) {
+	
+	/**
+	 * Form Input
+	 *
+	 * @return Form
+	 */
+	protected function InputForm($action = null, $id = null) {
+		if (! array_key_exists ( $action, $this->inputform )) {
+			$this->inputform [$action] = null;
+		}
+		if ((! is_object ( $this->inputform [$action] ) && empty ( $this->inputform [$action] )) || ! empty ( $id )) {
 			$options = array (
 					'servicelocator' => $this->getServiceLocator (),
-					'action' => $action 
+					'action' => ucfirst ( $action ) 
 			);
-			
 			$walletoptions = array (
 					'action' => $this->module,
 					'from_user' => $this->from_user,
@@ -239,3 +296,4 @@ class TransferActionController extends AbstractActionController {
 		return $this->inputform [$action];
 	}
 }
+			

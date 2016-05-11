@@ -3,7 +3,6 @@
 namespace Techfever\User;
 
 use Techfever\Exception;
-use Techfever\Template\Plugin\Filters\ToUnderscore;
 use Techfever\Functions\General as GeneralBase;
 use Techfever\Parameter\Parameter;
 
@@ -136,13 +135,37 @@ class Permission {
 				$permission_as = $this->getOption ( 'permission_as' );
 				$this->getContainer ()->offsetSet ( 'Initialized', False );
 				$data = array ();
+				$visitormoduledata = array ();
 				$visitordata = array ();
 				$rankdata = array ();
 				$userdata = array ();
 				
-				$ToUnderscore = new ToUnderscore ( '\\' );
+				$QVisitorModule = $this->getDatabase ();
+				$QVisitorModule->select ();
+				$QVisitorModule->columns ( array (
+						'mcid' => 'module_controllers_id',
+						'controller' => 'module_controllers_alias' 
+				) );
+				$QVisitorModule->from ( array (
+						'mc' => 'module_controllers' 
+				) );
+				$QVisitorModule->where ( array (
+						'mc.module_controllers_visitor = 1' 
+				) );
+				$QVisitorModule->order ( array (
+						'mc.module_controllers_alias ASC' 
+				) );
+				$QVisitorModule->execute ();
+				if ($QVisitorModule->hasResult ()) {
+					while ( $QVisitorModule->valid () ) {
+						$rawdata = $QVisitorModule->current ();
+						$rawdata ['upid'] = 0;
+						$rawdata ['uprid'] = 0;
+						$visitormoduledata [$rawdata ['mcid']] = $rawdata;
+						$QVisitorModule->next ();
+					}
+				}
 				
-				$cachename = $ToUnderscore->filter ( 'user_permission_rank_0' );
 				$QVisitor = $this->getDatabase ();
 				$QVisitor->select ();
 				$QVisitor->columns ( array (
@@ -162,13 +185,12 @@ class Permission {
 				 * $QVisitor->join ( array ( 'mca' => 'module_controllers_action' ), 'up.module_controllers_action_id = mca.module_controllers_action_id', array ( 'mcaid' => 'module_controllers_action_id', 'action' => 'module_controllers_action_param' ) );
 				 */
 				$QVisitor->where ( array (
-						'mc.module_controllers_visitor = 1' 
+						'up.user_rank_id = ' . $user_rank_id 
 				) );
 				$QVisitor->order ( array (
 						'mc.module_controllers_alias ASC' 
 				// 'mca.module_controllers_action_param ASC'
 								) );
-				$QVisitor->setCacheName ( $cachename );
 				$QVisitor->execute ();
 				if ($QVisitor->hasResult ()) {
 					while ( $QVisitor->valid () ) {
@@ -179,7 +201,6 @@ class Permission {
 				}
 				
 				if ($permission_as == "2" && $user_rank_id > 1) {
-					$cachename = $ToUnderscore->filter ( 'user_permission_rank_' . $user_rank_id );
 					$QRank = $this->getDatabase ();
 					$QRank->select ();
 					$QRank->columns ( array (
@@ -205,7 +226,6 @@ class Permission {
 							'mc.module_controllers_alias ASC' 
 					// 'mca.module_controllers_action_param ASC'
 										) );
-					$QRank->setCacheName ( $cachename );
 					$QRank->execute ();
 					if ($QRank->hasResult ()) {
 						while ( $QRank->valid () ) {
@@ -215,7 +235,6 @@ class Permission {
 						}
 					}
 				} elseif ($permission_as == "3" && $user_id > 0) {
-					$cachename = $ToUnderscore->filter ( 'user_permission_user_' . $user_id );
 					$QUser = $this->getDatabase ();
 					$QUser->select ();
 					$QUser->columns ( array (
@@ -241,7 +260,6 @@ class Permission {
 							'mc.module_controllers_alias ASC' 
 					// 'mca.module_controllers_action_param ASC'
 										) );
-					$QUser->setCacheName ( $cachename );
 					$QUser->execute ();
 					if ($QUser->hasResult ()) {
 						while ( $QUser->valid () ) {
@@ -252,6 +270,7 @@ class Permission {
 					}
 				}
 				
+				$data = array_merge ( $data, $visitormoduledata );
 				$data = array_merge ( $data, $visitordata );
 				$data = array_merge ( $data, $rankdata );
 				$data = array_merge ( $data, $userdata );
@@ -296,7 +315,6 @@ class Permission {
 					'mc.module_controllers_alias ASC',
 					'mca.module_controllers_action_param ASC' 
 			) );
-			$QControllers->setCacheName ( 'module_controllers_action' );
 			$QControllers->execute ();
 			if ($QControllers->hasResult ()) {
 				while ( $QControllers->valid () ) {
@@ -328,7 +346,7 @@ class Permission {
 			foreach ( $data as $permission ) {
 				$permission_controller = strtolower ( $permission ['controller'] );
 				// $permission_action = strtolower ( $permission ['action'] );
-				if ($controller === $permission_controller) {
+				if (strtolower ( $controller ) === $permission_controller) {
 					$status = true;
 					break;
 				}

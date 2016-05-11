@@ -3,11 +3,10 @@
 namespace Techfever\Template\Plugin\Helpers;
 
 use Zend\Form\ElementInterface;
-use Zend\Form\View\Helper\AbstractHelper;
 use Techfever\Template\Plugin\Forms\SelectYear as SelectYearElement;
 use Techfever\Exception;
 
-class FormSelectYear extends AbstractHelper {
+class FormSelectYear extends AbstractFormHelper {
 	/**
 	 * FormSelect helper
 	 *
@@ -65,8 +64,12 @@ class FormSelectYear extends AbstractHelper {
 		
 		$yearElement = $element->getYearElement ()->setValueOptions ( $yearOptions );
 		
+		$yearElement = $element->getYearElement ()->setAttribute ( 'class', 'selectyear' );
+		
+		$yearElement = $element->getYearElement ()->setAttribute ( 'type', 'select' );
+		
 		if ($element->shouldCreateEmptyOption ()) {
-			$yearElement->setEmptyOption ( '' );
+			$yearElement = $element->getYearElement ()->setEmptyOption ( '' );
 		}
 		
 		return $selectHelper->render ( $yearElement );

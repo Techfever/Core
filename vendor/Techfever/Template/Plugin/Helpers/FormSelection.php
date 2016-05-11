@@ -4,11 +4,10 @@ namespace Techfever\Template\Plugin\Helpers;
 
 use Zend\Form\ElementInterface;
 use Techfever\Template\Plugin\Forms\Selection as SelectElement;
-use Zend\Form\View\Helper\AbstractHelper;
 use Techfever\Exception;
 use Zend\Stdlib\ArrayUtils;
 
-class FormSelection extends AbstractHelper {
+class FormSelection extends AbstractFormHelper {
 	/**
 	 * Attributes valid for the current tag
 	 *

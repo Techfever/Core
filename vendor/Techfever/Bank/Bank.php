@@ -66,7 +66,6 @@ class Bank extends Country {
 					'ud.user_profile_id' => $this->getOption ( 'profile_id' ),
 					'ud.user_bank_delete_status' => '0' 
 			) );
-			$QBank->setCacheName ( 'user_bank_' . $this->getOption ( 'profile_id' ) );
 			$QBank->execute ();
 			if ($QBank->hasResult ()) {
 				$data = array ();
@@ -142,7 +141,6 @@ class Bank extends Country {
 			$DBBank->order ( array (
 					'bank_name ASC' 
 			) );
-			$DBBank->setCacheName ( 'bank' );
 			$DBBank->execute ();
 			if ($DBBank->hasResult ()) {
 				$data = array ();
@@ -289,7 +287,6 @@ class Bank extends Country {
 						'user_profile_id' => $profile,
 						'user_bank_id' => $bank 
 				) );
-				$UBank->setCacheName ( 'user_access_' . $bank . '_' . $profile );
 				$UBank->execute ();
 				if ($UBank->affectedRows ()) {
 					return true;

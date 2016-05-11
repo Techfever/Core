@@ -49,6 +49,7 @@ class Configuration extends Withdraw {
 	 */
 	public function getConfigurationData() {
 		if (! is_array ( $this->wallet_configuration_data ) || count ( $this->wallet_configuration_data ) < 1) {
+			$wallet_type = $this->getTypeAllID ();
 			$rawdata = array ();
 			$QConfiguration = $this->getDatabase ();
 			$QConfiguration->select ();
@@ -71,12 +72,13 @@ class Configuration extends Withdraw {
 			$QConfiguration->where ( array (
 					'wc.user_rank_id_from' => $this->getOption ( 'from_user_rank' ),
 					'wc.wallet_configuration_action' => $this->getOption ( 'action' ),
-					'wc.wallet_configuration_status' => '1' 
+					'wc.wallet_configuration_status' => '1',
+					'wc.wallet_type_id_from in (' . implode ( ', ', $wallet_type ) . ')',
+					'wc.wallet_type_id_to in (' . implode ( ', ', $wallet_type ) . ')' 
 			) );
 			$QConfiguration->order ( array (
 					'wc.wallet_type_id_from ASC' 
 			) );
-			$QConfiguration->setCacheName ( 'wallet_configuration_' . $this->getOption ( 'action' ) );
 			$QConfiguration->execute ();
 			if ($QConfiguration->hasResult ()) {
 				while ( $QConfiguration->valid () ) {

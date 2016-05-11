@@ -3,7 +3,7 @@
  * Zend Framework (http://framework.zend.com/)
  *
  * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
@@ -25,27 +25,28 @@ class ContentType implements HeaderInterface
 
     public static function fromString($headerLine)
     {
-        $headerLine = iconv_mime_decode($headerLine, ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF-8');
-        list($name, $value) = explode(': ', $headerLine, 2);
+        list($name, $value) = GenericHeader::splitHeaderLine($headerLine);
+        $value = HeaderWrap::mimeDecodeValue($value);
 
         // check to ensure proper header type for this factory
         if (strtolower($name) !== 'content-type') {
             throw new Exception\InvalidArgumentException('Invalid header line for Content-Type string');
         }
 
-        $value  = str_replace(Headers::FOLDING, " ", $value);
+        $value  = str_replace(Headers::FOLDING, ' ', $value);
         $values = preg_split('#\s*;\s*#', $value);
-        $type   = array_shift($values);
 
+        $type   = array_shift($values);
         $header = new static();
         $header->setType($type);
 
-        if (count($values)) {
-            foreach ($values as $keyValuePair) {
-                list($key, $value) = explode('=', $keyValuePair, 2);
-                $value = trim($value, "'\" \t\n\r\0\x0B");
-                $header->addParameter($key, $value);
-            }
+        // Remove empty values
+        $values = array_filter($values);
+
+        foreach ($values as $keyValuePair) {
+            list($key, $value) = explode('=', $keyValuePair, 2);
+            $value = trim($value, "'\" \t\n\r\0\x0B");
+            $header->addParameter($key, $value);
         }
 
         return $header;
@@ -123,11 +124,22 @@ class ContentType implements HeaderInterface
      * @param  string $name
      * @param  string $value
      * @return ContentType
+     * @throws Exception\InvalidArgumentException for parameter names that do not follow RFC 2822
+     * @throws Exception\InvalidArgumentException for parameter values that do not follow RFC 2822
      */
     public function addParameter($name, $value)
     {
-        $name = strtolower($name);
-        $this->parameters[$name] = (string) $value;
+        $name  = strtolower($name);
+        $value = (string) $value;
+
+        if (! HeaderValue::isValid($name)) {
+            throw new Exception\InvalidArgumentException('Invalid content-type parameter name detected');
+        }
+        if (! HeaderValue::isValid($value)) {
+            throw new Exception\InvalidArgumentException('Invalid content-type parameter value detected');
+        }
+
+        $this->parameters[$name] = $value;
         return $this;
     }
 
@@ -153,7 +165,7 @@ class ContentType implements HeaderInterface
         if (isset($this->parameters[$name])) {
             return $this->parameters[$name];
         }
-        return null;
+        return;
     }
 
     /**

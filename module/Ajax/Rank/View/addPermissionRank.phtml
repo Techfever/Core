@@ -1,0 +1,15 @@
+<?php
+$rankData = $this->rankData;
+if (is_array ( $rankData ) && count ( $rankData ) > 0) {
+	echo '<div id="permission_rank">' . "\n";
+	echo '	<div id="permission_rank_rank">' . "\n";
+	foreach ( $rankData as $rankData_key => $rankData_value ) {
+		$attributes ['id'] = $rankData_value ['modify_id'];
+		$attributes ['name'] = $rankData_value ['modify_id'];
+		$attributes ['class'] = 'addpermissionrank';
+		$attributes ['onclick'] = "$(this).addPermissionRank($(this));";
+		echo '		<div id="' . $attributes ['id'] . '" name="' . $attributes ['id'] . '"><span>' . $rankData_value ['text'] . '</span>&nbsp;' . $this->htmlLink ( '#', '[&nbsp;' . $this->translate ( "text_add" ) . '&nbsp;]', $attributes ) . "</div>" . "\n";
+	}
+	echo '	</div>' . "\n";
+	echo '</div>' . "\n";
+}

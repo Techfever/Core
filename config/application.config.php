@@ -11,6 +11,7 @@ return array(
 				// Module class.
 				'module_paths' => array(
 						'./module',
+						'./box',
 						'./vendor',
 				),
 				// An array of paths from which to glob configuration files after

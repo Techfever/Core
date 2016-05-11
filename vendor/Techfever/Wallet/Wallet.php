@@ -64,7 +64,6 @@ class Wallet extends Configuration {
 						'uw.user_access_id' => $this->getOption ( 'from_user' ),
 						'uw.user_wallet_status' => '1' 
 				) );
-				$QWallet->setCacheName ( 'user_wallet_' . $this->getOption ( 'from_user' ) );
 				$QWallet->execute ();
 				if ($QWallet->hasResult ()) {
 					while ( $QWallet->valid () ) {
@@ -125,9 +124,75 @@ class Wallet extends Configuration {
 	}
 	
 	/**
+	 * Get User History List Total
+	 */
+	public function getHistoryListingTotal($search = null, $encryted_id = false) {
+		$orderstr = null;
+		
+		$QHistory = $this->getDatabase ();
+		$QHistory->select ();
+		$QHistory->columns ( array (
+				'*' 
+		) );
+		$QHistory->from ( array (
+				'uwh' => 'user_wallet_history' 
+		) );
+		$QHistory->join ( array (
+				'ws' => 'wallet_status' 
+		), 'ws.wallet_status_id  = uwh.wallet_status_id', array (
+				'wallet_status_key' 
+		) );
+		$QHistory->join ( array (
+				'wt' => 'wallet_transaction' 
+		), 'wt.wallet_transaction_id  = uwh.wallet_transaction_id', array (
+				'wallet_transaction_key' 
+		) );
+		$QHistory->join ( array (
+				'uat' => 'user_access' 
+		), 'uat.user_access_id  = uwh.user_access_id_to', array (
+				'user_username_to' => 'user_access_username' 
+		) );
+		$QHistory->join ( array (
+				'uaf' => 'user_access' 
+		), 'uaf.user_access_id  = uwh.user_access_id_from', array (
+				'user_username_from' => 'user_access_username' 
+		) );
+		$QHistory->join ( array (
+				'wtf' => 'wallet_type' 
+		), 'wtf.wallet_type_id  = uwh.wallet_type_id_from', array (
+				'wallet_type_key_from' => 'wallet_type_key' 
+		) );
+		$QHistory->join ( array (
+				'wtt' => 'wallet_type' 
+		), 'wtt.wallet_type_id  = uwh.wallet_type_id_to', array (
+				'wallet_type_key_to' => 'wallet_type_key' 
+		) );
+		$where = array (
+				'uwh.user_wallet_history_visible_status = 1',
+				'uwh.user_wallet_history_deleted_status = 0' 
+		);
+		if (is_array ( $search ) && count ( $search ) > 0 && array_key_exists ( 'user_wallet_history', $search )) {
+			$where = array_merge ( $where, $search ['user_wallet_history'] );
+		}
+		if (is_array ( $search ) && count ( $search ) > 0 && array_key_exists ( 'user_access_to', $search )) {
+			$where = array_merge ( $where, $search ['user_access_to'] );
+		}
+		if (is_array ( $search ) && count ( $search ) > 0 && array_key_exists ( 'user_access_from', $search )) {
+			$where = array_merge ( $where, $search ['user_access_from'] );
+		}
+		$QHistory->where ( $where );
+		$QHistory->execute ();
+		$count = 0;
+		if ($QHistory->hasResult ()) {
+			$count = $QHistory->count ();
+		}
+		return $count;
+	}
+	
+	/**
 	 * Get User History List
 	 */
-	public function getHistoryListing($search = null, $order = null, $index = 0, $perpage = 10, $cache = 'user_wallet_history', $encryted_id = false) {
+	public function getHistoryListing($search = null, $order = null, $index = 0, $perpage = 10, $encryted_id = false) {
 		$orderstr = null;
 		$data = array ();
 		
@@ -150,13 +215,13 @@ class Wallet extends Configuration {
 				'wallet_transaction_key' 
 		) );
 		$QHistory->join ( array (
-				'uaf' => 'user_access' 
-		), 'uaf.user_access_id  = uwh.user_access_id_from', array (
+				'uat' => 'user_access' 
+		), 'uat.user_access_id  = uwh.user_access_id_to', array (
 				'user_username_to' => 'user_access_username' 
 		) );
 		$QHistory->join ( array (
-				'uat' => 'user_access' 
-		), 'uat.user_access_id  = uwh.user_access_id_to', array (
+				'uaf' => 'user_access' 
+		), 'uaf.user_access_id  = uwh.user_access_id_from', array (
 				'user_username_from' => 'user_access_username' 
 		) );
 		$QHistory->join ( array (
@@ -184,20 +249,17 @@ class Wallet extends Configuration {
 		}
 		$QHistory->where ( $where );
 		if (empty ( $order )) {
-			$QHistory->order ( array (
+			$order = array (
 					'uwh.user_wallet_history_id' 
-			) );
-		} else {
-			$QHistory->order ( $order );
+			);
 		}
+		$QHistory->order ( $order );
 		if (isset ( $perpage )) {
 			$QHistory->limit ( ( int ) $perpage );
 		}
 		if (isset ( $index )) {
 			$QHistory->offset ( ( int ) $index );
 		}
-		$QHistory->setCacheName ( 'user_wallet_history_' . $cache );
-		$this->getLog ()->info ( $QHistory->getSQLString () );
 		$QHistory->execute ();
 		if ($QHistory->hasResult ()) {
 			$data = array ();
@@ -221,25 +283,37 @@ class Wallet extends Configuration {
 				$rawdata ['user_wallet_status_text'] = $rawdata ['wallet_status_id'];
 				$rawdata ['user_wallet_status_text'] = $this->getStatusMessage ( $rawdata ['wallet_status_id'] );
 				
+				$rawdata ['wallet_type_id_from_text'] = $rawdata ['wallet_type_id_from'];
+				$rawdata ['wallet_type_id_from_text'] = $this->getTypeMessage ( $rawdata ['wallet_type_id_from'] );
+				
+				$rawdata ['wallet_type_id_to_text'] = $rawdata ['wallet_type_id_to'];
+				$rawdata ['wallet_type_id_to_text'] = $this->getTypeMessage ( $rawdata ['wallet_type_id_to'] );
+				
+				$rawdata ['wallet_transaction_id_text'] = $rawdata ['wallet_transaction_id'];
+				$rawdata ['wallet_transaction_id_text'] = $this->getTransactionMessage ( $rawdata ['wallet_transaction_id'] );
+				
+				$rawdata ['wallet_status_id_text'] = $rawdata ['wallet_status_id'];
+				$rawdata ['wallet_status_id_text'] = $this->getStatusMessage ( $rawdata ['wallet_status_id'] );
+				
 				$rawdata ['user_wallet_history_amount_in'] = $this->formatNumber ( $rawdata ['user_wallet_history_amount_in'] );
 				$rawdata ['user_wallet_history_amount_out'] = $this->formatNumber ( $rawdata ['user_wallet_history_amount_out'] );
 				
 				$rawdata ['user_wallet_history_modified_date_format'] = "";
 				if ($rawdata ['user_wallet_history_modified_date'] !== "0000-00-00 00:00:00") {
 					$datetime = new \DateTime ( $rawdata ['user_wallet_history_modified_date'] );
-					$rawdata ['user_wallet_history_modified_date_format'] = $datetime->format ( 'H:i:s d-m-Y' );
+					$rawdata ['user_wallet_history_modified_date_format'] = $datetime->format ( 'H:i:s d-F-Y' );
 				}
 				
 				$rawdata ['user_wallet_history_created_date_format'] = "";
 				if ($rawdata ['user_wallet_history_created_date'] !== "0000-00-00 00:00:00") {
 					$datetime = new \DateTime ( $rawdata ['user_wallet_history_created_date'] );
-					$rawdata ['user_wallet_history_created_date_format'] = $datetime->format ( 'H:i:s d-m-Y' );
+					$rawdata ['user_wallet_history_created_date_format'] = $datetime->format ( 'H:i:s d-F-Y' );
 				}
 				
 				$rawdata ['user_wallet_history_approved_date_format'] = "";
 				if ($rawdata ['user_wallet_history_approved_date'] !== "0000-00-00 00:00:00") {
 					$datetime = new \DateTime ( $rawdata ['user_wallet_history_approved_date'] );
-					$rawdata ['user_wallet_history_approved_date_format'] = $datetime->format ( 'H:i:s d-m-Y' );
+					$rawdata ['user_wallet_history_approved_date_format'] = $datetime->format ( 'H:i:s d-F-Y' );
 				}
 				
 				$QHistory->next ();
@@ -333,7 +407,6 @@ class Wallet extends Configuration {
 				'uwh.user_wallet_history_id = ' . $id 
 		);
 		$QHistory->where ( $where );
-		$QHistory->setCacheName ( 'user_wallet_history_' . $id );
 		$QHistory->execute ();
 		if ($QHistory->hasResult ()) {
 			$data = $QHistory->current ();
@@ -361,19 +434,19 @@ class Wallet extends Configuration {
 			$data ['user_wallet_history_modified_date_format'] = "";
 			if ($data ['user_wallet_history_modified_date'] !== "0000-00-00 00:00:00") {
 				$datetime = new \DateTime ( $data ['user_wallet_history_modified_date'] );
-				$data ['user_wallet_history_modified_date_format'] = $datetime->format ( 'H:i:s d-m-Y' );
+				$data ['user_wallet_history_modified_date_format'] = $datetime->format ( 'H:i:s d-F-Y' );
 			}
 			
 			$data ['user_wallet_history_created_date_format'] = "";
 			if ($data ['user_wallet_history_created_date'] !== "0000-00-00 00:00:00") {
 				$datetime = new \DateTime ( $data ['user_wallet_history_created_date'] );
-				$data ['user_wallet_history_created_date_format'] = $datetime->format ( 'H:i:s d-m-Y' );
+				$data ['user_wallet_history_created_date_format'] = $datetime->format ( 'H:i:s d-F-Y' );
 			}
 			
 			$data ['user_wallet_history_approved_date_format'] = "";
 			if ($data ['user_wallet_history_approved_date'] !== "0000-00-00 00:00:00") {
 				$datetime = new \DateTime ( $data ['user_wallet_history_approved_date'] );
-				$data ['user_wallet_history_approved_date_format'] = $datetime->format ( 'H:i:s d-m-Y' );
+				$data ['user_wallet_history_approved_date_format'] = $datetime->format ( 'H:i:s d-F-Y' );
 			}
 		}
 		ksort ( $data );
@@ -496,7 +569,6 @@ class Wallet extends Configuration {
 				'uw.wallet_type_id = ' . $this->getOption ( 'from_wallet_type' ) 
 		);
 		$QWallet->where ( $where );
-		$QWallet->setCacheName ( 'user_wallet_' . $this->getOption ( 'from_user' ) . '_' . $this->getOption ( 'from_wallet_type' ) );
 		$QWallet->execute ();
 		if ($QWallet->hasResult ()) {
 			return true;
@@ -515,12 +587,24 @@ class Wallet extends Configuration {
 		$history_from = 0;
 		$history_to = 0;
 		$bank = 0;
-		if ($this->validUserPocketAmount ( $data ['user_wallet_amount'] )) {
-			$history_from = $this->insertUserHistory ( $data, '-' );
+		$ignore_from = false;
+		if (array_key_exists ( 'ignore_from', $data ) && $data ['ignore_from']) {
+			$ignore_from = true;
+		}
+		if ($ignore_from || $this->validUserPocketAmount ( $data ['user_wallet_amount'] )) {
+			if (! $ignore_from) {
+				$history_from = $this->insertUserHistory ( $data, '-' );
+			} else {
+				$history_from = true;
+			}
 			$history_to = 0;
 			if ($history_from !== false && $history_from > 0) {
 				if ($this->getOption ( 'transaction_status' ) !== 1) {
-					$pocket_from = $this->updateUserPocket ( $this->getOption ( 'from_user' ), $this->getOption ( 'from_wallet_type' ), $data ['user_wallet_amount'], '-' );
+					if (! $ignore_from) {
+						$pocket_from = $this->updateUserPocket ( $this->getOption ( 'from_user' ), $this->getOption ( 'from_wallet_type' ), $data ['user_wallet_amount'], '-' );
+					} else {
+						$pocket_from = true;
+					}
 					if ($pocket_from) {
 						$history_to = $this->insertUserHistory ( $data, '+' );
 						if ($history_to !== false && $history_to > 0) {

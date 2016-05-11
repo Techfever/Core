@@ -11428,6 +11428,7 @@ $.widget( "ui.menu", {
 			submenu: "ui-icon-carat-1-e"
 		},
 		menus: "ul",
+		onclick: false, // Technation Customize
 		position: {
 			my: "left top",
 			at: "right top"
@@ -11501,7 +11502,9 @@ $.widget( "ui.menu", {
 				var target = $( event.currentTarget );
 				// Remove ui-state-active class from siblings of the newly focused menu item
 				// to avoid a jump caused by adjacent elements both having a class with a border
-				target.siblings().children( ".ui-state-active" ).removeClass( "ui-state-active" );
+				if(this.options.onclick !== true){
+					target.siblings().children( ".ui-state-active" ).removeClass( "ui-state-active" );
+				}
 				this.focus( event, target );
 			},
 			mouseleave: "collapseAll",
@@ -11770,13 +11773,12 @@ $.widget( "ui.menu", {
 		if ( this.options.role ) {
 			this.element.attr( "aria-activedescendant", focused.attr( "id" ) );
 		}
-
 		// Highlight active parent menu item, if any
 		this.active
-			.parent()
-			.closest( ".ui-menu-item" )
-			.children( "a:first" )
-			.addClass( "ui-state-active" );
+		.parent()
+		.closest( ".ui-menu-item" )
+		.children( "a:first" )
+		.addClass( "ui-state-active" );
 
 		if ( event && event.type === "keydown" ) {
 			this._close();
@@ -11786,9 +11788,11 @@ $.widget( "ui.menu", {
 			}, this.delay );
 		}
 
-		nested = item.children( ".ui-menu" );
-		if ( nested.length && ( /^mouse/.test( event.type ) ) ) {
-			this._startOpening(nested);
+		if(this.options.onclick !== true){
+			nested = item.children( ".ui-menu" );
+			if ( nested.length && ( /^mouse/.test( event.type ) ) ) {
+				this._startOpening(nested);
+			}
 		}
 		this.activeMenu = item.parent();
 
@@ -11881,19 +11885,20 @@ $.widget( "ui.menu", {
 
 	// With no arguments, closes the currently active menu - if nothing is active
 	// it closes all menus.  If passed an argument, it will search for menus BELOW
-	_close: function( startMenu ) {
+	_close: function( startMenu, event ) {
 		if ( !startMenu ) {
 			startMenu = this.active ? this.active.parent() : this.element;
 		}
-
 		startMenu
-			.find( ".ui-menu" )
-				.hide()
-				.attr( "aria-hidden", "true" )
-				.attr( "aria-expanded", "false" )
-			.end()
-			.find( "a.ui-state-active" )
-				.removeClass( "ui-state-active" );
+		.find( ".ui-menu" )
+			.hide()
+			.attr( "aria-hidden", "true" )
+			.attr( "aria-expanded", "false" )
+		.end()
+		.find( "a.ui-state-active" )
+			.removeClass( "ui-state-active" );
+
+		startMenu.find( "a.ui-state-disabled" ).removeClass( "ui-state-disabled" );
 	},
 
 	collapse: function( event ) {

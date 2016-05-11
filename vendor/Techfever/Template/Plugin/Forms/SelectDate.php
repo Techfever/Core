@@ -39,7 +39,7 @@ class SelectDate extends SelectMonth {
 	public function __construct($name = null, $options = array()) {
 		$this->dayElement = new Select ( $name . '[day]', $options );
 		parent::__construct ( $name, $options );
-		
+		$this->setOptions ( $options );
 		if (isset ( $options ['day_attributes'] )) {
 			$this->setDayAttributes ( $options ['day_attributes'] );
 		}
@@ -131,9 +131,11 @@ class SelectDate extends SelectMonth {
 		$this->dayElement->setName ( $name . '[day]' );
 		$this->dayElement->setAttribute ( 'id', $name . '[day]' );
 		$this->dayElement->setAttribute ( 'class', 'selectdate' );
-		$this->dayElement->setOptions ( array (
-				'empty_option' => '' 
-		) );
+		if ($this->shouldCreateEmptyOption ()) {
+			$this->dayElement->setOptions ( array (
+					'empty_option' => '' 
+			) );
+		}
 	}
 	
 	/**

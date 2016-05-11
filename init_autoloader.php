@@ -6,7 +6,7 @@ define('CORE_PATH', getcwd());
 define('KERNEL_PATH', CORE_PATH . '/Kernel');
 define('CONFIG_PATH', CORE_PATH . '/Config');
 define('MODULE_PATH', CORE_PATH . '/Module');
-define('CACHE_ENABLE', False);
+define('CACHE_ENABLE', True);
 define('DB_LOG_ENABLE', False);
 
 // Composer autoloading

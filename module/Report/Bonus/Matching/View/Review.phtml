@@ -1,0 +1,14 @@
+<?php
+$isAdminUser = $this->isAdminUser;
+if ($isAdminUser) {
+	$form = $this->form;
+	echo $this->FormFactory ( $form );
+	?>
+<div class="seperator"></div>
+<?php
+}
+?><div class="filter"
+	<?php echo ( ($isAdminUser) ? 'style="display: none;"' : ""); ?>><?php
+	echo $this->filtermodel;
+	?></div>
+<div class="review" style="display: none;"></div>

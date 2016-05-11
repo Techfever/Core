@@ -147,7 +147,6 @@ class Template {
 				$QSystem->from ( array (
 						'ss' => 'system_configuration' 
 				) );
-				$QSystem->setCacheName ( 'system_configuration' );
 				$QSystem->execute ();
 				if ($QSystem->hasResult ()) {
 					while ( $QSystem->valid () ) {
@@ -169,12 +168,35 @@ class Template {
 							't.theme_key = "' . $dbconfig ['SYSTEM_THEME'] . '"' 
 					) );
 					$QTheme->limit ( 1 );
-					$QTheme->setCacheName ( 'theme' );
 					$QTheme->execute ();
 					if ($QTheme->hasResult ()) {
 						$result = $QTheme->current ();
 						foreach ( $result as $key => $value ) {
 							$dbconfig [strtoupper ( $key )] = $value;
+						}
+					}
+					if (array_key_exists ( 'THEME_ID', $dbconfig )) {
+						$QTSystem = $this->getDatabase ();
+						$QTSystem->select ();
+						$QTSystem->columns ( array (
+								'key' => 'theme_system_configuration_key',
+								'value' => 'theme_system_configuration_value' 
+						) );
+						$QTSystem->from ( array (
+								'ss' => 'theme_system_configuration' 
+						) );
+						$QTSystem->where ( array (
+								'ss.theme_id = ' . $dbconfig ['THEME_ID'] . '' 
+						) );
+						$QTSystem->execute ();
+						if ($QTSystem->hasResult ()) {
+							while ( $QTSystem->valid () ) {
+								$rawdata2 = $QTSystem->current ();
+								if (array_key_exists ( strtoupper ( $rawdata2 ['key'] ), $dbconfig )) {
+									$dbconfig [strtoupper ( $rawdata2 ['key'] )] = (strlen ( $rawdata2 ['value'] ) > 0 ? $rawdata2 ['value'] : null);
+								}
+								$QTSystem->next ();
+							}
 						}
 					}
 				}

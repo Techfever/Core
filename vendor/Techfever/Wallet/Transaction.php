@@ -66,7 +66,6 @@ class Transaction extends Status {
 			$QTransaction->order ( array (
 					'wt.wallet_transaction_sort_order ASC' 
 			) );
-			$QTransaction->setCacheName ( 'wallet_transaction' );
 			$QTransaction->execute ();
 			if ($QTransaction->hasResult ()) {
 				while ( $QTransaction->valid () ) {

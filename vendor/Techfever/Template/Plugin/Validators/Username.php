@@ -279,7 +279,9 @@ class Username extends AbstractValidator {
 			$this->error ( self::ALPHA_CHAR_MAX );
 			return false;
 		}
-		
+		$user_access_id = $this->options ['user_access_id'];
+		$user_profile_id = $this->options ['user_profile_id'];
+		$default_value = $this->options ['default_value'];
 		$DBVerify = $this->getDatabase ();
 		$DBVerify->select ();
 		$DBVerify->columns ( array (
@@ -288,10 +290,14 @@ class Username extends AbstractValidator {
 		$DBVerify->from ( array (
 				'ua' => 'user_access' 
 		) );
-		$DBVerify->where ( array (
+		$where = array (
 				'ua.user_access_username = "' . strtoupper ( $value ) . '"',
 				'ua.user_access_delete_status = 0' 
-		) );
+		);
+		if (is_numeric ( $user_access_id ) && $user_access_id > 0) {
+			$where [] = 'ua.user_access_id != ' . $user_access_id;
+		}
+		$DBVerify->where ( $where );
 		$DBVerify->limit ( 1 );
 		$DBVerify->execute ();
 		if ($DBVerify->hasResult () === true && $this->getOption ( 'exist' ) === 'false') {

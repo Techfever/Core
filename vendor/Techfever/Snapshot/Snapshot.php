@@ -74,6 +74,31 @@ class Snapshot {
 	public function getController() {
 		return $this->controller;
 	}
+	public function getIp() {
+		$ip = '1.1.1.1';
+		if (isset ( $_SERVER )) {
+			if (isset ( $_SERVER ['HTTP_X_FORWARDED_FOR'] )) {
+				$ip = $_SERVER ['HTTP_X_FORWARDED_FOR'];
+			} elseif (isset ( $_SERVER ['HTTP_CLIENT_IP'] )) {
+				$ip = $_SERVER ['HTTP_CLIENT_IP'];
+			} else {
+				$ip = $_SERVER ['REMOTE_ADDR'];
+			}
+		} else {
+			if (getenv ( 'HTTP_X_FORWARDED_FOR' )) {
+				$ip = getenv ( 'HTTP_X_FORWARDED_FOR' );
+			} elseif (getenv ( 'HTTP_CLIENT_IP' )) {
+				$ip = getenv ( 'HTTP_CLIENT_IP' );
+			} else {
+				$ip = getenv ( 'REMOTE_ADDR' );
+			}
+		}
+		return $ip;
+	}
+	public function getReferer() {
+		$referer = (array_key_exists ( 'HTTP_REFERER', $_SERVER ) ? $_SERVER ['HTTP_REFERER'] : null);
+		return $referer;
+	}
 	public function getProtocol() {
 		$protocol = 'http://';
 		if (isset ( $_SERVER ['HTTPS'] )) {
@@ -106,15 +131,19 @@ class Snapshot {
 		$uri = $this->getUri ();
 		$uristatus = true;
 		$controller = $this->getController ();
-		if (in_array ( $controller, array (
-				'Wallet\\Controller\\LoginAction',
-				'Account\\Controller\\LoginAction',
-				'Theme\\Controller\\GetAction',
-				'Image\\Controller\\Action',
-				'Language\\Controller\\Action' 
-		) )) {
+		if (preg_match ( '/Login/', $controller )) {
 			$uristatus = false;
 		} else if (preg_match ( '/Ajax/', $controller )) {
+			$uristatus = false;
+		} else if (preg_match ( '/Captcha/', $controller )) {
+			$uristatus = false;
+		} else if (preg_match ( '/Widget/', $controller )) {
+			$uristatus = false;
+		} else if (preg_match ( '/Language/', $controller )) {
+			$uristatus = false;
+		} else if (preg_match ( '/Theme/', $controller )) {
+			$uristatus = false;
+		} else if (preg_match ( '/Image/', $controller )) {
 			$uristatus = false;
 		}
 		if ($uristatus) {

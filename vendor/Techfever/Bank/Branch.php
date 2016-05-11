@@ -65,7 +65,6 @@ class Branch extends GeneralBase {
 				$DBBranch->order ( array (
 						'bank_branch_key ASC' 
 				) );
-				$DBBranch->setCacheName ( 'country_bank_branch_' . $this->getOption ( 'bank' ) . '_' . $this->getOption ( 'country' ) . '_' . $this->getOption ( 'state' ) );
 				$DBBranch->execute ();
 				if ($DBBranch->hasResult ()) {
 					$data = array ();

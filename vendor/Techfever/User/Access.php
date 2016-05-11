@@ -192,6 +192,18 @@ class Access {
 					'profile_dob' => 'user_profile_dob' 
 			), 'right' );
 			$DBUser->join ( array (
+					'uh' => 'user_hierarchy' 
+			), 'uh.user_access_id = ua.user_access_id', array (
+					'sponsor' => 'user_hierarchy_sponsor',
+					'sponsor_username' => 'user_hierarchy_sponsor_username',
+					'placement' => 'user_hierarchy_placement',
+					'placement_username' => 'user_hierarchy_placement_username',
+					'hierarchy_created_by' => 'user_hierarchy_created_by',
+					'hierarchy_created_date' => 'user_hierarchy_created_date',
+					'hierarchy_modified_by' => 'user_hierarchy_modified_by',
+					'hierarchy_modified_date' => 'user_hierarchy_modified_date' 
+			), 'right' );
+			$DBUser->join ( array (
 					'ur' => 'user_rank' 
 			), 'ur.user_rank_id = ua.user_rank_id', array (
 					'rank_key' => 'user_rank_key',
@@ -209,7 +221,6 @@ class Access {
 					'ua.user_access_delete_status = 0' 
 			) );
 			$DBUser->limit ( 1 );
-			$DBUser->setCacheName ( 'user_access_data' );
 			$DBUser->execute ();
 			if ($DBUser->hasResult ()) {
 				$data = $DBUser->current ();
@@ -220,31 +231,46 @@ class Access {
 				$data ['rank_group_key'] = 'text_rank_group_' . $data ['rank_group_key'];
 				
 				$datetime = new \DateTime ( $data ['activated_date'] );
-				$data ['activated_date_format'] = $datetime->format ( 'H:i:s d-m-Y' );
+				$data ['activated_date_format'] = $datetime->format ( 'H:i:s d-F-Y' );
 				
 				$datetime = new \DateTime ( $data ['created_date'] );
-				$data ['created_date_format'] = $datetime->format ( 'H:i:s d-m-Y' );
+				$data ['created_date_format'] = $datetime->format ( 'H:i:s d-F-Y' );
 				
 				$datetime = new \DateTime ( $data ['expired_date'] );
-				$data ['expired_date_format'] = $datetime->format ( 'H:i:s d-m-Y' );
+				$data ['expired_date_format'] = $datetime->format ( 'H:i:s d-F-Y' );
 				
 				$datetime = new \DateTime ( $data ['last_login_date'] );
-				$data ['last_login_date_format'] = $datetime->format ( 'H:i:s d-m-Y' );
+				$data ['last_login_date_format'] = $datetime->format ( 'H:i:s d-F-Y' );
 				
 				$datetime = new \DateTime ( $data ['modified_date'] );
-				$data ['modified_date_format'] = $datetime->format ( 'H:i:s d-m-Y' );
+				$data ['modified_date_format'] = $datetime->format ( 'H:i:s d-F-Y' );
 				
 				$datetime = new \DateTime ( $data ['profile_created_date'] );
-				$data ['profile_created_date_format'] = $datetime->format ( 'H:i:s d-m-Y' );
+				$data ['profile_created_date_format'] = $datetime->format ( 'H:i:s d-F-Y' );
 				
 				$datetime = new \DateTime ( $data ['profile_modified_date'] );
-				$data ['profile_modified_date_format'] = $datetime->format ( 'H:i:s d-m-Y' );
+				$data ['profile_modified_date_format'] = $datetime->format ( 'H:i:s d-F-Y' );
 				
 				$datetime = new \DateTime ( $data ['profile_dob'] );
-				$data ['profile_dob_format'] = $datetime->format ( 'd-m-Y' );
+				$data ['profile_dob_format'] = $datetime->format ( 'd-F-Y' );
 				
-				$this->getContainer ()->offsetSet ( 'Data', $data );
-				$this->setData ( $data );
+				$datetime = new \DateTime ();
+				$ULogin = $this->getDatabase ();
+				$ULogin->update ();
+				$ULogin->table ( 'user_access' );
+				$ULogin->set ( array (
+						'user_access_last_login_date' => $datetime->format ( 'Y-m-d H:i:s' ),
+						'user_access_last_login_ip' => $this->getIPAddress (),
+						'user_access_no_of_login' => ($data ['no_login'] + 1) 
+				) );
+				$ULogin->where ( array (
+						'user_access_id = ' . $data ['id'] 
+				) );
+				$ULogin->execute ();
+				if ($ULogin->affectedRows ()) {
+					$this->getContainer ()->offsetSet ( 'Data', $data );
+					$this->setData ( $data );
+				}
 			}
 		}
 	}
@@ -369,6 +395,58 @@ class Access {
 	public function getID() {
 		if (isset ( $this->data ['id'] )) {
 			return ( int ) $this->data ['id'];
+		}
+		return False;
+	}
+	
+	/**
+	 * Get Sponsor
+	 *
+	 * @return string
+	 *
+	 */
+	public function getSponsor() {
+		if (isset ( $this->data ['sponsor'] )) {
+			return ( string ) $this->data ['sponsor'];
+		}
+		return False;
+	}
+	
+	/**
+	 * Get Sponsor Username
+	 *
+	 * @return string
+	 *
+	 */
+	public function getSponsorUsername() {
+		if (isset ( $this->data ['sponsor_username'] )) {
+			return ( string ) $this->data ['sponsor_username'];
+		}
+		return False;
+	}
+	
+	/**
+	 * Get Placement
+	 *
+	 * @return string
+	 *
+	 */
+	public function getPlacement() {
+		if (isset ( $this->data ['placement'] )) {
+			return ( string ) $this->data ['placement'];
+		}
+		return False;
+	}
+	
+	/**
+	 * Get Placement Username
+	 *
+	 * @return string
+	 *
+	 */
+	public function getPlacementUsername() {
+		if (isset ( $this->data ['placement_username'] )) {
+			return ( string ) $this->data ['placement_username'];
 		}
 		return False;
 	}
@@ -717,15 +795,16 @@ class Access {
 	 * @return Boolean
 	 *
 	 */
-	public function verifyPassword($username, $password) {
+	public function verifyPassword($username, $password, $encrypt = false) {
 		$status = false;
-		
-		$Bcrypt = new Bcrypt ( array (
-				'salt' => SYSTEM_BCRYPT_SALT,
-				'cost' => SYSTEM_BCRYPT_COST 
-		) );
-		$password = $Bcrypt->create ( $password );
-		
+		if (! $encrypt) {
+			$Bcrypt = new Bcrypt ( array (
+					'salt' => SYSTEM_BCRYPT_SALT,
+					'cost' => SYSTEM_BCRYPT_COST 
+			) );
+			$password = $Bcrypt->create ( $password );
+		}
+
 		$DBVerify = $this->getDatabase ();
 		$DBVerify->select ();
 		$DBVerify->columns ( array (
@@ -754,14 +833,16 @@ class Access {
 	 * @return Boolean
 	 *
 	 */
-	public function verifySecurity($username, $password) {
+	public function verifySecurity($username, $password, $encrypt = false) {
 		$status = false;
 		
-		$Bcrypt = new Bcrypt ( array (
-				'salt' => SYSTEM_BCRYPT_SALT,
-				'cost' => SYSTEM_BCRYPT_COST 
-		) );
-		$password = $Bcrypt->create ( $password );
+		if (! $encrypt) {
+			$Bcrypt = new Bcrypt ( array (
+					'salt' => SYSTEM_BCRYPT_SALT,
+					'cost' => SYSTEM_BCRYPT_COST 
+			) );
+			$password = $Bcrypt->create ( $password );
+		}
 		
 		$DBVerify = $this->getDatabase ();
 		$DBVerify->select ();

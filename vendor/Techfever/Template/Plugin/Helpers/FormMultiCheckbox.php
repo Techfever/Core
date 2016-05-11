@@ -142,9 +142,9 @@ class FormMultiCheckbox extends FormInput {
 		
 		$combinedMarkup = array ();
 		$count = 0;
-		
 		foreach ( $options as $key => $optionSpec ) {
 			$count ++;
+			// $id = $attributes ['id'] . $count;
 			$id = $attributes ['id'] . $count;
 			
 			$value = '';

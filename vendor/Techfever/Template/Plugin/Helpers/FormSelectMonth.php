@@ -38,9 +38,13 @@ class FormSelectMonth extends FormSelectYearHelper {
 		$monthElement = $element->getMonthElement ()->setValueOptions ( $monthsOptions );
 		$yearElement = $element->getYearElement ()->setValueOptions ( $yearOptions );
 		
+		$monthElement = $element->getMonthElement ()->setAttribute ( 'class', 'selectmonth' );
+		
+		$monthElement = $element->getMonthElement ()->setAttribute ( 'type', 'select' );
+		
 		if ($element->shouldCreateEmptyOption ()) {
-			$monthElement->setEmptyOption ( '' );
-			$yearElement->setEmptyOption ( '' );
+			$monthElement = $element->getMonthElement ()->setEmptyOption ( '' );
+			$yearElement = $element->getYearElement ()->setEmptyOption ( '' );
 		}
 		
 		return $selectHelper->render ( $monthElement ) . '-' . $selectHelper->render ( $yearElement );

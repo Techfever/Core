@@ -3,7 +3,7 @@
  * Zend Framework (http://framework.zend.com/)
  *
  * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
@@ -34,9 +34,32 @@ class GenericHeader implements HeaderInterface
      */
     public static function fromString($headerLine)
     {
-        list($fieldName, $fieldValue) = explode(': ', $headerLine, 2);
+        list($fieldName, $fieldValue) = GenericHeader::splitHeaderLine($headerLine);
         $header = new static($fieldName, $fieldValue);
         return $header;
+    }
+
+    /**
+     * Splits the header line in `name` and `value` parts.
+     *
+     * @param string $headerLine
+     * @return string[] `name` in the first index and `value` in the second.
+     * @throws Exception\InvalidArgumentException If header does not match with the format ``name:value``
+     */
+    public static function splitHeaderLine($headerLine)
+    {
+        $parts = explode(':', $headerLine, 2);
+        if (count($parts) !== 2) {
+            throw new Exception\InvalidArgumentException('Header must match with the format "name:value"');
+        }
+
+        if (! HeaderValue::isValid($parts[1])) {
+            throw new Exception\InvalidArgumentException('Invalid header value detected');
+        }
+
+        $parts[1] = ltrim($parts[1]);
+
+        return $parts;
     }
 
     /**
@@ -61,7 +84,7 @@ class GenericHeader implements HeaderInterface
      *
      * @param  string $fieldName
      * @return GenericHeader
-     * @throws Exception\InvalidArgumentException(
+     * @throws Exception\InvalidArgumentException If the name does not match with RFC 2616 format.
      */
     public function setFieldName($fieldName)
     {
@@ -69,13 +92,18 @@ class GenericHeader implements HeaderInterface
             throw new Exception\InvalidArgumentException('Header name must be a string');
         }
 
-        // Pre-filter to normalize valid characters, change underscore to dash
-        $fieldName = str_replace(' ', '-', ucwords(str_replace(array('_', '-'), ' ', $fieldName)));
-
-        // Validate what we have
-        if (!preg_match('/^[a-z][a-z0-9-]*$/i', $fieldName)) {
+        /*
+         * Following RFC 7230 section 3.2
+         *
+         * header-field = field-name ":" [ field-value ]
+         * field-name   = token
+         * token        = 1*tchar
+         * tchar        = "!" / "#" / "$" / "%" / "&" / "'" / "*" / "+" / "-" / "." /
+         *                "^" / "_" / "`" / "|" / "~" / DIGIT / ALPHA
+         */
+        if (!preg_match('/^[!#$%&\'*+\-\.\^_`|~0-9a-zA-Z]+$/', $fieldName)) {
             throw new Exception\InvalidArgumentException(
-                'Header name must start with a letter, and consist of only letters, numbers, and dashes'
+                'Header name must be a valid RFC 7230 (section 3.2) field-name.'
             );
         }
 
@@ -102,6 +130,7 @@ class GenericHeader implements HeaderInterface
     public function setFieldValue($fieldValue)
     {
         $fieldValue = (string) $fieldValue;
+        HeaderValue::assertValid($fieldValue);
 
         if (preg_match('/^\s+$/', $fieldValue)) {
             $fieldValue = '';

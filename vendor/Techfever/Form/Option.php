@@ -72,7 +72,6 @@ class Option extends Filter {
 				$QOption->order ( array (
 						'fe.form_element_options_key ASC' 
 				) );
-				$QOption->setCacheName ( 'form_element_options' );
 				$QOption->execute ();
 				if ($QOption->hasResult ()) {
 					while ( $QOption->valid () ) {

@@ -1,0 +1,46 @@
+<div class="layoutBoxes"><?php
+$success = $this->success;
+if ($success) {
+	$type = $this->type;
+	$content = $this->content;
+	if ($type == "navigator" && is_array ( $content ) && count ( $content ) > 0) {
+		?><div class="navigator">
+		<div class="language"><?php
+		echo $this->title . ': ';
+		$count = 1;
+		foreach ( $content as $content_value ) {
+			if ($count > 1) {
+				echo "&nbsp;|&nbsp;";
+			}
+			echo $this->htmlLink ( $this->serverUrl ( $this->baseHref () . $content_value ['route'] . '/' . $content_value ['action'] . '/' . $content_value ['locale'] ), $this->translate ( $content_value ['value'] ) );
+			$count ++;
+		}
+		?></div>
+	</div><?php
+	} elseif ($type == "selector") {
+		?><div class="selector">
+		<div class="body">
+			<div class="bodyheader">
+				<div><?php
+		echo $this->title;
+		?></div>
+			</div>
+			<div class="bodycontent"><?php
+		$elements = $content->getElements ();
+		$total_element = count ( $elements );
+		if ($total_element > 0) {
+			$formLabel = $this->plugin ( 'formLabel' );
+			echo $this->form ()->openTag ( $content );
+			?><div class="form_element"><?php
+			$selection = $content->get ( 'language_selector' );
+			echo $this->formSelection ( $selection );
+			?></div><?php
+			echo $this->form ()->closeTag ();
+		}
+		?></div>
+		</div>
+	</div><?php
+	}
+}
+?>
+</div>

@@ -78,7 +78,6 @@ class Attribute extends Option {
 				$QAttribute->order ( array (
 						'fe.form_element_attributes_key ASC' 
 				) );
-				$QAttribute->setCacheName ( 'form_element_attributes' );
 				$QAttribute->execute ();
 				if ($QAttribute->hasResult ()) {
 					while ( $QAttribute->valid () ) {

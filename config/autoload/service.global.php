@@ -24,6 +24,7 @@ return array(
 						'template' => 'Techfever\Template\TemplateServiceFactory',
 						'snapshot' => 'Techfever\Snapshot\SnapshotServiceFactory',
 						'MvcTranslator' => 'Techfever\Translator\TranslatorServiceFactory',
+						'UserLog' => 'Techfever\User\LogServiceFactory',
 						'UserAccess' => 'Techfever\User\AccessServiceFactory',
 						'UserPermission' => 'Techfever\User\PermissionServiceFactory',
 						'navigator' => 'Techfever\Navigator\NavigatorServiceFactory',

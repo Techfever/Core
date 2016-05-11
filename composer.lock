@@ -1,0 +1,84 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
+    "hash": "0dd46fc3edc9e6d6e5b573451a7c4299",
+    "packages": [
+        {
+            "name": "Techfever/Javascript",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Techfever/Javascript.git",
+                "reference": "aadbffbb053dc125e0380364e5e83972b00fea5b"
+            },
+            "require": {
+                "php": ">=5.3.14"
+            },
+            "type": "library",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "LkM",
+                    "email": "liew@technation.cc",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Techfever Javascript is an Opensource Project",
+            "homepage": "http://www.technation.cc/",
+            "keywords": [
+                "Multisystem"
+            ],
+            "time": "2013-06-29 07:27:22"
+        },
+        {
+            "name": "Techfever/Theme",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Techfever/Theme.git",
+                "reference": "592f1633badbad14ee5a3fa98e8dbe07d7bcd06b"
+            },
+            "require": {
+                "php": ">=5.3.14"
+            },
+            "type": "library",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "LkM",
+                    "email": "liew@technation.cc",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Techfever Theme is an Opensource Project",
+            "homepage": "http://www.technation.cc/",
+            "keywords": [
+                "Multisystem"
+            ],
+            "time": "2013-06-29 10:16:43"
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "techfever/theme": 20,
+        "techfever/javascript": 20
+    },
+    "platform": {
+        "php": ">=5.3.14"
+    },
+    "platform-dev": [
+
+    ]
+}

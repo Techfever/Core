@@ -3,9 +3,8 @@
 namespace Techfever\Template\Plugin\Helpers;
 
 use Zend\Form\ElementInterface;
-use Zend\Form\View\Helper\AbstractHelper;
 // use Techfever\Exception;
-class FormParagraph extends AbstractHelper {
+class FormParagraph extends AbstractFormHelper {
 	/**
 	 * Attributes valid for the input tag
 	 *
@@ -30,7 +29,7 @@ class FormParagraph extends AbstractHelper {
 		// $attributes['name'] = $name;
 		$content = ( string ) $element->getValue ();
 		$escapeHtml = $this->getEscapeHtmlHelper ();
-		return sprintf ( '<p %s>%s</p>', $this->createAttributesString ( $attributes ), $escapeHtml ( $content ) );
+		return sprintf ( '<p %s>%s</p>', $this->createAttributesString ( $attributes ), $content );
 	}
 	
 	/**

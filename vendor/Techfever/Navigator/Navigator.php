@@ -32,7 +32,7 @@ class Navigator {
 	 * @var Data
 	 *
 	 */
-	private $structure = null;
+	private $structure = array ();
 	
 	/**
 	 *
@@ -121,31 +121,32 @@ class Navigator {
 			$QNavigator = $this->getDatabase ();
 			$QNavigator->select ();
 			$QNavigator->columns ( array (
-					'root' => 'system_navigator_id',
-					'label' => 'system_navigator_label',
-					'route' => 'system_navigator_route',
-					'action' => 'system_navigator_action',
-					'controller' => 'system_navigator_controller',
-					'uri' => 'system_navigator_uri',
-					'class' => 'system_navigator_css_class',
-					'order' => 'system_navigator_order',
-					'visible' => 'system_navigator_visible',
-					'parent' => 'system_navigator_parent' 
+					'root' => 'theme_navigator_id',
+					'label' => 'theme_navigator_label',
+					'route' => 'theme_navigator_route',
+					'action' => 'theme_navigator_action',
+					'controller' => 'theme_navigator_controller',
+					'uri' => 'theme_navigator_uri',
+					'class' => 'theme_navigator_css_class',
+					'order' => 'theme_navigator_order',
+					'visible' => 'theme_navigator_visible',
+					'parent' => 'theme_navigator_parent',
+					'backend' => 'theme_navigator_backend' 
 			) );
 			$QNavigator->from ( array (
-					'sn' => 'system_navigator' 
+					'sn' => 'theme_navigator' 
 			) );
 			$where = array (
-					'system_navigator_visible = 1' 
+					'theme_navigator_visible = 1' 
 			);
-			$where [] = '(system_navigator_controller in ("' . implode ( '", "', $permission_array ) . '") or system_navigator_controller is null or system_navigator_controller = "")';
+			$where [] = 'theme_id = ' . THEME_ID;
+			$where [] = '(theme_navigator_controller in ("' . implode ( '", "', $permission_array ) . '") or theme_navigator_controller is null or theme_navigator_controller = "")';
 			$QNavigator->where ( $where );
 			$QNavigator->order ( array (
-					'system_navigator_parent ASC',
-					'system_navigator_order ASC',
-					'system_navigator_label ASC' 
+					'theme_navigator_parent ASC',
+					'theme_navigator_order ASC',
+					'theme_navigator_label ASC' 
 			) );
-			$QNavigator->setCacheName ( 'system_navigator' );
 			$QNavigator->execute ();
 			if ($QNavigator->hasResult ()) {
 				$this->navigator = $QNavigator->toArray ();
@@ -157,20 +158,22 @@ class Navigator {
 	/**
 	 * Prepare
 	 */
-	public function getTree($parent = 0) {
+	public function getTree($parent = 0, $backend = false) {
 		$data = null;
 		$navigator = $this->getNavigator ();
 		if (is_array ( $navigator ) && count ( $navigator ) > 0) {
 			foreach ( $navigator as $dbdata ) {
 				if ($dbdata ['parent'] == $parent) {
-					$rawdata = $this->getTree ( $dbdata ['root'] );
+					$rawdata = $this->getTree ( $dbdata ['root'], $backend );
 					if (is_array ( $rawdata ) && count ( $rawdata ) > 0) {
 						$dbdata ['pages'] = $rawdata;
 					}
 					$structure = array ();
+					$structure ['class'] = "";
 					if (! empty ( $dbdata ['label'] )) {
-						$structure ['label'] = $this->getTranslate ( 'text_navigator_' . strtolower ( $dbdata ['label'] ) );
+						$structure ['label'] = "<span></span>" . $this->getTranslate ( 'text_navigator_' . strtolower ( $dbdata ['label'] ) );
 						$structure ['id'] = strtolower ( $dbdata ['label'] );
+						$structure ['class'] .= $dbdata ['label'];
 					}
 					if (! empty ( $dbdata ['route'] )) {
 						$structure ['route'] = $dbdata ['route'];
@@ -185,7 +188,7 @@ class Navigator {
 						$structure ['uri'] = $dbdata ['uri'];
 					}
 					if (! empty ( $dbdata ['class'] )) {
-						$structure ['class'] = $dbdata ['class'];
+						$structure ['class'] .= ' ' . $dbdata ['class'];
 					}
 					if (! empty ( $dbdata ['order'] )) {
 						$structure ['order'] = $dbdata ['order'];
@@ -193,22 +196,39 @@ class Navigator {
 					if (! empty ( $dbdata ['visible'] )) {
 						$structure ['visible'] = ($dbdata ['visible'] == 1 ? True : False);
 					}
+					$structure ['backend'] = false;
+					if (! empty ( $dbdata ['backend'] )) {
+						$structure ['backend'] = ($dbdata ['backend'] == 1 ? True : False);
+					}
 					if (! empty ( $dbdata ['pages'] )) {
+						unset ( $structure ['route'] );
+						unset ( $structure ['action'] );
+						unset ( $structure ['controller'] );
+						$structure ['uri'] = "#";
 						$structure ['pages'] = $dbdata ['pages'];
 					}
-					$data [] = $structure;
+					$status = false;
+					if ($backend && $structure ['backend']) {
+						$status = true;
+					} else if (! $backend && ! $structure ['backend']) {
+						$status = true;
+					}
+					if ($status) {
+						$data [] = $structure;
+					}
 				}
 			}
 		}
+		
 		return $data;
 	}
 	
 	/**
 	 * getStructure
 	 */
-	public function getStructure() {
+	public function getStructure($backend = false) {
 		if (! is_array ( $this->structure ) || count ( $this->structure ) < 1) {
-			$this->structure = $this->getTree ();
+			$this->structure = $this->getTree ( 0, $backend );
 		}
 		return $this->structure;
 	}

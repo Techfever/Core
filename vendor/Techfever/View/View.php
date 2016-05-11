@@ -79,6 +79,12 @@ class View extends Element implements ViewInterface {
 	
 	/**
 	 *
+	 * @var array
+	 */
+	protected $elements_structure = array ();
+	
+	/**
+	 *
 	 * @var PriorityQueue
 	 */
 	protected $iterator;
@@ -413,7 +419,6 @@ class View extends Element implements ViewInterface {
 		if (! is_array ( $this->view_data ) || count ( $this->view_data ) < 1) {
 			$this->view_data = array ();
 			$ToUnderscore = new ToUnderscore ( '\\' );
-			$cachename = $ToUnderscore->filter ( 'module_controllers_view_controller_view_to_controller_view_' . $this->getController () . '_' . $this->getRouteAction () );
 			$QView = $this->getDatabase ();
 			$QView->select ();
 			$QView->columns ( array (
@@ -423,31 +428,36 @@ class View extends Element implements ViewInterface {
 					'mc' => 'module_controllers' 
 			) );
 			$QView->join ( array (
-					'fc' => 'view_controller' 
+					'fc' => 'view_element_controller' 
 			), 'fc.module_controllers_id = mc.module_controllers_id', array (
-					'fid' => 'view_controller_id' 
+					'fid' => 'view_element_controller_id' 
 			) );
 			$QView->join ( array (
-					'fec' => 'view_to_controller' 
-			), 'fec.view_controller_id = fc.view_controller_id', array (
-					'id' => 'view_id' 
+					'fec' => 'view_element_to_controller' 
+			), 'fec.view_element_controller_id = fc.view_element_controller_id', array (
+					'link_id' => 'view_element_to_controller_id',
+					'parent' => 'view_element_to_controller_parent',
+					'sort_order' => 'view_element_to_controller_sort_order' 
 			) );
 			$QView->join ( array (
-					'fe' => 'view' 
-			), 'fe.view_id = fec.view_id', array (
-					'type' => 'view_type',
-					'key' => 'view_key',
-					'field' => 'view_field' 
+					'fe' => 'view_element' 
+			), 'fe.view_element_id = fec.view_element_id', array (
+					'id' => 'view_element_id',
+					'type' => 'view_element_type',
+					'key' => 'view_element_key',
+					'field' => 'view_element_field',
+					'check_locale' => 'view_element_check_locale',
+					'locale' => 'view_element_locale' 
 			) );
 			$QView->where ( array (
 					'fc.module_controllers_action = "' . $this->getRouteAction () . '"',
 					'mc.module_controllers_alias = "' . str_replace ( '\\', '\\\\', $this->getController () ) . '"',
-					'fec.view_to_controller_status = 1' 
+					'fec.view_element_to_controller_status = 1' 
 			) );
 			$QView->order ( array (
-					'fec.view_to_controller_sort_order ASC' 
+					'fec.view_element_to_controller_parent ASC',
+					'fec.view_element_to_controller_sort_order ASC' 
 			) );
-			$QView->setCacheName ( $cachename );
 			$QView->execute ();
 			if ($QView->hasResult ()) {
 				while ( $QView->valid () ) {
@@ -456,7 +466,21 @@ class View extends Element implements ViewInterface {
 					$class = array_slice ( $class, - 1 );
 					$rawdata ['class'] = $class [0];
 					$rawdata ['key'] = strtolower ( $rawdata ['key'] );
-					$this->view_data [$rawdata ['key']] = $rawdata;
+					
+					$check_locale = (strtolower ( $rawdata ['check_locale'] ) == "true" ? True : False);
+					$add_status = true;
+					if ($check_locale) {
+						$get_locale = $rawdata ['locale'];
+						$add_status = false;
+						if (! empty ( $get_locale )) {
+							if ($this->getTranslator ()->checkLocale ( $get_locale )) {
+								$add_status = true;
+							}
+						}
+					}
+					if ($add_status) {
+						$this->view_data [$rawdata ['key']] = $rawdata;
+					}
 					$QView->next ();
 				}
 			}
@@ -508,6 +532,8 @@ class View extends Element implements ViewInterface {
 							'name' => strtolower ( $key ),
 							'type' => $value ['type'],
 							'options' => array (
+									'node' => $value ['link_id'],
+									'parent' => $value ['parent'],
 									'label' => 'text_' . strtolower ( $key ) 
 							),
 							'attributes' => array (
@@ -517,6 +543,10 @@ class View extends Element implements ViewInterface {
 							) 
 					);
 					$elementOrFieldset ['attributes'] ['content'] = $this->getVariable ( strtolower ( $value ['field'] ) );
+					if ($value ['type'] == 'selectdate') {
+						$elementOrFieldset ['options'] ['create_empty_option'] = True;
+						$elementOrFieldset ['attributes'] ['value'] = "";
+					}
 					$this->add ( $elementOrFieldset );
 				}
 			}

@@ -39,12 +39,14 @@ class Rank extends GeneralBase {
 	 */
 	public function getRankData() {
 		if (! is_array ( $this->_rank_data ) || count ( $this->_rank_data ) < 1) {
-			$DBRankCache = 'user_rank';
 			$DBRank = $this->getDatabase ();
 			$DBRank->select ();
 			$DBRank->columns ( array (
 					'id' => 'user_rank_id',
 					'iso' => 'user_rank_key',
+					'price_status' => 'user_rank_price_status',
+					'price_dl' => 'user_rank_price_dl',
+					'price_pv' => 'user_rank_price_pv',
 					'group' => 'user_rank_group_id',
 					'is_admin' => 'user_rank_is_admin' 
 			) );
@@ -56,17 +58,14 @@ class Rank extends GeneralBase {
 			);
 			if ($this->getOption ( 'group' ) > 0) {
 				$DBRankWhere [] = 'ur.user_rank_group_id = ' . $this->getOption ( 'group' );
-				$DBRankCache .= '_' . $this->getOption ( 'group' );
 			}
 			if ($this->getOption ( 'id' ) > 0) {
 				$DBRankWhere [] = 'ur.user_rank_id = ' . $this->getOption ( 'id' );
-				$DBRankCache .= '_' . $this->getOption ( 'id' );
 			}
 			$DBRank->where ( $DBRankWhere );
 			$DBRank->order ( array (
 					'user_rank_key ASC' 
 			) );
-			$DBRank->setCacheName ( $DBRankCache );
 			$DBRank->execute ();
 			if ($DBRank->hasResult ()) {
 				$data = array ();
@@ -85,6 +84,7 @@ class Rank extends GeneralBase {
 	 * Get Rank Message
 	 */
 	public function getMessage($id = null) {
+		$id = (! empty ( $id ) ? $id : $this->getOption ( 'id' ));
 		$data = $this->getRank ( $id );
 		$iso = $data ['iso'];
 		$name = "";
@@ -95,13 +95,40 @@ class Rank extends GeneralBase {
 	}
 	
 	/**
+	 * Get Rank Message
+	 */
+	public function getMessageKey($id = null) {
+		$id = (! empty ( $id ) ? $id : $this->getOption ( 'id' ));
+		$data = $this->getRank ( $id );
+		$iso = $data ['iso'];
+		$name = "";
+		if (strlen ( $iso ) > 0) {
+			$name = $data ['group'] . '_' . strtolower ( $this->convertToUnderscore ( $data ['iso'], ' ' ) );
+		}
+		return $name;
+	}
+	
+	/**
+	 * Get Rank
+	 */
+	public function verifyRank($id = null) {
+		$id = (! empty ( $id ) ? $id : $this->getOption ( 'id' ));
+		$data = $this->getRankData ();
+		if (is_array ( $data ) && count ( $data ) > 0) {
+			return (array_key_exists ( $id, $data ) ? true : false);
+		}
+		return false;
+	}
+	
+	/**
 	 * Get Rank Group
 	 */
 	public function getRankGroup($id = null) {
-		$data = $this->getRank ( $id );
-		$group = "";
-		if (strlen ( $data ['group'] ) > 0) {
-			$name = $data ['group'];
+		$id = (! empty ( $id ) ? $id : $this->getOption ( 'id' ));
+		$group = false;
+		if ($this->verifyRank ( $id )) {
+			$data = $this->getRank ( $id );
+			$group = $data ['group'];
 		}
 		return $group;
 	}
@@ -110,19 +137,59 @@ class Rank extends GeneralBase {
 	 * Get Rank
 	 */
 	public function getRank($id = null) {
-		$data = $this->getRankData ();
-		if (is_array ( $data ) && count ( $data ) > 0) {
-			if (! empty ( $id )) {
-				return (array_key_exists ( $id, $data ) ? $data [$id] : null);
-			}
+		$id = (! empty ( $id ) ? $id : $this->getOption ( 'id' ));
+		$status = false;
+		if ($this->verifyRank ( $id )) {
+			$data = $this->getRankData ();
+			return (array_key_exists ( $id, $data ) ? $data [$id] : null);
 		}
 		return false;
+	}
+	
+	/**
+	 * Get Rank Price Status
+	 */
+	public function getRankPriceStatus($id = null) {
+		$id = (! empty ( $id ) ? $id : $this->getOption ( 'id' ));
+		$status = false;
+		if ($this->verifyRank ( $id )) {
+			$data = $this->getRank ( $id );
+			$status = $data ['price_status'];
+		}
+		return $status;
+	}
+	
+	/**
+	 * Get Rank Price DL
+	 */
+	public function getRankPriceDL($id = null) {
+		$id = (! empty ( $id ) ? $id : $this->getOption ( 'id' ));
+		$price = false;
+		if ($this->verifyRank ( $id )) {
+			$data = $this->getRank ( $id );
+			$price = $data ['price_dl'];
+		}
+		return $price;
+	}
+	
+	/**
+	 * Get Rank Price PV
+	 */
+	public function getRankPricePV($id = null) {
+		$id = (! empty ( $id ) ? $id : $this->getOption ( 'id' ));
+		$price = false;
+		if ($this->verifyRank ( $id )) {
+			$data = $this->getRank ( $id );
+			$price = $data ['price_pv'];
+		}
+		return $price;
 	}
 	
 	/**
 	 * Get Rank ISO
 	 */
 	public function getRankISO($id = null) {
+		$id = (! empty ( $id ) ? $id : $this->getOption ( 'id' ));
 		$data = $this->getRank ( $id );
 		$iso = "";
 		if (strlen ( $data ['iso'] ) > 0) {

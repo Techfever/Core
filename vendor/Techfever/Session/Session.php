@@ -48,6 +48,7 @@ class Session {
 			$options = isset ( $session ['config'] ['options'] ) ? $session ['config'] ['options'] : array ();
 			$sessionConfig = new $class ();
 			$sessionConfig->setOptions ( $options );
+			define("SYSTEM_SESSION_MAX_LIFETIME", $options['gc_maxlifetime']);
 		}
 		
 		if (array_key_exists ( 'storage', $session ) && isset ( $session ['storage'] )) {
@@ -102,5 +103,11 @@ class Session {
 			$this->getManager ()->regenerateId ( true );
 			$container->init = 1;
 		}
+	}
+	public function isValid() {
+		return $this->getManager ()->isValid ();
+	}
+	public function getID() {
+		return $this->getManager ()->getId ();
 	}
 }

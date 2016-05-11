@@ -3,7 +3,7 @@
  * Zend Framework (http://framework.zend.com/)
  *
  * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
@@ -13,7 +13,6 @@ use Zend\XmlRpc\AbstractValue;
 
 abstract class AbstractCollection extends AbstractValue
 {
-
     /**
      * Set the value of a collection type (array and struct) native types
      *
@@ -21,7 +20,7 @@ abstract class AbstractCollection extends AbstractValue
      */
     public function __construct($value)
     {
-        $values = (array)$value;   // Make sure that the value is an array
+        $values = (array) $value;   // Make sure that the value is an array
         foreach ($values as $key => $value) {
             // If the elements of the given array are not Zend\XmlRpc\Value objects,
             // we need to convert them as such (using auto-detection from PHP value)
@@ -32,7 +31,6 @@ abstract class AbstractCollection extends AbstractValue
         }
     }
 
-
     /**
      * Return the value of this object, convert the XML-RPC native collection values into a PHP array
      *
@@ -40,7 +38,7 @@ abstract class AbstractCollection extends AbstractValue
      */
     public function getValue()
     {
-        $values = (array)$this->value;
+        $values = (array) $this->value;
         foreach ($values as $key => $value) {
             $values[$key] = $value->getValue();
         }

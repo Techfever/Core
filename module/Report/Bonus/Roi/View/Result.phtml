@@ -1,0 +1,103 @@
+<?php
+$content = $this->details;
+$summary = $content ['summary'];
+$details = $content ['details'];
+?><div class="seperator"></div>
+<div class="review_summary">
+	<div class="datatablecontent">
+		<div class="list">
+			<div id="datatable">
+				<div class="jtable-main-container">
+					<table class="jtable" style="width: 40%;">
+						<thead>
+							<tr>
+								<th class="jtable-column-header" colspan="2"><span
+									class="jtable-column-header-text"><?php echo $this->translate('text_summary'); ?></span>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="jtable-data-row jtable-row-even">
+								<td style="white-space: nowrap; width: 50%;"><?php echo $this->translate('text_filter_date_from'); ?>&nbsp;:</td>
+								<td><?php echo $summary['start_date']; ?></td>
+							</tr>
+							<tr class="jtable-data-row jtable-row-odd">
+								<td style="white-space: nowrap;"><?php echo $this->translate('text_filter_date_to'); ?>&nbsp;:</td>
+								<td><?php echo $summary['end_date']; ?></td>
+							</tr>
+							<tr class="jtable-data-row jtable-row-even">
+								<td style="white-space: nowrap;"><?php echo $this->translate('text_total_level'); ?>&nbsp;:</td>
+								<td><?php echo $summary['total_level']; ?></td>
+							</tr>
+							<tr class="jtable-data-row jtable-row-even">
+								<td style="white-space: nowrap;"><?php echo $this->translate('text_total_done'); ?>&nbsp;:</td>
+								<td><?php echo $summary['total_done']; ?></td>
+							</tr>
+							<tr class="jtable-data-row jtable-row-odd">
+								<td style="white-space: nowrap;"><?php echo $this->translate('text_total_amount'); ?>&nbsp;:</td>
+								<td><?php echo number_format($summary['total_amount'],2); ?></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="review_details">
+	<div class="datatablecontent">
+		<div class="list">
+			<div id="datatable">
+				<div class="jtable-main-container"><?php
+				if (is_array ( $details ) && count ( $details ) > 0) {
+					?><table class="jtable">
+						<thead>
+							<tr>
+								<th class="jtable-column-header"><span
+									class="jtable-column-header-text"><?php
+					echo $this->translate ( 'text_level' );
+					?></span></th>
+								<th class="jtable-column-header"><span
+									class="jtable-column-header-text"><?php
+					echo $this->translate ( 'text_status' );
+					?></span></th>
+								<th class="jtable-column-header"><span
+									class="jtable-column-header-text"><?php
+					echo $this->translate ( 'text_amount' );
+					?></span></th>
+								<th class="jtable-column-header"><span
+									class="jtable-column-header-text"><?php
+					echo $this->translate ( 'text_percentage' );
+					?></span></th>
+								<th class="jtable-column-header"><span
+									class="jtable-column-header-text"><?php
+					echo $this->translate ( 'text_bonus' );
+					?></span></th>
+								<th class="jtable-column-header"><span
+									class="jtable-column-header-text"><?php
+					echo $this->translate ( 'text_created_date' );
+					?></span></th>
+							</tr>
+						</thead>
+						<tbody><?php
+					$count = 1;
+					foreach ( $details as $details_key => $details_value ) {
+						?><tr
+								class="jtable-data-row jtable-row-<?php echo ((boolean) ($count % 2) ? "odd" : "even"); ?>">
+								<td><?php echo $details_value['level']; ?></td>
+								<td><?php echo ($details_value['status'] == "1" ? $this->translate ( 'text_status_success' ) : $this->translate ( 'text_status_pending' )); ?></td>
+								<td><?php echo number_format($details_value['amount'],2); ?></td>
+								<td><?php echo number_format($details_value['percentage_format'],2); ?>%</td>
+								<td><?php echo number_format($details_value['profit'],2); ?></td>
+								<td><?php echo $details_value['created_date_format']; ?></td>
+							</tr><?php
+						$count ++;
+					}
+					?></tbody>
+					</table><?php
+				}
+				?></div>
+			</div>
+		</div>
+	</div>
+</div>

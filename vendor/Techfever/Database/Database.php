@@ -10,7 +10,7 @@ use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\Sql\Select as SQLSelect;
-use Techfever\Database\Sql\Insert as SQLInsert;
+use Techfever\Database\SQL\Insert as SQLInsert;
 use Zend\Db\Sql\Update as SQLUpdate;
 use Zend\Db\Sql\Delete as SQLDelete;
 use Zend\Db\Sql\Predicate;
@@ -261,6 +261,14 @@ class Database extends Result implements DatabaseInterface {
 	private $sql = null;
 	
 	/**
+	 * Disable Cache
+	 *
+	 * @var boolean
+	 *
+	 */
+	private $disablecache = false;
+	
+	/**
 	 * SQL Last ID
 	 *
 	 * @var int
@@ -270,14 +278,14 @@ class Database extends Result implements DatabaseInterface {
 	
 	/**
 	 * Maximum stack level of backtrace (PHP > 5.4.0)
-	 * 
+	 *
 	 * @var int
 	 */
 	protected $traceLimit = 10;
 	
 	/**
 	 * Classes within this namespace in the stack are ignored
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $ignoredNamespace = 'Techfever\\Database\\Database';
@@ -296,6 +304,20 @@ class Database extends Result implements DatabaseInterface {
 		$this->logger = $log;
 		
 		$this->prepare ();
+	}
+	
+	/**
+	 * Disable Cache
+	 */
+	public function setDisableCache($status = false) {
+		$this->disablecache = $status;
+	}
+	
+	/**
+	 * Disable Cache
+	 */
+	public function disableCache() {
+		return $this->disablecache;
 	}
 	
 	/**
@@ -585,21 +607,22 @@ class Database extends Result implements DatabaseInterface {
 	public function execute() {
 		$this->prepareSQL ();
 		$this->prepare ();
+		
 		if (is_object ( $this->sql ) && is_object ( $this->adapter )) {
 			if (DB_LOG_ENABLE) {
-				$this->logger->info ( $this->prepareBacktrace () );
+				$this->prepareLogger()->info ( $this->prepareBacktrace () );
 				
-				$sql = $this->sql->getSqlString ( $this->adapter->getPlatform () );
-				$this->logger->info ( $sql );
+				$sql = $this->sql->getSqlString ( $this->prepareAdapter()->getPlatform () );
+				$this->prepareLogger()->info ( $sql );
 			}
 			
 			if ($this->action == 'select') {
 				$hasdata = false;
-				if ($this->hasCacheName () && $this->cache->hasItem ( $this->cachename )) {
-					$resultdata = $this->cache->getItem ( $this->cachename );
+				if ($this->hasCacheName () && $this->prepareCache()->hasItem ( $this->cachename )) {
+					$resultdata = $this->prepareCache()->getItem ( $this->cachename );
 					$hasdata = true;
 				} else {
-					$statement = $this->adapter->createStatement ();
+					$statement = $this->prepareAdapter()->createStatement ();
 					$this->sql->prepareStatement ( $this->adapter, $statement );
 					$resultdata = $statement->execute ();
 					if ($resultdata instanceof ResultInterface && $resultdata->isQueryResult ()) {
@@ -614,21 +637,21 @@ class Database extends Result implements DatabaseInterface {
 				if ($hasdata) {
 					$this->setResult ( $resultdata );
 					
-					if ($this->hasCacheName () && ! $this->cache->hasItem ( $this->cachename )) {
+					if ($this->hasCacheName () && ! $this->prepareCache()->hasItem ( $this->cachename )) {
 						$this->setCache ( $resultdata );
 					}
 				}
 			} elseif ($this->action == 'delete' || $this->action == 'update' || $this->action == 'insert') {
-				$statement = $this->adapter->createStatement ();
+				$statement = $this->prepareAdapter()->createStatement ();
 				$this->sql->prepareStatement ( $this->adapter, $statement );
 				$resultdata = $statement->execute ();
 				
 				$this->affectedrows = $resultdata->getAffectedRows ();
 				if ($this->action == 'insert') {
-					$this->lastid = $this->adapter->getDriver ()->getConnection ()->getLastGeneratedValue ();
+					$this->lastid = $this->prepareAdapter()->getDriver ()->getConnection ()->getLastGeneratedValue ();
 				}
-				if ($this->hasCacheName ()) {
-					$this->cache->clearByPrefix ( $this->cachename );
+				if ($this->hasCacheName () && ! $this->disableCache ()) {
+					$this->clearCache ( "*" . $this->cachename );
 				}
 				$statement->getResource ()->close ();
 			}
@@ -646,6 +669,8 @@ class Database extends Result implements DatabaseInterface {
 	}
 	private function prepareSQL() {
 		$sql = null;
+		$cache_name = null;
+		$cache_status = true;
 		if ($this->action == 'select') {
 			$sql = new SQLSelect ();
 			if (! empty ( $this->columns )) {
@@ -653,11 +678,33 @@ class Database extends Result implements DatabaseInterface {
 			}
 			if (! empty ( $this->table )) {
 				$sql->from ( $this->table );
+				if (is_array ( $this->table )) {
+					foreach ( $this->table as $table ) {
+						if (! $this->checkCacheIgnore ( $table )) {
+							$cache_name .= '+' . $table;
+						}
+					}
+				} else {
+					if (! $this->checkCacheIgnore ( $this->table )) {
+						$cache_name .= $this->table;
+					}
+				}
 			}
 			if (! empty ( $this->join ) && is_array ( $this->join )) {
 				$countjoin = count ( $this->join );
 				for($i = 0; $i < $countjoin; $i ++) {
 					$sql->join ( $this->join [$i], $this->joinon [$i], $this->joincolumns [$i], $this->jointype [$i] );
+					if (is_array ( $this->join [$i] )) {
+						foreach ( $this->join [$i] as $table ) {
+							if (! $this->checkCacheIgnore ( $table )) {
+								$cache_name .= '+' . $table;
+							}
+						}
+					} else {
+						if (! $this->checkCacheIgnore ( $this->table )) {
+							$cache_name .= $this->table;
+						}
+					}
 				}
 			}
 			if (! empty ( $this->where )) {
@@ -682,6 +729,17 @@ class Database extends Result implements DatabaseInterface {
 			$sql = new SQLInsert ();
 			if (! empty ( $this->table )) {
 				$sql->into ( $this->table );
+				if (is_array ( $this->table )) {
+					foreach ( $this->table as $table ) {
+						if (! $this->checkCacheIgnore ( $table )) {
+							$cache_name .= '+' . $table;
+						}
+					}
+				} else {
+					if (! $this->checkCacheIgnore ( $this->table )) {
+						$cache_name .= $this->table;
+					}
+				}
 			}
 			if (! empty ( $this->columns )) {
 				$sql->columns ( $this->columns );
@@ -693,6 +751,17 @@ class Database extends Result implements DatabaseInterface {
 			$sql = new SQLDelete ();
 			if (! empty ( $this->table )) {
 				$sql->from ( $this->table );
+				if (is_array ( $this->table )) {
+					foreach ( $this->table as $table ) {
+						if (! $this->checkCacheIgnore ( $table )) {
+							$cache_name .= '+' . $table;
+						}
+					}
+				} else {
+					if (! $this->checkCacheIgnore ( $this->table )) {
+						$cache_name .= $this->table;
+					}
+				}
 			}
 			if (! empty ( $this->where )) {
 				$sql->where ( $this->where, $this->wherecombination );
@@ -701,6 +770,17 @@ class Database extends Result implements DatabaseInterface {
 			$sql = new SQLUpdate ();
 			if (! empty ( $this->table )) {
 				$sql->table ( $this->table );
+				if (is_array ( $this->table )) {
+					foreach ( $this->table as $table ) {
+						if (! $this->checkCacheIgnore ( $table )) {
+							$cache_name .= '+' . $table;
+						}
+					}
+				} else {
+					if (! $this->checkCacheIgnore ( $this->table )) {
+						$cache_name .= $this->table;
+					}
+				}
 			}
 			if (! empty ( $this->set )) {
 				$sql->set ( $this->set, $this->setflag );
@@ -709,13 +789,33 @@ class Database extends Result implements DatabaseInterface {
 				$sql->where ( $this->where, $this->wherecombination );
 			}
 		}
+		$cache_name = (substr ( $cache_name, 0, 1 ) == '+' ? substr ( $cache_name, 1 ) : $cache_name);
 		$this->sql = $sql;
 		if (! is_object ( $this->sql )) {
 			throw new Exception\RuntimeException ( 'Zend\Db\Sql\\' . $this->action . ' object not found' );
+		} else {
+			if ($this->action == 'select') {
+				$sqlstring = $this->sql->getSqlString ( $this->prepareAdapter()->getPlatform () );
+				$cache_name .= '-' . md5 ( $sqlstring );
+			}
+		}
+		if ($cache_status) {
+			$this->setCacheName ( $cache_name );
 		}
 		return $this->sql;
 	}
+	public function checkCacheIgnore($table = null) {
+		$status = false;
+		$table = strtolower ( $table );
+		switch ($table) {
+			case 'session' :
+				$status = true;
+				break;
+		}
+		return $status;
+	}
 	public function reset() {
+		$this->disablecache = false;
 		$this->columns = null;
 		$this->prefixColumnsWithTable = null;
 		$this->from = null;
@@ -741,7 +841,7 @@ class Database extends Result implements DatabaseInterface {
 	public function getSqlString() {
 		$this->prepareSQL ();
 		if (is_object ( $this->sql )) {
-			return $this->sql->getSqlString ( $this->adapter->getPlatform () );
+			return $this->sql->getSqlString ( $this->prepareAdapter()->getPlatform () );
 		}
 		return null;
 	}
@@ -939,12 +1039,11 @@ class Database extends Result implements DatabaseInterface {
 		if (! is_object ( $this->cache )) {
 			throw new Exception\RuntimeException ( 'Zend\Cache object not found' );
 		}
-		$this->cache->setItem ( $this->cachename, $result );
+		$this->prepareCache()->setItem ( $this->cachename, $result );
 	}
 	public function clearCache($cachename = null) {
-		$this->prepareCache ();
 		if ($this->hasCacheName ()) {
-			$this->cache->clearByPrefix ( $cachename );
+			$this->prepareCache()->clearByPrefix ( $cachename );
 		}
 	}
 }

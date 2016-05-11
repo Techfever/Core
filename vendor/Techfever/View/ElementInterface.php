@@ -92,4 +92,32 @@ interface ElementInterface {
 	 * @return string
 	 */
 	public function getLabel();
+	
+	/**
+	 * Retrieve the title used for this element
+	 *
+	 * @return string
+	 */
+	public function getTitle();
+	
+	/**
+	 * Retrieve the node used for this element
+	 *
+	 * @return string
+	 */
+	public function getNode();
+	
+	/**
+	 * Retrieve the parent used for this element
+	 *
+	 * @return string
+	 */
+	public function getParent();
+	
+	/**
+	 * Return the is password
+	 *
+	 * @return boolean
+	 */
+	public function isPassword();
 }

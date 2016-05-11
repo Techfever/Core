@@ -58,7 +58,6 @@ class Address extends Country {
 						'ud.user_profile_id' => $this->getOption ( 'profile_id' ),
 						'ud.user_address_delete_status' => '0' 
 				) );
-				$QAddress->setCacheName ( 'user_address_' . $this->getOption ( 'profile_id' ) );
 				$QAddress->execute ();
 				if ($QAddress->hasResult ()) {
 					$data = array ();
@@ -109,6 +108,8 @@ class Address extends Country {
 	 */
 	public function createUserAddress($profile, $data) {
 		if (! empty ( $profile ) && count ( $data ) > 0) {
+			$data ['user_address_country'] = $this->getCountryID($data ['user_address_country_text']);
+			$data ['user_address_state'] = $this->getCountryID($data ['user_address_state_text']);
 			$IAddress = $this->getDatabase ();
 			$IAddress->insert ();
 			$IAddress->into ( 'user_address' );
@@ -154,6 +155,8 @@ class Address extends Country {
 	public function updateUserAddress($profile, $data) {
 		if ($profile > 0 && count ( $data ) > 0) {
 			$address = $this->getUserAddressDefaultID ( $profile );
+			$data ['user_address_country'] = $this->getCountryID($data ['user_address_country_text']);
+			$data ['user_address_state'] = $this->getCountryID($data ['user_address_state_text']);
 			if ($address > 0) {
 				$UAddress = $this->getDatabase ();
 				$UAddress->update ();
@@ -174,7 +177,6 @@ class Address extends Country {
 						'user_profile_id' => $profile,
 						'user_address_id' => $address 
 				) );
-				$UAddress->setCacheName ( 'user_address_' . $address . '_' . $profile );
 				$UAddress->execute ();
 				if ($UAddress->affectedRows ()) {
 					return true;

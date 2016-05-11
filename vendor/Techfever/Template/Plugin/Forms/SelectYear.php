@@ -64,6 +64,7 @@ class SelectYear extends Element implements InputProviderInterface, ElementPrepa
 		$this->yearElement = new Select ( $name . '[year]', $options );
 		parent::__construct ( $name, $options );
 		
+		$this->setOptions ( $options );
 		if (isset ( $options ['year_attributes'] )) {
 			$this->setYearAttributes ( $options ['year_attributes'] );
 		}
@@ -208,9 +209,11 @@ class SelectYear extends Element implements InputProviderInterface, ElementPrepa
 		$this->yearElement->setName ( $name . '[year]' );
 		$this->yearElement->setAttribute ( 'id', $name . '[year]' );
 		$this->yearElement->setAttribute ( 'class', 'selectyear' );
-		$this->yearElement->setOptions ( array (
-				'empty_option' => '' 
-		) );
+		if ($this->shouldCreateEmptyOption ()) {
+			$this->yearElement->setOptions ( array (
+					'empty_option' => '' 
+			) );
+		}
 	}
 	
 	/**

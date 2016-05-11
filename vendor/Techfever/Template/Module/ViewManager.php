@@ -5,6 +5,7 @@ namespace Techfever\Template\Module;
 use Techfever\Exception;
 use Techfever\Functions\General as GeneralBase;
 use Techfever\Functions\DirConvert;
+use Techfever\Template\Plugin\Filters\ToForwardSlash;
 
 class ViewManager {
 	
@@ -479,7 +480,7 @@ class ViewManager {
 				if (file_exists ( $errorindexPath )) {
 					$templatemap [$this->getExceptionTemplate ()] = $errorindexPath;
 				}
-				$navigatorlayoutPath = new DirConvert ( $themelocation . 'Techfever/Theme/' . $themedefault . '/topnavigator.phtml' );
+				$navigatorlayoutPath = new DirConvert ( $themelocation . 'Techfever/Theme/' . $themedefault . '/navigator.phtml' );
 				$navigatorlayoutPath = $navigatorlayoutPath->__toString ();
 				if (file_exists ( $navigatorlayoutPath )) {
 					$templatemap ['navigator/layout'] = $navigatorlayoutPath;
@@ -489,48 +490,21 @@ class ViewManager {
 				if (file_exists ( $breadcrumblayoutPath )) {
 					$templatemap ['breadcrumb/layout'] = $breadcrumblayoutPath;
 				}
-				$datatablemenulayoutPath = new DirConvert ( $themelocation . 'Techfever/Theme/' . $themedefault . '/Module/Share/Datatable/menu.phtml' );
-				$datatablemenulayoutPath = $datatablemenulayoutPath->__toString ();
-				if (file_exists ( $datatablemenulayoutPath )) {
-					$templatemap ['datatable/menu/layout'] = $datatablemenulayoutPath;
-				}
-				$datatablemenusearchlayoutPath = new DirConvert ( $themelocation . 'Techfever/Theme/' . $themedefault . '/Module/Share/Datatable/Menu/search.phtml' );
-				$datatablemenusearchlayoutPath = $datatablemenusearchlayoutPath->__toString ();
-				if (file_exists ( $datatablemenusearchlayoutPath )) {
-					$templatemap ['datatable/menu/search/layout'] = $datatablemenusearchlayoutPath;
-				}
-				$datatablemenucolumnlayoutPath = new DirConvert ( $themelocation . 'Techfever/Theme/' . $themedefault . '/Module/Share/Datatable/Menu/column.phtml' );
-				$datatablemenucolumnlayoutPath = $datatablemenucolumnlayoutPath->__toString ();
-				if (file_exists ( $datatablemenucolumnlayoutPath )) {
-					$templatemap ['datatable/menu/column/layout'] = $datatablemenucolumnlayoutPath;
-				}
 			}
+			$backendlayout = new DirConvert ( $themelocation . 'Techfever/Theme/Backend/layout.phtml' );
+			$backendlayout = $backendlayout->__toString ();
+			$templatemap ['backend/layout'] = $backendlayout;
 			$blanklayout = new DirConvert ( $themelocation . 'Techfever/Theme/Blank.phtml' );
 			$blanklayout = $blanklayout->__toString ();
 			$templatemap ['blank/layout'] = $blanklayout;
 			$templatemap = array_merge ( $templatemap, $this->getTemplateShareMap ( 'Share' ) );
 			
+			$ToForwardSlash = new ToForwardSlash ( '\\' );
 			$controller = $this->getControllers ();
 			if (is_array ( $controller ) && count ( $controller ) > 0) {
 				foreach ( $controller as $value ) {
 					$path = $value ['path'];
-					$alias = explode ( '\\', $value ['alias'] );
-					$classes = $alias [(count ( $alias ) - 1)];
-					// $alias = array_slice($alias, 0, (count($alias) - 2));
-					// $module = implode('-', $alias);
-					$module = $alias [0];
-					preg_match_all ( '/[A-Z]/', substr ( $classes, 1, strlen ( $classes ) ), $classmatch, PREG_OFFSET_CAPTURE );
-					if (is_array ( $classmatch [0] ) && count ( $classmatch [0] ) > 0) {
-						$startlen = 0;
-						$endlen = 0;
-						foreach ( $classmatch [0] as $classmatchpos ) {
-							$classes = strtolower ( str_replace ( $classmatchpos [0], '-' . $classmatchpos [0], $classes ) );
-						}
-					}
-					if (substr ( $classes, 0, 1 ) == "-") {
-						$classes = substr ( $classes, 1, strlen ( $classes ) );
-					}
-					$classes = strtolower ( $classes );
+					$alias = $value ['alias'];
 					$dir = new DirConvert ( CORE_PATH . '/' . $path . '/View/' );
 					$dir = $dir->__toString ();
 					if (file_exists ( $dir )) {
@@ -539,14 +513,29 @@ class ViewManager {
 							$fileinfo = pathinfo ( $dir . $filename );
 							if ($fileinfo ['extension'] == 'phtml') {
 								$method = $fileinfo ['filename'];
-								$configfile = new DirConvert ( CORE_PATH . '/' . $path . '/View/' . $fileinfo ['basename'] );
-								$configfile = $configfile->__toString ();
-								$templatemap [strtolower ( $module . '/' . $classes . '/' . $method )] = $configfile;
+								
+								$mapmodule = strtolower ( $ToForwardSlash->filter ( $alias . '\\' . $method ) );
+								
+								$modulepath = $path . '/View/' . $fileinfo ['basename'];
+								
+								$mopthememodulepath = $themelocation . 'Techfever/Theme/' . $themedefault . '/' . ucfirst ( $modulepath );
+								$thememodulepath = new DirConvert ( $mopthememodulepath );
+								$thememodulepath = $thememodulepath->__toString ();
+								if (file_exists ( $thememodulepath )) {
+									$configfile = $thememodulepath;
+								} else {
+									$mopmodulepath = CORE_PATH . '/' . $modulepath;
+									$configfile = new DirConvert ( $mopmodulepath );
+									$configfile = $configfile->__toString ();
+								}
+								
+								$templatemap [$mapmodule] = $configfile;
 							}
 						}
 					}
 				}
 			}
+			ksort ( $templatemap );
 			$this->templatemap = $templatemap;
 		}
 		return $this->templatemap;

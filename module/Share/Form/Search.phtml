@@ -1,0 +1,10 @@
+<?php
+$search = $this->search;
+echo $this->FormFactory ( $search );
+$js = $this->js;
+if (! empty ( $js )) {
+	echo $js;
+}
+?>
+<div class="seperator"></div>
+<div class="form" style="display: none;"></div>

@@ -3,11 +3,10 @@
 namespace Techfever\Template\Plugin\Helpers;
 
 use Zend\Form\ElementInterface;
-use Zend\Form\View\Helper\AbstractHelper;
 use Techfever\Template\Plugin\Forms\Permission as PermissionElement;
 use Techfever\Exception;
 
-class FormPermission extends AbstractHelper {
+class FormPermission extends AbstractFormHelper {
 	/**
 	 * Attributes valid for the input tag
 	 *

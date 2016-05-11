@@ -3,13 +3,14 @@
  * Zend Framework (http://framework.zend.com/)
  *
  * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
 namespace Zend\InputFilter;
 
 use Traversable;
+use Zend\Filter\Exception;
 use Zend\Filter\FilterChain;
 use Zend\Stdlib\ArrayUtils;
 use Zend\Validator\ValidatorInterface;
@@ -38,12 +39,12 @@ class Factory
      */
     public function __construct(InputFilterPluginManager $inputFilterManager = null)
     {
+        $this->defaultFilterChain    = new FilterChain();
+        $this->defaultValidatorChain = new ValidatorChain();
+
         if ($inputFilterManager) {
             $this->setInputFilterManager($inputFilterManager);
         }
-
-        $this->defaultFilterChain    = new FilterChain();
-        $this->defaultValidatorChain = new ValidatorChain();
     }
 
     /**
@@ -144,13 +145,17 @@ class Factory
     /**
      * Factory for input objects
      *
-     * @param  array|Traversable $inputSpecification
+     * @param  array|Traversable|InputProviderInterface $inputSpecification
      * @throws Exception\InvalidArgumentException
      * @throws Exception\RuntimeException
      * @return InputInterface|InputFilterInterface
      */
     public function createInput($inputSpecification)
     {
+        if ($inputSpecification instanceof InputProviderInterface) {
+            $inputSpecification = $inputSpecification->getInputSpecification();
+        }
+
         if (!is_array($inputSpecification) && !$inputSpecification instanceof Traversable) {
             throw new Exception\InvalidArgumentException(sprintf(
                 '%s expects an array or Traversable; received "%s"',
@@ -225,6 +230,9 @@ class Factory
                 case 'fallback_value':
                     $input->setFallbackValue($value);
                     break;
+                case 'break_on_failure':
+                    $input->setBreakOnFailure($value);
+                    break;
                 case 'filters':
                     if ($value instanceof FilterChain) {
                         $input->setFilterChain($value);
@@ -265,13 +273,17 @@ class Factory
     /**
      * Factory for input filters
      *
-     * @param  array|Traversable $inputFilterSpecification
+     * @param  array|Traversable|InputFilterProviderInterface $inputFilterSpecification
      * @throws Exception\InvalidArgumentException
      * @throws Exception\RuntimeException
      * @return InputFilterInterface
      */
     public function createInputFilter($inputFilterSpecification)
     {
+        if ($inputFilterSpecification instanceof InputFilterProviderInterface) {
+            $inputFilterSpecification = $inputFilterSpecification->getInputFilterSpecification();
+        }
+
         if (!is_array($inputFilterSpecification) && !$inputFilterSpecification instanceof Traversable) {
             throw new Exception\InvalidArgumentException(sprintf(
                 '%s expects an array or Traversable; received "%s"',
@@ -300,10 +312,16 @@ class Factory
             if (isset($inputFilterSpecification['count'])) {
                 $inputFilter->setCount($inputFilterSpecification['count']);
             }
+            if (isset($inputFilterSpecification['required'])) {
+                $inputFilter->setIsRequired($inputFilterSpecification['required']);
+            }
             return $inputFilter;
         }
 
         foreach ($inputFilterSpecification as $key => $value) {
+            if (null === $value) {
+                continue;
+            }
 
             if (($value instanceof InputInterface)
                 || ($value instanceof InputFilterInterface)
@@ -322,6 +340,7 @@ class Factory
     /**
      * @param  FilterChain       $chain
      * @param  array|Traversable $filters
+     * @throws Exception\RuntimeException
      * @return void
      */
     protected function populateFilters(FilterChain $chain, $filters)
@@ -357,6 +376,7 @@ class Factory
     /**
      * @param  ValidatorChain    $chain
      * @param  array|Traversable $validators
+     * @throws Exception\RuntimeException
      * @return void
      */
     protected function populateValidators(ValidatorChain $chain, $validators)

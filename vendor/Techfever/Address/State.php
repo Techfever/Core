@@ -66,7 +66,6 @@ class State extends Postcode {
 				$DBState->order ( array (
 						'country_state_name ASC' 
 				) );
-				$DBState->setCacheName ( 'country_address_state_' . $this->getOption ( 'country' ) );
 				$DBState->execute ();
 				if ($DBState->hasResult ()) {
 					$data = array ();
@@ -125,6 +124,41 @@ class State extends Postcode {
 	 */
 	public function getStateAll() {
 		return $this->getStateData ();
+	}
+	
+	/**
+	 * Get State Id
+	 */
+	public function getStateID($val = null) {
+		$data = $this->getStateData ();
+		if (is_array ( $data ) && count ( $data ) > 0) {
+			foreach ( $data as $state ) {
+				$stateName = $this->getStateName ( $state ['id'] );
+				if (strtolower($val) === strtolower($stateName)) {
+					return $state['id'];
+				}
+			}
+		}
+		return 0;
+	}
+	
+	/**
+	 * Get State By Expr
+	 */
+	public function getStateByExpr($expr = null) {
+		$data = $this->getStateData ();
+		$stateData = array ();
+		if (is_array ( $data ) && count ( $data ) > 0) {
+			foreach ( $data as $state ) {
+				$stateName = $this->getStateName ( $state ['id'] );
+				if(empty($expr)){
+					$stateData [$stateName] = $stateName;
+				}elseif (strpos ( strtolower ( $stateName ), strtolower ( $expr ) ) !== false) {
+					$stateData [$stateName] = $stateName;
+				}
+			}
+		}
+		return $stateData;
 	}
 	
 	/**

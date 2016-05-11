@@ -62,7 +62,6 @@ class Country extends GeneralBase {
 			$DBCountry->order ( array (
 					'country_name ASC' 
 			) );
-			$DBCountry->setCacheName ( 'country_nationality' );
 			$DBCountry->execute ();
 			if ($DBCountry->hasResult ()) {
 				$data = array ();

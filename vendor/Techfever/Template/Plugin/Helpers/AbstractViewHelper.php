@@ -7,6 +7,7 @@ use Zend\I18n\View\Helper\AbstractTranslatorHelper as BaseAbstractHelper;
 use Zend\View\Helper\Doctype;
 use Zend\View\Helper\EscapeHtml;
 use Zend\View\Helper\EscapeHtmlAttr;
+use Techfever\Template\Plugin\Helpers\ViewFactory;
 
 /**
  * Base functionality for all view helpers
@@ -39,6 +40,12 @@ abstract class AbstractViewHelper extends BaseAbstractHelper {
 	 * @var EscapeHtml
 	 */
 	protected $escapeHtmlHelper;
+	
+	/**
+	 *
+	 * @var ViewFactory
+	 */
+	protected $viewFactoryHelper;
 	
 	/**
 	 *
@@ -224,6 +231,27 @@ abstract class AbstractViewHelper extends BaseAbstractHelper {
 		}
 		
 		return $this->escapeHtmlHelper;
+	}
+	
+	/**
+	 * Retrieve the viewFactory helper
+	 *
+	 * @return ViewFactory
+	 */
+	protected function getViewFactoryHelper() {
+		if ($this->viewFactoryHelper) {
+			return $this->viewFactoryHelper;
+		}
+		
+		if (method_exists ( $this->view, 'plugin' )) {
+			$this->viewFactoryHelper = $this->view->plugin ( 'viewfactory' );
+		}
+		
+		if (! $this->viewFactoryHelper instanceof ViewFactory) {
+			$this->viewFactoryHelper = new ViewFactory ();
+		}
+		
+		return $this->viewFactoryHelper;
 	}
 	
 	/**

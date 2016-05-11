@@ -1,56 +1,11 @@
 <?php
 
-namespace Ajax\Controller;
+namespace Ajax\Bank\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Techfever\Template\Plugin\AbstractActionController;
 use Zend\Json\Json;
 
-class BankActionController extends AbstractActionController {
-	public function getStateAction() {
-		$request = $this->getRequest ();
-		$response = $this->getResponse ();
-		$success = 0;
-		$valid = 0;
-		$country = $request->getPost ( 'country' );
-		$bank_data = array ();
-		if ($request->isXmlHttpRequest ()) {
-			$bank_data [] = array (
-					'id' => '',
-					'value' => '' 
-			);
-			if (isset ( $country ) && $country > 0) {
-				$bank_state = array ();
-				
-				$this->getUserBank ()->setOption ( 'country', $country );
-				$this->getUserBank ()->clearUserBankData ();
-				$bank_state = $this->getUserBank ()->stateToForm ();
-				
-				if (is_array ( $bank_state )) {
-					foreach ( $bank_state as $bank_key => $bank_value ) {
-						$bank_data [] = array (
-								'id' => $bank_key,
-								'value' => $this->getTranslate ( $bank_value ) 
-						);
-						$valid = 1;
-					}
-				}
-				$success = 1;
-			}
-			$bank_data [] = array (
-					'id' => '0',
-					'value' => $this->getTranslate ( 'text_not_listed' ) 
-			);
-		} else {
-			return $this->redirect ()->toRoute ( 'Index' );
-		}
-		$response->setContent ( Json::encode ( array (
-				'success' => $success,
-				'valid' => $valid,
-				'country' => $country,
-				'data' => $bank_data 
-		) ) );
-		return $response;
-	}
+class ActionController extends AbstractActionController {
 	public function getBranchAction() {
 		$request = $this->getRequest ();
 		$response = $this->getResponse ();
@@ -102,6 +57,36 @@ class BankActionController extends AbstractActionController {
 		) ) );
 		return $response;
 	}
+	public function getStateAction() {
+		$request = $this->getRequest ();
+		$response = $this->getResponse ();
+		$address_data = array ();
+		$country = $this->params ()->fromQuery ( 'country' );
+		$state = $this->params ()->fromQuery ( 'state' );
+		if ($request->isXmlHttpRequest ()) {
+			$country = $this->getUserAddress ()->getCountryID($country);
+			$this->getUserAddress ()->setOption ( 'country', $country );
+			$this->getUserAddress ()->clearUserAddressData ();
+			$address_data = $this->getUserAddress ()->getStateByExpr ( $state );
+		} else {
+			return $this->redirect ()->toRoute ( 'Index' );
+		}
+		$response->setContent ( Json::encode ( $address_data ) );
+		return $response;
+	}
+	public function getCountryAction() {
+		$request = $this->getRequest ();
+		$response = $this->getResponse ();
+		$address_data = array ();
+		$country = $this->params ()->fromQuery ( 'country' );
+		if ($request->isXmlHttpRequest ()) {
+			$address_data = $this->getUserAddress ()->getCountryByExpr ( $country );
+		} else {
+			return $this->redirect ()->toRoute ( 'Index' );
+		}
+		$response->setContent ( Json::encode ( $address_data ) );
+		return $response;
+	}
 	public function getUserAction() {
 		$request = $this->getRequest ();
 		$response = $this->getResponse ();
@@ -121,12 +106,12 @@ class BankActionController extends AbstractActionController {
 				$data ['user_bank_created_date_format'] = "";
 				if ($data ['user_bank_created_date'] != '0000-00-00 00:00:00') {
 					$datetime = new \DateTime ( $data ['user_bank_created_date'] );
-					$data ['user_bank_created_date_format'] = $datetime->format ( 'H:i:s d-m-Y' );
+					$data ['user_bank_created_date_format'] = $datetime->format ( 'H:i:s d-F-Y' );
 				}
 				$data ['user_bank_modified_date_format'] = "";
 				if ($data ['user_bank_modified_date'] != '0000-00-00 00:00:00') {
 					$datetime = new \DateTime ( $data ['user_bank_modified_date'] );
-					$data ['user_bank_modified_date_format'] = $datetime->format ( 'H:i:s d-m-Y' );
+					$data ['user_bank_modified_date_format'] = $datetime->format ( 'H:i:s d-F-Y' );
 				}
 				$success = 1;
 			}

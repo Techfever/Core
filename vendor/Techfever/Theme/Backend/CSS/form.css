@@ -1,0 +1,159 @@
+form .group {
+	padding: 0;
+	margin: 0;
+}
+
+form .row {
+	padding: 0;
+	margin: 0;	
+	display: block;
+	width: 100%;
+	margin-bottom: 5px;
+}
+
+form .row .seperator{	
+	margin-top: 10px;
+	padding-bottom: 10px;
+	background: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/rule2.gif') ?>') 0px 0px repeat-x;
+}
+
+form .row .label{	
+	display: table-cell;
+	width: 160px;
+	text-transform: capitalize;	
+	padding-left: 10px;	
+	line-height: 1.4;	
+}
+
+form .row .label > label{	
+}
+
+form .row .label .required{	
+	color: red;
+}
+
+form .row .textarea{
+	display: block;
+	width: 100%;	
+}
+
+form .row .textarea .value{
+	display: block;
+	width: auto;
+	margin-right: 5px;	
+	margin-left: 5px;	
+}
+
+form .row .textarea .value textarea{
+	height: 300px;
+}
+
+form .row .value{
+	display: table-cell;	
+	width: 250px;	
+}
+
+form .row .value > select{
+	width: 100%;
+	height: 24px;	
+	text-transform: capitalize;	
+}
+
+form .row .value > select.selectdate{
+	width: auto;
+}
+
+form .row .value > select.selectmonth{
+	width: auto;
+}
+
+form .row .value > select.selectyear{
+	width: auto;
+}
+
+form .row .value input{
+	width: 100%;	
+	height: 20px;	
+}
+
+form .row .value > p{
+	padding: 0px;
+	margin: 0px;
+}
+
+form .row .value div#radio.ui-buttonset .ui-button{
+	border: 1px solid white;
+}
+
+form .row.ui-input-hover{
+	-webkit-box-shadow: 0px 0px 2px 2px rgba(255, 255, 255, 0.64);
+	   -moz-box-shadow: 0px 0px 2px 2px rgba(255, 255, 255, 0.64);
+	        box-shadow: 0px 0px 2px 2px rgba(255, 255, 255, 0.64);
+}
+
+form .row .value .ui-input-focus{
+	-webkit-box-shadow: 0px 0px 2px 2px rgba(255, 255, 255, 0.64);
+	   -moz-box-shadow: 0px 0px 2px 2px rgba(255, 255, 255, 0.64);
+	        box-shadow: 0px 0px 2px 2px rgba(255, 255, 255, 0.64);
+}
+
+form .row .help{
+	display: table-cell;
+	line-height: 1.4;
+	width: auto;	
+}
+
+form .row .help .ui-state-error.ui-corner-all{
+	border: unset;	
+	background: unset;	
+	color: unset;	
+	border-bottom-right-radius: 0px;	
+	border-bottom-left-radius: 0px;	
+	border-top-right-radius: 0px;	
+	border-top-left-radius: 0px;	
+}
+
+form .row .help .ui-state-error .ui-icon{
+	float: left;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+
+form .row .help .ui-state-highlight.ui-corner-all{
+	border: unset;	
+	background: unset;	
+	color: unset;	
+	border-bottom-right-radius: 0px;	
+	border-bottom-left-radius: 0px;	
+	border-top-right-radius: 0px;	
+	border-top-left-radius: 0px;	
+}
+
+form .row .help .ui-state-highlight .ui-icon{
+	float: left;
+	margin-right: 5px;
+	margin-left: 5px;	
+}
+
+form .button{
+	text-align: center;
+}
+
+
+.ui-autocomplete-combobox {
+	position: relative;
+	display: inline-block;
+	width: 100%;
+}
+
+.ui-autocomplete-combobox-toggle {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	margin-left: -29px;
+	padding: 0;
+}
+
+.ui-autocomplete-combobox-input {
+	margin: 0;
+}

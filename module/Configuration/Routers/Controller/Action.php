@@ -1,10 +1,16 @@
 <?php
 
-namespace Configuration\Controller;
+namespace Configuration\Routers\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Techfever\Template\Plugin\AbstractActionController;
 
-class RoutersActionController extends AbstractActionController {
+class ActionController extends AbstractActionController {
+	
+	/**
+	 * Index Action
+	 *
+	 * @return ViewModel
+	 */
 	public function IndexAction() {
 	}
 }

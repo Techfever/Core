@@ -7,9 +7,13 @@ use Techfever\Functions\Crypt\Encode as Encrypt;
 use Techfever\Functions\Crypt\Decode as Decrypt;
 use Techfever\Template\Plugin\Filters\ToUnderscore;
 use Techfever\User\Management as UserManagement;
+use Techfever\User\Structure as UserStructure;
+use Techfever\User\Rank as UserRank;
+use Techfever\Wallet\Wallet as UserWallet;
 use Techfever\Exception;
 use Traversable;
 use NumberFormatter;
+use Techfever\User\Access as UserAccess;
 
 class General {
 	/**
@@ -32,6 +36,18 @@ class General {
 	
 	/**
 	 *
+	 * @var User Log
+	 */
+	private $userlog = null;
+	
+	/**
+	 *
+	 * @var User Permission
+	 */
+	private $userpermission = null;
+	
+	/**
+	 *
 	 * @var User Access
 	 */
 	private $useraccess = null;
@@ -44,6 +60,24 @@ class General {
 	
 	/**
 	 *
+	 * @var User Structure
+	 */
+	private $userstructure = null;
+	
+	/**
+	 *
+	 * @var User Rank
+	 */
+	private $userrank = null;
+	
+	/**
+	 *
+	 * @var User Wallet
+	 */
+	private $userwallet = null;
+	
+	/**
+	 *
 	 * @var Log
 	 */
 	private $log = null;
@@ -53,6 +87,12 @@ class General {
 	 * @var Session
 	 */
 	private $session = null;
+	
+	/**
+	 *
+	 * @var Is Admin
+	 */
+	private $isAdminUser = false;
 	
 	/**
 	 *
@@ -113,6 +153,7 @@ class General {
 	 * @throws Exception\InvalidArgumentException
 	 */
 	public function getOption($option) {
+		$option = ( string ) $option;
 		if (isset ( $this->options ) && array_key_exists ( $option, $this->options )) {
 			return $this->options [$option];
 		}
@@ -428,6 +469,15 @@ class General {
 	}
 	
 	/**
+	 * Get IP Address
+	 *
+	 * @return Request
+	 */
+	public function getIPAddress() {
+		return $this->getUserLog ()->getUserIP ();
+	}
+	
+	/**
 	 * getDatabase()
 	 *
 	 * @throws Exception\RuntimeException
@@ -471,6 +521,32 @@ class General {
 	}
 	
 	/**
+	 * getUserLog()
+	 *
+	 * @throws Exception\RuntimeException
+	 * @return Translator\Translator
+	 */
+	public function getUserLog() {
+		if (! is_object ( $this->userlog )) {
+			$this->userlog = $this->getServiceLocator ()->get ( 'UserLog' );
+		}
+		return $this->userlog;
+	}
+	
+	/**
+	 * getUserPermission()
+	 *
+	 * @throws Exception\RuntimeException
+	 * @return Translator\Translator
+	 */
+	public function getUserPermission() {
+		if (! is_object ( $this->userpermission )) {
+			$this->userpermission = $this->getServiceLocator ()->get ( 'UserPermission' );
+		}
+		return $this->userpermission;
+	}
+	
+	/**
 	 * getUserAccess()
 	 *
 	 * @throws Exception\RuntimeException
@@ -496,7 +572,57 @@ class General {
 			);
 			$this->usermanagement = new UserManagement ( $options );
 		}
-		return clone $this->usermanagement;
+		// return clone $this->usermanagement;
+		return $this->usermanagement;
+	}
+	
+	/**
+	 * getUserStructure()
+	 *
+	 * @throws Exception\RuntimeException
+	 * @return User\Structure
+	 */
+	public function getUserStructure() {
+		if (! is_object ( $this->userstructure )) {
+			$options = array (
+					'servicelocator' => $this->getServiceLocator () 
+			);
+			$this->userstructure = new UserStructure ( $options );
+		}
+		// return clone $this->userstructure;
+		return $this->userstructure;
+	}
+	/**
+	 * getUserRank()
+	 *
+	 * @throws Exception\RuntimeException
+	 * @return User\Rank
+	 */
+	public function getUserRank() {
+		if (! is_object ( $this->userrank )) {
+			$options = array (
+					'servicelocator' => $this->getServiceLocator () 
+			);
+			$this->userrank = new UserRank ( $options );
+		}
+		// return clone $this->userrank;
+		return $this->userrank;
+	}
+	
+	/**
+	 * getUserWallet()
+	 *
+	 * @throws Exception\RuntimeException
+	 * @return User\Wallet
+	 */
+	public function getUserWallet() {
+		if (! is_object ( $this->userwallet )) {
+			$options = array (
+					'servicelocator' => $this->getServiceLocator () 
+			);
+			$this->userwallet = new UserWallet ( $options );
+		}
+		return $this->userwallet;
 	}
 	
 	/**
@@ -523,6 +649,19 @@ class General {
 			$this->session = $this->getServiceLocator ()->get ( 'session' );
 		}
 		return $this->session;
+	}
+	
+	/**
+	 * isAdminUser()
+	 *
+	 * @return boolean
+	 */
+	public function isAdminUser() {
+		$UserAccess = $this->getUserAccess ();
+		if ($UserAccess instanceof UserAccess) {
+			$this->isAdminUser = $this->getUserAccess ()->isAdminUser ();
+		}
+		return $this->isAdminUser;
 	}
 	
 	/**
