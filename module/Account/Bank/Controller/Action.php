@@ -35,7 +35,7 @@ class ActionController extends AbstractActionController {
 			}
 			$this->setContent ( $this->ViewModal ( array (
 					'form' => $InputForm 
-			),'share/form/input' ) );
+			), 'share/form/input' ) );
 			return $this->renderModal ();
 		} else {
 			$this->redirectHome ();
@@ -75,7 +75,7 @@ class ActionController extends AbstractActionController {
 	 */
 	protected function Javascript() {
 		return array (
-				"Theme/" . SYSTEM_THEME_LOAD . "/Js/bank.js" 
+				"Theme/" . SYSTEM_THEME_LOAD . "/js/" . SYSTEM_THEME_SUFFIX . "/bank.js" 
 		);
 	}
 	

@@ -29,8 +29,8 @@ class TranslatorServiceFactory implements FactoryInterface {
 		$cache->setOptions ( $cacheoption );
 		
 		$locale = $config ['system'] ['SYSTEM_LANGUAGE'];
-		
-		$httpacceptlanguage = Locale::acceptFromHttp ( $_SERVER ['HTTP_ACCEPT_LANGUAGE'] );
+
+		$httpacceptlanguage = Locale::acceptFromHttp ( (array_key_exists('HTTP_ACCEPT_LANGUAGE', $_SERVER) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : $locale) );
 		$Session = $serviceLocator->get ( 'session' );
 		$Container = $Session->getContainer ( 'Translator' );
 		if ($Container->offsetExists ( 'locale' )) {

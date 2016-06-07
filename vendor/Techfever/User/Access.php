@@ -804,7 +804,7 @@ class Access {
 			) );
 			$password = $Bcrypt->create ( $password );
 		}
-
+		
 		$DBVerify = $this->getDatabase ();
 		$DBVerify->select ();
 		$DBVerify->columns ( array (

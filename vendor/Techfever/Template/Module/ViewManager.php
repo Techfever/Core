@@ -7,7 +7,7 @@ use Techfever\Functions\General as GeneralBase;
 use Techfever\Functions\DirConvert;
 use Techfever\Template\Plugin\Filters\ToForwardSlash;
 
-class ViewManager {
+class ViewManager extends GeneralBase {
 	
 	/**
 	 * options
@@ -21,13 +21,6 @@ class ViewManager {
 	 * @var Variables
 	 */
 	private $variables = array ();
-	
-	/**
-	 * General object
-	 *
-	 * @var General
-	 */
-	protected $generalobject = null;
 	
 	/**
 	 *
@@ -134,9 +127,9 @@ class ViewManager {
 			throw new Exception\RuntimeException ( 'ServiceLocator has not been set or configured.' );
 		}
 		$options = array_merge ( $this->options, $options );
-		$this->generalobject = new GeneralBase ( $options );
 		$this->setServiceLocator ( $options ['servicelocator'] );
-		unset ( $options ['servicelocator'] );
+		parent::__construct ( $options );
+		unset ( $this->options ['servicelocator'] );
 		$this->setOptions ( $options );
 		
 		$this->config = $this->getOption ( 'config' );
@@ -162,37 +155,6 @@ class ViewManager {
 		$this->templatepathstack = array (
 				'Index' => CORE_PATH . '/module/Index/View' 
 		);
-	}
-	
-	/**
-	 * function call handler
-	 *
-	 * @param string $function
-	 *        	Function name to call
-	 * @param array $args
-	 *        	Function arguments
-	 * @return mixed
-	 * @throws Exception\RuntimeException
-	 * @throws \Exception
-	 */
-	public function __call($name, $arguments) {
-		if (is_object ( $this->generalobject )) {
-			$obj = $this->generalobject;
-			if (method_exists ( $obj, $name )) {
-				if (is_array ( $arguments ) && count ( $arguments ) > 0) {
-					return call_user_func_array ( array (
-							$obj,
-							$name 
-					), $arguments );
-				} else {
-					return call_user_func ( array (
-							$obj,
-							$name 
-					) );
-				}
-			}
-		}
-		return null;
 	}
 	
 	/**
@@ -229,19 +191,6 @@ class ViewManager {
 	}
 	
 	/**
-	 * Get Theme
-	 *
-	 * @return string theme
-	 *        
-	 */
-	public function getTheme() {
-		if (! isset ( $this->theme )) {
-			$this->theme = $this->getConfig ( 'theme_key' );
-		}
-		return $this->theme;
-	}
-	
-	/**
 	 * Get Developer
 	 *
 	 * @return string developer
@@ -271,7 +220,7 @@ class ViewManager {
 	 *        
 	 */
 	public function getNotFoundTemplate() {
-		return $this->notfoundtemplate;
+		return strtolower ( $this->notfoundtemplate );
 	}
 	
 	/**
@@ -331,7 +280,7 @@ class ViewManager {
 	 *        
 	 */
 	public function getExceptionTemplate() {
-		return $this->exceptiontemplate;
+		return strtolower ( $this->exceptiontemplate );
 	}
 	
 	/**
@@ -463,42 +412,39 @@ class ViewManager {
 	 */
 	public function getTemplateMap() {
 		if (! is_array ( $this->templatemap ) || count ( $this->templatemap ) < 1) {
-			$themedefault = $this->getTheme ();
 			$themelocation = CORE_PATH . '/vendor/';
 			$templatemap = array ();
-			$layoutPath = new DirConvert ( $themelocation . 'Techfever/Theme/' . $themedefault . '/layout.phtml' );
+			$layoutPath = $themelocation . 'Techfever/Theme/' . SYSTEM_THEME_LOAD . '/layout/' . SYSTEM_THEME_SUFFIX . '.phtml';
+			$layoutPath = new DirConvert ( $layoutPath );
 			$layoutPath = $layoutPath->__toString ();
 			if (file_exists ( $layoutPath )) {
 				$templatemap [$this->layout] = $layoutPath;
-				$error404Path = new DirConvert ( $themelocation . 'Techfever/Theme/' . $themedefault . '/Error/404.phtml' );
+				$error404Path = new DirConvert ( $themelocation . 'Techfever/Theme/' . SYSTEM_THEME . '/error/404.phtml' );
 				$error404Path = $error404Path->__toString ();
 				if (file_exists ( $error404Path )) {
 					$templatemap [$this->getNotFoundTemplate ()] = $error404Path;
 				}
-				$errorindexPath = new DirConvert ( $themelocation . 'Techfever/Theme/' . $themedefault . '/Error/index.phtml' );
+				$errorindexPath = new DirConvert ( $themelocation . 'Techfever/Theme/' . SYSTEM_THEME . '/error/index.phtml' );
 				$errorindexPath = $errorindexPath->__toString ();
 				if (file_exists ( $errorindexPath )) {
 					$templatemap [$this->getExceptionTemplate ()] = $errorindexPath;
 				}
-				$navigatorlayoutPath = new DirConvert ( $themelocation . 'Techfever/Theme/' . $themedefault . '/navigator.phtml' );
-				$navigatorlayoutPath = $navigatorlayoutPath->__toString ();
-				if (file_exists ( $navigatorlayoutPath )) {
-					$templatemap ['navigator/layout'] = $navigatorlayoutPath;
-				}
-				$breadcrumblayoutPath = new DirConvert ( $themelocation . 'Techfever/Theme/' . $themedefault . '/breadcrumb.phtml' );
+				$breadcrumblayoutPath = new DirConvert ( $themelocation . 'Techfever/Theme/' . SYSTEM_THEME_LOAD . '/breadcrumb/' . SYSTEM_THEME_SUFFIX . '.phtml' );
 				$breadcrumblayoutPath = $breadcrumblayoutPath->__toString ();
 				if (file_exists ( $breadcrumblayoutPath )) {
 					$templatemap ['breadcrumb/layout'] = $breadcrumblayoutPath;
 				}
+				$navigatorlayoutPath = new DirConvert ( $themelocation . 'Techfever/Theme/' . SYSTEM_THEME_LOAD . '/navigator/' . SYSTEM_THEME_SUFFIX . '.phtml' );
+				$navigatorlayoutPath = $navigatorlayoutPath->__toString ();
+				if (file_exists ( $navigatorlayoutPath )) {
+					$templatemap ['navigator/layout'] = $navigatorlayoutPath;
+				}
 			}
-			$backendlayout = new DirConvert ( $themelocation . 'Techfever/Theme/Backend/layout.phtml' );
-			$backendlayout = $backendlayout->__toString ();
-			$templatemap ['backend/layout'] = $backendlayout;
 			$blanklayout = new DirConvert ( $themelocation . 'Techfever/Theme/Blank.phtml' );
 			$blanklayout = $blanklayout->__toString ();
 			$templatemap ['blank/layout'] = $blanklayout;
-			$templatemap = array_merge ( $templatemap, $this->getTemplateShareMap ( 'Share' ) );
 			
+			$templatemap = array_merge ( $templatemap, $this->getTemplateShareMap ( 'Share' ) );
 			$ToForwardSlash = new ToForwardSlash ( '\\' );
 			$controller = $this->getControllers ();
 			if (is_array ( $controller ) && count ( $controller ) > 0) {
@@ -518,7 +464,7 @@ class ViewManager {
 								
 								$modulepath = $path . '/View/' . $fileinfo ['basename'];
 								
-								$mopthememodulepath = $themelocation . 'Techfever/Theme/' . $themedefault . '/' . ucfirst ( $modulepath );
+								$mopthememodulepath = $themelocation . 'Techfever/Theme/' . SYSTEM_THEME_LOAD . '/' . lcfirst ( $modulepath );
 								$thememodulepath = new DirConvert ( $mopthememodulepath );
 								$thememodulepath = $thememodulepath->__toString ();
 								if (file_exists ( $thememodulepath )) {

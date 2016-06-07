@@ -236,7 +236,7 @@ class ActionController extends AbstractActionController {
 				$ViewModel->setTemplate ( 'share/form/update' );
 				$ViewModel->setVariables ( array (
 						'form' => $this->InputForm ( $action, $id ),
-						'js' => '<script type="text/javascript">$(document).ready(function() {  $(this).Wallet();  });</script>' 
+						'js' => '$(document).ready(function() {  $(this).Wallet();  });' 
 				) );
 				return $this->getServiceLocator ()->get ( 'viewrenderer' )->render ( $ViewModel );
 				break;

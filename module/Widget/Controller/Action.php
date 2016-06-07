@@ -42,11 +42,11 @@ class ActionController extends AbstractActionController {
 		if (empty ( $Widget )) {
 			$success = False;
 		}
-		
+
 		if ($success) {
 			if ($Widget->verifyLocation ( $location )) {
 				$Widget->setLocation ( $location );
-				
+
 				$widgetData = array ();
 				if (! $this->validWidgetStatus () || $module == 'Initial') {
 					$widgetData = $Widget->getLocationValidWidget ();
@@ -111,7 +111,7 @@ class ActionController extends AbstractActionController {
 					'controlleraction' => $controllerAction 
 			);
 			$this->widget_object = new Widget ( $options );
-			
+
 			if (! $this->widget_object->verifyPermission ( $controllerName, $controllerAction )) {
 				$this->widget_object = null;
 			}

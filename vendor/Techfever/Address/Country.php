@@ -133,8 +133,8 @@ class Country extends State {
 		if (is_array ( $data ) && count ( $data ) > 0) {
 			foreach ( $data as $country ) {
 				$countryName = $this->getCountryName ( $country ['id'] );
-				if (strtolower($val) === strtolower($countryName)) {
-					return $country['id'];
+				if (strtolower ( $val ) === strtolower ( $countryName )) {
+					return $country ['id'];
 				}
 			}
 		}
@@ -150,9 +150,9 @@ class Country extends State {
 		if (is_array ( $data ) && count ( $data ) > 0) {
 			foreach ( $data as $country ) {
 				$countryName = $this->getCountryName ( $country ['id'] );
-				if(empty($expr)){
+				if (empty ( $expr )) {
 					$countryData [$countryName] = $countryName;
-				}elseif (strpos ( strtolower ( $countryName ), strtolower ( $expr ) ) !== false) {
+				} elseif (strpos ( strtolower ( $countryName ), strtolower ( $expr ) ) !== false) {
 					$countryData [$countryName] = $countryName;
 				}
 			}

@@ -1,0 +1,37 @@
+<?php
+if (count ( $this->pages ) > 0) {
+	$breadcrumbSub = array ();
+	$totalBreadcrumb = count($this->pages);
+	$countBreadcrumb = 1;
+	foreach ( $this->pages as $key => $page ) {
+		$breadcrumbSpan = array ();
+		if ($countBreadcrumb < $totalBreadcrumb) {
+			$breadcrumbSpan = $this->htmlElement ( array (
+					'tag' => 'span',
+					'attributes' => array (
+							'class' => 'ui-icon ui-icon-carat-1-e',
+					),
+			) );
+		}
+		$breadcrumbSub [] = $this->htmlElement ( array (
+				'tag' => 'div',
+				'attributes' => array (
+						'class' => 'ui-breadcrumb-sub ui-breadcrumb-' . strtolower ( $page->getId () ),
+						'id' => 'ui-breadcrumb-' . strtolower ( $page->getId () ) 
+				),
+				'element' => $breadcrumbSpan,
+				'content' => $page->getLabel () 
+		) );
+		$countBreadcrumb ++;
+	}
+	$breadcrumbUL = $this->htmlElement ( array (
+			'tag' => 'div',
+			'attributes' => array (
+					'class' => 'ui-breadcrumb ui-widget-content ui-corner-all',
+					'id' => 'ui-breadcrumb' 
+			),
+			'element' => $breadcrumbSub 
+	) );
+	echo $breadcrumbUL->render () . "\n";
+}
+?>

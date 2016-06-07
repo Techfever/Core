@@ -34,7 +34,7 @@ class ActionController extends AbstractActionController {
 			}
 			$this->setContent ( $this->ViewModal ( array (
 					'form' => $InputForm 
-			),'share/form/input' ) );
+			), 'share/form/input' ) );
 			return $this->renderModal ();
 		} else {
 			$this->redirectHome ();

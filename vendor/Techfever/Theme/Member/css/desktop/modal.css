@@ -1,0 +1,67 @@
+.ui-dialog p{
+}
+
+.ui-dialog .ui-progressbar {
+	position: relative;
+	height: 15px;
+}
+
+.ui-dialog .ui-progressbar .progress-label {
+	position: absolute;
+	left: 37%;
+	font-weight: bold;
+	text-shadow: 1px 1px 0 #000000;
+	color: white;
+}
+
+.ui-dialog {
+	opacity: 0.9;
+	filter: alpha(opacity = 90);	
+}
+
+.ui-dialog .ui-dialog-buttonpane{
+	background-image: inherit;
+	padding: .5em .5em .5em .5em;
+	margin-top: 0px;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset{
+	text-align: center;
+	width: 100%;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset button{
+	margin: 0px;
+	margin-right: 4px;
+	text-transform: capitalize;	
+}
+
+.ui-layout-inner-center .ui-dialog {
+	
+}
+
+.ui-layout-inner-center .ui-dialog.ui-widget.ui-widget-content.ui-corner-all {
+	border-bottom-right-radius: 0px;	
+	border-bottom-left-radius: 0px;	
+	border-top-right-radius: 0px;	
+	border-top-left-radius: 0px;	
+}
+
+.ui-layout-inner-center .ui-dialog .ui-dialog-titlebar{
+}
+
+.ui-layout-inner-center .ui-dialog .ui-dialog-titlebar .ui-dialog-title{
+}
+
+.ui-layout-inner-center .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-close {
+}
+
+.ui-layout-inner-center .ui-dialog .ui-dialog-content{
+	
+}
+
+.ui-layout-inner-center .ui-dialog .ui-dialog-content > p{
+}
+
+.ui-layout-inner-south{
+}

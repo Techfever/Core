@@ -12,6 +12,11 @@ class ActionController extends AbstractActionController {
 	 * @return ViewModel
 	 */
 	public function IndexAction() {
+		if ($this->getUserAccess ()->isLogin ()) {
+			return $this->redirect ()->toRoute ( 'Account/Dashboard', array (
+					'action' => 'Index' 
+			) );
+		}
 		if ($this->isXmlHttpRequest ()) {
 			$InputForm = $this->InputForm ();
 			if ($InputForm->isPost ()) {
@@ -49,8 +54,27 @@ class ActionController extends AbstractActionController {
 					'form' => $InputForm 
 			), 'share/form/input' ) );
 			return $this->renderModal ();
-		} else {
+		} elseif ($this->isFullyJSON ()) {
 			$this->redirectHome ();
+		} else {
+			$InputForm = $this->InputForm ();
+			return array (
+					'content' => $this->ViewModal ( array (
+							'form' => $InputForm,
+							'js' => '
+					if ( $.isFunction( $.fn.form )) {
+						var formoption = {
+							usemodalbutton : false,
+							submit: {
+								confirmation : false,
+							},
+							dialog : "account-login-index", 
+						};
+						formplugin = $("form#Account_Login_Index").form(formoption);
+					};
+					' 
+					), 'share/form/input' ) 
+			);
 		}
 	}
 	
@@ -77,7 +101,7 @@ class ActionController extends AbstractActionController {
 	 */
 	protected function CSS() {
 		return array (
-				"Theme/" . SYSTEM_THEME_LOAD . "/CSS/loginmodal.css" 
+				"Theme/" . SYSTEM_THEME_LOAD . "/css/" . SYSTEM_THEME_SUFFIX . "/loginmodal.css" 
 		);
 	}
 	
@@ -87,8 +111,16 @@ class ActionController extends AbstractActionController {
 	 * @return JS
 	 */
 	protected function doneCallback() {
-		return "
+		if ($this->isBackend ()) {
+			return "
 		$(this).syncSystem();
 		";
+		} else {
+			return "
+		$(this).pageRedirect('" . $this->url ()->fromRoute ( 'Account/Dashboard', array (
+					'action' => 'Index' 
+			) ) . "');
+		";
+		}
 	}
 }

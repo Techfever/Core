@@ -610,19 +610,19 @@ class Database extends Result implements DatabaseInterface {
 		
 		if (is_object ( $this->sql ) && is_object ( $this->adapter )) {
 			if (DB_LOG_ENABLE) {
-				$this->prepareLogger()->info ( $this->prepareBacktrace () );
+				$this->prepareLogger ()->info ( $this->prepareBacktrace () );
 				
-				$sql = $this->sql->getSqlString ( $this->prepareAdapter()->getPlatform () );
-				$this->prepareLogger()->info ( $sql );
+				$sql = $this->sql->getSqlString ( $this->prepareAdapter ()->getPlatform () );
+				$this->prepareLogger ()->info ( $sql );
 			}
 			
 			if ($this->action == 'select') {
 				$hasdata = false;
-				if ($this->hasCacheName () && $this->prepareCache()->hasItem ( $this->cachename )) {
-					$resultdata = $this->prepareCache()->getItem ( $this->cachename );
+				if ($this->hasCacheName () && $this->prepareCache ()->hasItem ( $this->cachename )) {
+					$resultdata = $this->prepareCache ()->getItem ( $this->cachename );
 					$hasdata = true;
 				} else {
-					$statement = $this->prepareAdapter()->createStatement ();
+					$statement = $this->prepareAdapter ()->createStatement ();
 					$this->sql->prepareStatement ( $this->adapter, $statement );
 					$resultdata = $statement->execute ();
 					if ($resultdata instanceof ResultInterface && $resultdata->isQueryResult ()) {
@@ -637,18 +637,18 @@ class Database extends Result implements DatabaseInterface {
 				if ($hasdata) {
 					$this->setResult ( $resultdata );
 					
-					if ($this->hasCacheName () && ! $this->prepareCache()->hasItem ( $this->cachename )) {
+					if ($this->hasCacheName () && ! $this->prepareCache ()->hasItem ( $this->cachename )) {
 						$this->setCache ( $resultdata );
 					}
 				}
 			} elseif ($this->action == 'delete' || $this->action == 'update' || $this->action == 'insert') {
-				$statement = $this->prepareAdapter()->createStatement ();
+				$statement = $this->prepareAdapter ()->createStatement ();
 				$this->sql->prepareStatement ( $this->adapter, $statement );
 				$resultdata = $statement->execute ();
 				
 				$this->affectedrows = $resultdata->getAffectedRows ();
 				if ($this->action == 'insert') {
-					$this->lastid = $this->prepareAdapter()->getDriver ()->getConnection ()->getLastGeneratedValue ();
+					$this->lastid = $this->prepareAdapter ()->getDriver ()->getConnection ()->getLastGeneratedValue ();
 				}
 				if ($this->hasCacheName () && ! $this->disableCache ()) {
 					$this->clearCache ( "*" . $this->cachename );
@@ -795,7 +795,7 @@ class Database extends Result implements DatabaseInterface {
 			throw new Exception\RuntimeException ( 'Zend\Db\Sql\\' . $this->action . ' object not found' );
 		} else {
 			if ($this->action == 'select') {
-				$sqlstring = $this->sql->getSqlString ( $this->prepareAdapter()->getPlatform () );
+				$sqlstring = $this->sql->getSqlString ( $this->prepareAdapter ()->getPlatform () );
 				$cache_name .= '-' . md5 ( $sqlstring );
 			}
 		}
@@ -841,7 +841,7 @@ class Database extends Result implements DatabaseInterface {
 	public function getSqlString() {
 		$this->prepareSQL ();
 		if (is_object ( $this->sql )) {
-			return $this->sql->getSqlString ( $this->prepareAdapter()->getPlatform () );
+			return $this->sql->getSqlString ( $this->prepareAdapter ()->getPlatform () );
 		}
 		return null;
 	}
@@ -1039,11 +1039,11 @@ class Database extends Result implements DatabaseInterface {
 		if (! is_object ( $this->cache )) {
 			throw new Exception\RuntimeException ( 'Zend\Cache object not found' );
 		}
-		$this->prepareCache()->setItem ( $this->cachename, $result );
+		$this->prepareCache ()->setItem ( $this->cachename, $result );
 	}
 	public function clearCache($cachename = null) {
 		if ($this->hasCacheName ()) {
-			$this->prepareCache()->clearByPrefix ( $cachename );
+			$this->prepareCache ()->clearByPrefix ( $cachename );
 		}
 	}
 }

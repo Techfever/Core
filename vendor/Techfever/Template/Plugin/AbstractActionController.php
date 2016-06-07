@@ -31,6 +31,12 @@ abstract class AbstractActionController extends BAbstractActionController {
 	
 	/**
 	 *
+	 * @var Breadcrumb
+	 */
+	protected $breadcrumb = "";
+	
+	/**
+	 *
 	 * @var Content
 	 */
 	protected $id = 0;
@@ -168,7 +174,6 @@ abstract class AbstractActionController extends BAbstractActionController {
 	 */
 	protected function renderModal() {
 		$Response = $this->getResponse ();
-		
 		$options = array (
 				'id' => $this->getID (),
 				'post' => $this->getPost (),
@@ -184,6 +189,7 @@ abstract class AbstractActionController extends BAbstractActionController {
 				'messagescount' => $this->getMessagesTotal (),
 				
 				'captcha' => $this->getCaptcha (),
+				'breadcrumb' => $this->getBreadcrumb (),
 				'title' => $this->getTitle (),
 				'content' => $this->getContent (),
 				'javascript' => $this->Javascript (),
@@ -205,7 +211,7 @@ abstract class AbstractActionController extends BAbstractActionController {
 						'admin' => $this->isAdminUser () 
 				) 
 		);
-		
+		$this->layout ( 'blank/layout' );
 		$Response->setContent ( Json::encode ( $options ) );
 		return $Response;
 	}
@@ -249,6 +255,16 @@ abstract class AbstractActionController extends BAbstractActionController {
 			$this->title = $this->getTranslate ( 'text_' . $this->getModuleID () . '_title' );
 		}
 		return $this->title;
+	}
+	
+	/**
+	 * Get Breadcrumb
+	 *
+	 * @return String
+	 */
+	protected function getBreadcrumb() {
+		$this->breadcrumb = $this->ViewModal ( null, 'system/desktop/controller/action/breadcrumb' );
+		return $this->breadcrumb;
 	}
 	
 	/**
@@ -611,7 +627,7 @@ abstract class AbstractActionController extends BAbstractActionController {
 	 * @return JS
 	 */
 	protected function initCallback() {
-		if (! empty ( $this->initcallback ) || strlen ( $this->initcallback ) < 0) {
+		if (! empty ( $this->initcallback ) || strlen ( $this->initcallback ) <= 0) {
 			return "";
 		} else {
 			return $this->initcallback;
@@ -624,7 +640,7 @@ abstract class AbstractActionController extends BAbstractActionController {
 	 * @return JS
 	 */
 	protected function doneCallback() {
-		if (! empty ( $this->donecallback ) || strlen ( $this->donecallback ) < 0) {
+		if (! empty ( $this->donecallback ) || strlen ( $this->donecallback ) <= 0) {
 			return "
 					$(\".ui-dialog-" . $this->getDialogID () . "-modal\").modal({
 						dialogclass: \"ui-dialog-" . $this->getDialogID () . "-done-modal\",
@@ -651,7 +667,7 @@ abstract class AbstractActionController extends BAbstractActionController {
 	 * @return JS
 	 */
 	protected function failCallback() {
-		if (! empty ( $this->failcallback ) || strlen ( $this->failcallback ) < 0) {
+		if (! empty ( $this->failcallback ) || strlen ( $this->failcallback ) <= 0) {
 			return "
 					$(\".ui-dialog-" . $this->getDialogID () . "-modal\").modal({
 						dialogclass: \"ui-dialog-" . $this->getDialogID () . "-fail-modal\",
@@ -678,7 +694,7 @@ abstract class AbstractActionController extends BAbstractActionController {
 	 * @return JS
 	 */
 	protected function searchCallback() {
-		if (! empty ( $this->searchcallback ) || strlen ( $this->searchcallback ) < 0) {
+		if (! empty ( $this->searchcallback ) || strlen ( $this->searchcallback ) <= 0) {
 			return "";
 		} else {
 			return $this->searchcallback;
@@ -691,7 +707,7 @@ abstract class AbstractActionController extends BAbstractActionController {
 	 * @return JS
 	 */
 	protected function validCallback() {
-		if (! empty ( $this->validcallback ) || strlen ( $this->validcallback ) < 0) {
+		if (! empty ( $this->validcallback ) || strlen ( $this->validcallback ) <= 0) {
 			return "";
 		} else {
 			return $this->validcallback;

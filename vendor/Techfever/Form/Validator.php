@@ -31,7 +31,6 @@ class Validator extends GeneralBase {
 	 *     
 	 */
 	private $validator_option_data = null;
-	
 	public function __construct($options = null) {
 		if (! is_array ( $options )) {
 			throw new Exception\RuntimeException ( 'Options has not been set or configured.' );

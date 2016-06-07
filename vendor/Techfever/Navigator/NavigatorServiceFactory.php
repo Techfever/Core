@@ -40,7 +40,7 @@ class NavigatorServiceFactory extends DefaultNavigationFactory {
 	protected function getPages(ServiceLocatorInterface $serviceLocator) {
 		if (null === $this->pages) {
 			$Navigator = $this->getNavigator ( $serviceLocator );
-			$isBackend = $this->isBackend($serviceLocator);
+			$isBackend = $this->isBackend ( $serviceLocator );
 			$configuration ['navigation'] [$this->getName ()] = $Navigator->getStructure ( $isBackend );
 			if (! isset ( $configuration ['navigation'] )) {
 				throw new Exception\InvalidArgumentException ( 'Could not find navigation configuration key' );

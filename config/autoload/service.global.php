@@ -14,6 +14,8 @@
 return array(
 		'service_manager' => array(
 				'factories' => array(
+						'UrlRewrite' => 'Techfever\UrlRewrite\UrlRewriteServiceFactory',
+						'MobileDetect' => 'Techfever\Mobile\MobileDetectServiceFactory',
 						'php' => 'Techfever\Php\PhpServiceFactory',
 						'log' => 'Techfever\Log\LoggerServiceFactory',
 						'cachestorage' => 'Techfever\Cache\FilesystemServiceFactory',
@@ -28,6 +30,7 @@ return array(
 						'UserAccess' => 'Techfever\User\AccessServiceFactory',
 						'UserPermission' => 'Techfever\User\PermissionServiceFactory',
 						'navigator' => 'Techfever\Navigator\NavigatorServiceFactory',
+						'SystemService' => 'Techfever\Service\SystemServiceFactory',
 				),
 				'abstract_factories' => array(
 						'Zend\Cache\Service\StorageCacheAbstractServiceFactory',

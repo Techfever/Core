@@ -1,0 +1,120 @@
+<?php
+echo SYSTEM_THEME_LOAD . '=' . SYSTEM_THEME_SUFFIX;
+$request_uri = $this->Encrypt ( $this->controllerUriFull, false );
+echo $this->doctype ( 'XHTML1_STRICT' ) . "\n";
+$html = $this->htmlTag ( array (
+		'dir' => 'ltr',
+		'lang' => 'en',
+		'xml:lang' => 'en' 
+) );
+$html->setUseNamespaces ( true );
+echo $html->openTag () . "\n";
+
+$htmlHead = $this->htmlElement ( array (
+		'tag' => 'head' 
+) );
+echo $htmlHead->openTag ();
+
+echo $this->headTitle () . "\n";
+echo $this->headMeta ()->appendName ( 'viewport', 'width=device-width, initial-scale=1.0' )->appendHttpEquiv ( 'Content-Type', 'text/html; charset=utf-8' ) . "\n";
+
+echo $this->headLink ( array (
+		'rel' => 'shortcut icon',
+		'type' => 'image/png',
+		'href' => $this->serverUrl ( $this->baseHref () . '/Theme/Image/favicon.png' ) 
+) )->prependStylesheet ( $this->serverUrl ( $this->baseHref () . '/Theme/CSS/' . (! empty ( $request_uri ) ? $request_uri . '/' : null) ) ) . "\n";
+
+echo $this->headScript ()->prependScript ( '
+	$(document).ready(function(){ 
+	});
+' )->prependFile ( $this->serverUrl ( $this->baseHref () . '/Theme/Javascript/' . (! empty ( $request_uri ) ? $request_uri . '/' : null) . 'Javascript/respond.min.js' ), 'text/javascript', array (
+		'conditional' => 'lt IE 9' 
+) )->prependFile ( $this->serverUrl ( $this->baseHref () . '/Theme/Javascript/' . (! empty ( $request_uri ) ? $request_uri . '/' : null) . 'Javascript/html5.js' ), 'text/javascript', array (
+		'conditional' => 'lt IE 9' 
+) )->prependFile ( $this->serverUrl ( $this->baseHref () . '/Theme/Javascript/' . (! empty ( $request_uri ) ? $request_uri . '/' : null) ) ) . "\n";
+
+echo $htmlHead->closeTag () . "\n";
+
+$divLayoutHeader = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-header',
+				'id' => 'ui-layout-header' 
+		) 
+) );
+
+$divLayoutFooter = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-footer',
+				'id' => 'ui-layout-footer' 
+		) 
+) );
+
+$divLayoutLeft = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-left',
+				'id' => 'ui-layout-left' 
+		) 
+) );
+
+$divLayoutRight = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-right',
+				'id' => 'ui-layout-right' 
+		) 
+) );
+
+$divLayoutContent = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-content',
+				'id' => 'ui-layout-content' 
+		),
+		'content' => $this->content 
+) );
+
+$divLayoutCenter3 = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-inner',
+				'id' => 'ui-layout-inner' 
+		),
+		'element' => array (
+				$divLayoutContent,
+				$divLayoutHeader 
+		) 
+) );
+
+$divLayoutCenter2 = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-inner',
+				'id' => 'ui-layout-inner' 
+		),
+		'element' => array (
+				$divLayoutCenter3,
+				$divLayoutLeft 
+		) 
+) );
+
+$divLayoutCenter = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-center',
+				'id' => 'ui-layout-center' 
+		),
+		'element' => array (
+				$divLayoutCenter2,
+				$divLayoutFooter 
+		) 
+) );
+
+$htmlBody = $this->htmlElement ( array (
+		'tag' => 'body',
+		'attributes' => array (
+				'class' => 'ui-layout',
+				'style' => 'overflow: hidden' 
+		),
+		'element' => array (
+				$divLayoutCenter,
+				$divLayoutRight 
+		) 
+) );
+echo $htmlBody->render ();
+echo $html->closeTag () . "\n";
+?>

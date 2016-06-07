@@ -2,7 +2,7 @@
 return array(
 		'db' => array(
 				'driver' => 'Mysqli',
-				'database' => 'shopping',
+				'database' => 'technation_cc',
 				'username' => 'root',
 				'password' => 't3chn4t10n',
 				'hostname' => 'localhost',

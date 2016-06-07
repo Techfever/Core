@@ -1,0 +1,15 @@
+<?php
+$success = $this->success;
+if ($success) {
+    $content = $this->content;
+    ?>
+<div id="<?php echo $this->id; ?>"
+	class="ui-layout-boxes ui-widget ui-corner-all <?php echo $this->id; ?>">
+	<div class="ui-layout-boxes-content ui-widget-content"><?php
+	echo "News List";
+    ?></div>
+	<div class="ui-layout-boxes-clear"></div>
+</div>
+<?php
+}
+?>

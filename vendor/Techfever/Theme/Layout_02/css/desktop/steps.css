@@ -1,0 +1,37 @@
+.ui-step {
+	width: 100%;
+	padding: 0px;	
+	margin: 0px;	
+}
+
+.ui-step .ui-step-tab {
+	padding: 0px;	
+	margin: 0px;	
+	height: 45px;
+	width: 100%;
+	display: block;
+}
+
+.ui-step .ui-step-tab .ui-step-tabcontrol{
+	width: auto;
+	margin-right: 10px;	
+	display: inline-block;
+	float: left;	
+	font-size: 13px;	
+	height: 35px;
+	line-height: 2.5;
+	padding-left: 10px;	
+	padding-right: 10px;	
+	white-space: nowrap;	
+}
+
+.ui-step .ui-step-content {
+	padding: 0px;	
+	margin: 0px;	
+}
+
+.ui-step .ui-step-content .ui-step-contentcontrol{
+	width: auto;	
+	padding: 5px;
+	padding-right: 7px;
+}

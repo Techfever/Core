@@ -8,7 +8,7 @@ use Techfever\Template\Module\Controller;
 use Techfever\Template\Module\ViewManager;
 use Techfever\Functions\General as GeneralBase;
 
-class Template {
+class Template extends GeneralBase {
 	
 	/**
 	 * options
@@ -22,13 +22,6 @@ class Template {
 	 * @var Variables
 	 */
 	private $variables = array ();
-	
-	/**
-	 * General object
-	 *
-	 * @var General
-	 */
-	protected $generalobject = null;
 	
 	/**
 	 *
@@ -82,10 +75,11 @@ class Template {
 		if (! isset ( $options ['servicelocator'] )) {
 			throw new Exception\RuntimeException ( 'ServiceLocator has not been set or configured.' );
 		}
-		
-		$this->generalobject = new GeneralBase ( $options );
+		$options = array_merge ( $this->options, $options );
 		$this->setServiceLocator ( $options ['servicelocator'] );
-		unset ( $options ['servicelocator'] );
+		parent::__construct ( $options );
+		unset ( $this->options ['servicelocator'] );
+		$this->setOptions ( $options );
 		
 		$config = $this->getConfig ();
 		$options ['config'] = $config;
@@ -93,34 +87,19 @@ class Template {
 	}
 	
 	/**
-	 * function call handler
+	 * getSuffix()
 	 *
-	 * @param string $function
-	 *        	Function name to call
-	 * @param array $args
-	 *        	Function arguments
-	 * @return mixed
-	 * @throws Exception\RuntimeException
-	 * @throws \Exception
+	 * @return templatesuffix
 	 */
-	public function __call($name, $arguments) {
-		if (is_object ( $this->generalobject )) {
-			$obj = $this->generalobject;
-			if (method_exists ( $obj, $name )) {
-				if (is_array ( $arguments ) && count ( $arguments ) > 0) {
-					return call_user_func_array ( array (
-							$obj,
-							$name 
-					), $arguments );
-				} else {
-					return call_user_func ( array (
-							$obj,
-							$name 
-					) );
-				}
-			}
+	public function getSuffix() {
+		if ($this->getMobileDetect ()->isTablet ()) {
+			$templatesuffix = 'tablet';
+		} elseif ($this->getMobileDetect ()->isMobile ()) {
+			$templatesuffix = 'mobile';
+		} else {
+			$templatesuffix = 'desktop';
 		}
-		return null;
+		return $templatesuffix;
 	}
 	
 	/**
@@ -200,8 +179,60 @@ class Template {
 						}
 					}
 				}
+				
+				$dbconfig ['SYSTEM_THEME_LOAD'] = $dbconfig ['SYSTEM_THEME'];
+				$dbconfig ['SYSTEM_THEME_SUFFIX'] = $this->getSuffix ();
 				$this->_config = $dbconfig;
 				$Container->offsetSet ( 'Config', $this->_config );
+			}
+		}
+		if ($this->getUrlRewrite ()->validateBlog ()) {
+			$rawblog = $this->getUrlRewrite ()->detectBlog ();
+			if (strlen ( $rawblog ) > 0) {
+				$QBlog = $this->getDatabase ();
+				$QBlog->select ();
+				$QBlog->columns ( array (
+						'id' => 'theme_id' 
+				) );
+				$QBlog->from ( array (
+						'b' => 'blog' 
+				) );
+				$QBlog->join ( array (
+						't' => 'theme' 
+				), 'b.theme_id  = t.theme_id', array (
+						'key' => 'theme_key' 
+				) );
+				$QBlog->where ( array (
+						'b.blog_key = "' . $rawblog . '"' 
+				) );
+				$QBlog->limit ( 1 );
+				$QBlog->execute ();
+				if ($QBlog->hasResult ()) {
+					$blogData = $QBlog->current ();
+					$this->_config ['SYSTEM_THEME_LOAD'] = $blogData ['key'];
+					$this->_config ['SYSTEM_THEME_BLOG_ID'] = $blogData ['id'];
+				}
+			}
+		} else {
+			$isBackend = false;
+			if (strtolower ( $this->_config ['SYSTEM_BACKEND_ONLY'] ) === "true") {
+				$isBackend = true;
+			} else {
+				$Request = $this->getServiceLocator ()->get ( 'request' );
+				$RefererUri = $Request->getUriString ();
+				if (! empty ( $RefererUri )) {
+					if (substr ( $RefererUri, - 1 ) == "/") {
+						$RefererUri = substr ( $RefererUri, 0, (strlen ( $RefererUri ) - 1) );
+					}
+					$RefererUri = substr ( $RefererUri, (strlen ( $RefererUri ) - 14), strlen ( $RefererUri ) );
+					if (! empty ( $RefererUri ) && strtolower ( $RefererUri ) === strtolower ( $this->_config ['SYSTEM_BACKEND_URI'] )) {
+						$isBackend = true;
+					}
+				}
+			}
+			if ($isBackend) {
+				$this->_config ['SYSTEM_THEME_LOAD'] = 'Backend';
+				$this->_config ['SYSTEM_THEME_BLOG_ID'] = 0;
 			}
 		}
 		foreach ( $this->_config as $key => $value ) {

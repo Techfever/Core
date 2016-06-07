@@ -5,7 +5,7 @@ namespace Techfever\Template\Module;
 use Techfever\Exception;
 use Techfever\Functions\General as GeneralBase;
 
-class Router {
+class Router extends GeneralBase {
 	
 	/**
 	 * options
@@ -69,41 +69,10 @@ class Router {
 			throw new Exception\RuntimeException ( 'ServiceLocator has not been set or configured.' );
 		}
 		$options = array_merge ( $this->options, $options );
-		$this->generalobject = new GeneralBase ( $options );
 		$this->setServiceLocator ( $options ['servicelocator'] );
-		unset ( $options ['servicelocator'] );
+		parent::__construct ( $options );
+		unset ( $this->options ['servicelocator'] );
 		$this->setOptions ( $options );
-	}
-	
-	/**
-	 * function call handler
-	 *
-	 * @param string $function
-	 *        	Function name to call
-	 * @param array $args
-	 *        	Function arguments
-	 * @return mixed
-	 * @throws Exception\RuntimeException
-	 * @throws \Exception
-	 */
-	public function __call($name, $arguments) {
-		if (is_object ( $this->generalobject )) {
-			$obj = $this->generalobject;
-			if (method_exists ( $obj, $name )) {
-				if (is_array ( $arguments ) && count ( $arguments ) > 0) {
-					return call_user_func_array ( array (
-							$obj,
-							$name 
-					), $arguments );
-				} else {
-					return call_user_func ( array (
-							$obj,
-							$name 
-					) );
-				}
-			}
-		}
-		return null;
 	}
 	
 	/**
@@ -293,8 +262,30 @@ class Router {
 		if (! is_array ( $this->structure ) || count ( $this->structure ) < 1) {
 			$this->structure = $this->getTree ();
 		}
-		return array (
-				'routes' => $this->structure 
-		);
+		if ($this->getUrlRewrite ()->validateBlog () && $this->getUrlRewrite ()->isUri ()) {
+			$rawblog = $this->getUrlRewrite ()->detectBlog ();
+			if (strlen ( $rawblog ) > 0) {
+				return array (
+						'routes' => array (
+								$rawblog => array (
+										'type' => 'Zend\Mvc\Router\Http\Literal',
+										'options' => array (
+												'route' => '/' . $rawblog,
+												'defaults' => array (
+														'controller' => 'Index\Controller\Action',
+														'action' => 'Index' 
+												) 
+										),
+										'may_terminate' => true,
+										'child_routes' => $this->structure 
+								) 
+						) 
+				);
+			}
+		} else {
+			return array (
+					'routes' => $this->structure 
+			);
+		}
 	}
 }

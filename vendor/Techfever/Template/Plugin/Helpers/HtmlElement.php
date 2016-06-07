@@ -21,6 +21,7 @@ class HtmlElement extends AbstractHtmlElement {
 			'attributes' => array (),
 			'element' => array (),
 			'content' => '',
+			'append' => 'after',
 			'deep' => 0 
 	);
 	
@@ -53,6 +54,13 @@ class HtmlElement extends AbstractHtmlElement {
 	protected $content = "";
 	
 	/**
+	 * HTML Element Append.
+	 *
+	 * @var String
+	 */
+	protected $append = "after";
+	
+	/**
 	 * HTML Element Deep.
 	 *
 	 * @var String
@@ -72,6 +80,7 @@ class HtmlElement extends AbstractHtmlElement {
 		$this->setDeep ( $options ['deep'] );
 		$this->setElement ( $options ['element'] );
 		$this->setContent ( $options ['content'] );
+		$this->setAppend ( $options ['append'] );
 		
 		return clone $this;
 	}
@@ -143,6 +152,28 @@ class HtmlElement extends AbstractHtmlElement {
 			return $this->content;
 		}
 		return '';
+	}
+	
+	/**
+	 * Set new append.
+	 *
+	 * @param mix $append        	
+	 * @return self
+	 */
+	public function setAppend($append) {
+		$this->append = $append;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return mix
+	 */
+	public function getAppend() {
+		if (! empty ( $this->append )) {
+			return strtolower ( $this->append );
+		}
+		return 'after';
 	}
 	
 	/**
@@ -232,9 +263,13 @@ class HtmlElement extends AbstractHtmlElement {
 		$content = $this->getContent ();
 		if (! empty ( $content )) {
 			$content = $this->getIdent () . $content . "\n";
-			$element = $element . $content;
+			if ($this->getAppend () === "after") {
+				$element = $element . $content;
+			} elseif ($this->getAppend () === "before") {
+				$element = $content . $element;
+			}
 		}
-		return sprintf ( '%s%s%s', $this->getIdent () . $this->openTag (), $element, (empty ( $this->content ) && empty ( $this->element ) ? null : $this->getIdent ()) . $this->closeTag () ) . ($this->isContent () ? "\n" : null);
+		return sprintf ( '%s%s%s', $this->getIdent () . $this->openTag (), $element, (empty ( $this->getContent () ) && empty ( $this->element ) ? null : $this->getIdent ()) . $this->closeTag () ) . ($this->isContent () ? "\n" : null);
 	}
 	
 	/**
@@ -243,7 +278,7 @@ class HtmlElement extends AbstractHtmlElement {
 	 * @return string
 	 */
 	public function openTag() {
-		return sprintf ( '<%s%s>' . ($this->isContent () ? (empty ( $this->content ) && empty ( $this->element ) ? null : "\n") : null), $this->getTag (), $this->htmlAttribs ( $this->getAttributes () ) );
+		return sprintf ( '<%s%s>' . ($this->isContent () ? (empty ( $this->getContent () ) && empty ( $this->element ) ? null : "\n") : null), $this->getTag (), $this->htmlAttribs ( $this->getAttributes () ) );
 	}
 	
 	/**

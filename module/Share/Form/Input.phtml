@@ -3,6 +3,8 @@ $form = $this->form;
 echo $this->FormFactory ( $form );
 $js = $this->js;
 if (! empty ( $js )) {
+	echo '<script type="text/javascript">';
 	echo $js;
+	echo '</script>';
 }
 ?>

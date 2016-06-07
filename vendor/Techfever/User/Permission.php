@@ -5,6 +5,7 @@ namespace Techfever\User;
 use Techfever\Exception;
 use Techfever\Functions\General as GeneralBase;
 use Techfever\Parameter\Parameter;
+use Techfever\Template\Plugin\Filters\ToUnderscore;
 
 class Permission {
 	
@@ -343,9 +344,12 @@ class Permission {
 		if ($permission_as == "1") {
 			$status = true;
 		} elseif (is_array ( $data ) && count ( $data ) > 0) {
+			
+			$ToUnderscore = new ToUnderscore ( '\\' );
+			$controller = $ToUnderscore->filter ( $controller );
 			foreach ( $data as $permission ) {
-				$permission_controller = strtolower ( $permission ['controller'] );
-				// $permission_action = strtolower ( $permission ['action'] );
+				$permission_controller = $ToUnderscore->filter ( strtolower ( $permission ['controller'] ) );
+				//$permission_action = $ToUnderscore->filter ( strtolower ( $permission ['action'] ) );
 				if (strtolower ( $controller ) === $permission_controller) {
 					$status = true;
 					break;

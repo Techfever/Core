@@ -1,0 +1,43 @@
+<?php
+function NavigatorTree($pages, $verify) {
+	$content = null;
+	$total = count ( $pages );
+	$count = 1;
+	foreach ( $pages as $page ) {
+		if ($page->isVisible () && $verify->accept ( $page )) {
+			$hasChildren = $page->hasPages ();
+			$href = $page->getHref ();
+			if ($href == "#") {
+				$href = $_SERVER ['REQUEST_URI'] . "#";
+			} elseif (substr ( $href, - 1 ) == '/') {
+				$href = substr ( $href, 0, - 1 );
+			}
+			if (! $hasChildren) {
+				$content .= '<li><a href="' . $href . '"><span>' . $page->getLabel () . '</span></a></li>';
+				$content .= "\n";
+			} else {
+				$content .= '<li><a href="' . $href . '"><span>' . $page->getLabel () . '</span></a>';
+				$content .= "\n";
+				$content .= '<ul>';
+				$content .= "\n";
+				$content .= NavigatorTree ( $page->getPages (), $verify );
+				$content .= '</ul>';
+				$content .= "\n";
+				$content .= '</li>';
+				$content .= "\n";
+			}
+		}
+		$count ++;
+	}
+	return $content;
+}
+$navigatorUL = $this->htmlElement ( array (
+		'tag' => 'ul',
+		'attributes' => array (
+				'class' => 'navigation',
+				'id' => 'navigation' 
+		),
+		'element' => NavigatorTree ( $this->container, $this->navigation () ) 
+) );
+echo $navigatorUL->render () . "\n";
+?><script type="text/javascript">$("ul.navigation").navigation();</script>

@@ -1,0 +1,10 @@
+div.ui-layout-content-container {
+	padding-top: 10px;	
+}
+
+div.ui-layout-content-container .ui-layout-boxes {
+	margin-bottom: 5px;
+}
+
+div.ui-layout-content-container #widget_listing.ui-layout-boxes {
+}

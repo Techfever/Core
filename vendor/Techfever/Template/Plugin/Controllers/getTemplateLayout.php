@@ -16,7 +16,7 @@ class getTemplateLayout extends AbstractPlugin {
 		$layout = null;
 		$event = $controller->getEvent ();
 		if ($event instanceof MvcEvent) {
-			$layout = $event->getViewModel()->getTemplate();
+			$layout = $event->getViewModel ()->getTemplate ();
 		}
 		return $layout;
 	}

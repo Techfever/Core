@@ -134,8 +134,8 @@ class State extends Postcode {
 		if (is_array ( $data ) && count ( $data ) > 0) {
 			foreach ( $data as $state ) {
 				$stateName = $this->getStateName ( $state ['id'] );
-				if (strtolower($val) === strtolower($stateName)) {
-					return $state['id'];
+				if (strtolower ( $val ) === strtolower ( $stateName )) {
+					return $state ['id'];
 				}
 			}
 		}
@@ -151,9 +151,9 @@ class State extends Postcode {
 		if (is_array ( $data ) && count ( $data ) > 0) {
 			foreach ( $data as $state ) {
 				$stateName = $this->getStateName ( $state ['id'] );
-				if(empty($expr)){
+				if (empty ( $expr )) {
 					$stateData [$stateName] = $stateName;
-				}elseif (strpos ( strtolower ( $stateName ), strtolower ( $expr ) ) !== false) {
+				} elseif (strpos ( strtolower ( $stateName ), strtolower ( $expr ) ) !== false) {
 					$stateData [$stateName] = $stateName;
 				}
 			}

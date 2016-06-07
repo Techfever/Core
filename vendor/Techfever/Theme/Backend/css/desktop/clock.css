@@ -1,0 +1,110 @@
+.ui-clock {
+	margin: 0 auto;
+    overflow: hidden;
+	width: 100%;
+	margin-top: 8px;
+	-webkit-box-shadow: 0px 3px 7px -1px rgba(255, 255, 255, 0.64);
+	   -moz-box-shadow: 0px 3px 7px -1px rgba(255, 255, 255, 0.64);
+	        box-shadow: 0px 3px 7px -1px rgba(255, 255, 255, 0.64);
+}
+
+.ui-clock .ui-clock-date {
+	position: relative;
+	width: 100%;
+	display: block;
+	font-family: "BebasNeueRegular",Arial,Helvetica,sans-serif;
+	font-size: 14px;
+	text-align: center;
+	margin-left: 25px;
+}
+
+.ui-clock .ui-clock-date .ui-clock-date-day {
+	display: table-cell;
+	width: auto;
+	padding-left: 3px;	
+}
+
+.ui-clock .ui-clock-date .ui-clock-date-date {
+	display: table-cell;
+	width: auto;
+	padding-left: 3px;	
+}
+
+.ui-clock .ui-clock-date .ui-clock-date-month {
+	display: table-cell;
+	width: auto;
+	padding-left: 3px;	
+}
+
+.ui-clock .ui-clock-date .ui-clock-date-year {
+	display: table-cell;
+	width: auto;
+	padding-left: 3px;	
+	padding-right: 3px;	
+}
+
+.ui-clock .ui-clock-time {
+	position: relative;
+	display: block;
+	width: 100%;
+	font-size: 45px;
+	text-align: center;
+	font-family: "BebasNeueRegular",Arial,Helvetica,sans-serif;
+	margin-left: 12px;
+}
+
+.ui-clock .ui-clock-time .ui-clock-time-hours {
+	display: table-cell;
+	width: auto;
+}
+
+.ui-clock .ui-clock-time .ui-clock-time-minutes {
+	display: table-cell;
+	width: auto;
+}
+
+.ui-clock .ui-clock-time .ui-clock-time-seconds {
+	display: table-cell;
+	width: auto;
+}
+
+.ui-clock .ui-clock-time .ui-clock-time-seperator {
+	display: table-cell;
+	width: auto;
+    -moz-animation: mymove 1s ease infinite;
+    -webkit-animation: mymove 1s ease infinite;	
+}
+
+/* Simple Animation */
+@-webkit-keyframes mymove {
+    0% {opacity: 1.0;
+    text-shadow: 0 0 20px #00c6ff;
+}
+
+50% {
+    opacity: 0;
+    text-shadow: none;
+}
+
+100% {
+    opacity: 1.0;
+    text-shadow: 0 0 20px #00c6ff;
+}	
+}
+
+@-moz-keyframes mymove {
+    0% {
+        opacity: 1.0;
+        text-shadow: 0 0 20px #00c6ff;
+    }
+
+    50% {
+        opacity: 0;
+        text-shadow: none;
+    }
+
+    100% {
+        opacity: 1.0;
+        text-shadow: 0 0 20px #00c6ff;
+    };
+}

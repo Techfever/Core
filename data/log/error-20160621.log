@@ -1,0 +1,2397 @@
+2016-06-21 11:30:28 INFO (6): array (
+)
+2016-06-21 11:30:28 INFO (6): array (
+)
+2016-06-21 11:30:28 INFO (6): array (
+)
+2016-06-21 11:30:28 INFO (6): array (
+)
+2016-06-21 11:30:29 INFO (6): array (
+)
+2016-06-21 11:30:29 INFO (6): array (
+)
+2016-06-21 11:30:30 INFO (6): array (
+)
+2016-06-21 12:06:02 INFO (6): array (
+)
+2016-06-21 12:06:02 INFO (6): array (
+)
+2016-06-21 12:06:03 INFO (6): array (
+)
+2016-06-21 12:06:03 INFO (6): array (
+)
+2016-06-21 12:06:03 INFO (6): array (
+)
+2016-06-21 12:06:04 INFO (6): array (
+)
+2016-06-21 12:06:05 INFO (6): array (
+)
+2016-06-21 12:06:59 INFO (6): array (
+)
+2016-06-21 12:07:00 INFO (6): array (
+)
+2016-06-21 12:07:00 INFO (6): array (
+)
+2016-06-21 12:07:01 INFO (6): array (
+)
+2016-06-21 12:07:01 INFO (6): array (
+)
+2016-06-21 12:07:01 INFO (6): array (
+)
+2016-06-21 12:07:01 INFO (6): array (
+)
+2016-06-21 12:07:19 INFO (6): array (
+  95 => 
+  array (
+    'id' => 275,
+    'wid' => 95,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 1,
+    'key' => '95',
+    'config' => 'invokables',
+    'class' => 'Account\\Profile\\Widget\\Controller\\ActionController',
+    'alias' => 'Account\\Profile\\Widget\\Controller\\Action',
+    'path' => 'module\\Account\\Profile\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+  1400 => 
+  array (
+    'id' => 1,
+    'wid' => 1400,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 1000,
+    'key' => '1400',
+    'config' => 'invokables',
+    'class' => 'Bill\\Widget\\Controller\\ActionController',
+    'alias' => 'Bill\\Widget\\Controller\\Action',
+    'path' => 'module\\Bill\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+  1401 => 
+  array (
+    'id' => 2,
+    'wid' => 1401,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 2000,
+    'key' => '1401',
+    'config' => 'invokables',
+    'class' => 'Charity\\Widget\\Controller\\ActionController',
+    'alias' => 'Charity\\Widget\\Controller\\Action',
+    'path' => 'module\\Charity\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+  1402 => 
+  array (
+    'id' => 3,
+    'wid' => 1402,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 3000,
+    'key' => '1402',
+    'config' => 'invokables',
+    'class' => 'Mobile\\Widget\\Controller\\ActionController',
+    'alias' => 'Mobile\\Widget\\Controller\\Action',
+    'path' => 'module\\Mobile\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+  1403 => 
+  array (
+    'id' => 4,
+    'wid' => 1403,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 4000,
+    'key' => '1403',
+    'config' => 'invokables',
+    'class' => 'Parking\\Widget\\Controller\\ActionController',
+    'alias' => 'Parking\\Widget\\Controller\\Action',
+    'path' => 'module\\Parking\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+  1404 => 
+  array (
+    'id' => 5,
+    'wid' => 1404,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 5000,
+    'key' => '1404',
+    'config' => 'invokables',
+    'class' => 'Purchases\\Widget\\Controller\\ActionController',
+    'alias' => 'Purchases\\Widget\\Controller\\Action',
+    'path' => 'module\\Purchases\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+  1405 => 
+  array (
+    'id' => 6,
+    'wid' => 1405,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 6000,
+    'key' => '1405',
+    'config' => 'invokables',
+    'class' => 'Services\\Widget\\Controller\\ActionController',
+    'alias' => 'Services\\Widget\\Controller\\Action',
+    'path' => 'module\\Services\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+  1406 => 
+  array (
+    'id' => 7,
+    'wid' => 1406,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 7000,
+    'key' => '1406',
+    'config' => 'invokables',
+    'class' => 'Transport\\Widget\\Controller\\ActionController',
+    'alias' => 'Transport\\Widget\\Controller\\Action',
+    'path' => 'module\\Transport\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+)
+2016-06-21 12:07:19 INFO (6): array (
+)
+2016-06-21 12:07:20 INFO (6): array (
+)
+2016-06-21 12:07:20 INFO (6): array (
+)
+2016-06-21 12:07:20 INFO (6): array (
+)
+2016-06-21 12:07:21 INFO (6): array (
+)
+2016-06-21 12:07:22 INFO (6): array (
+)
+2016-06-21 12:16:23 INFO (6): array (
+)
+2016-06-21 12:16:23 INFO (6): array (
+)
+2016-06-21 12:16:24 INFO (6): array (
+  95 => 
+  array (
+    'id' => 275,
+    'wid' => 95,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 1,
+    'key' => '95',
+    'config' => 'invokables',
+    'class' => 'Account\\Profile\\Widget\\Controller\\ActionController',
+    'alias' => 'Account\\Profile\\Widget\\Controller\\Action',
+    'path' => 'module\\Account\\Profile\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+  1400 => 
+  array (
+    'id' => 1,
+    'wid' => 1400,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 1000,
+    'key' => '1400',
+    'config' => 'invokables',
+    'class' => 'Bill\\Widget\\Controller\\ActionController',
+    'alias' => 'Bill\\Widget\\Controller\\Action',
+    'path' => 'module\\Bill\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+  1401 => 
+  array (
+    'id' => 2,
+    'wid' => 1401,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 2000,
+    'key' => '1401',
+    'config' => 'invokables',
+    'class' => 'Charity\\Widget\\Controller\\ActionController',
+    'alias' => 'Charity\\Widget\\Controller\\Action',
+    'path' => 'module\\Charity\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+  1402 => 
+  array (
+    'id' => 3,
+    'wid' => 1402,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 3000,
+    'key' => '1402',
+    'config' => 'invokables',
+    'class' => 'Mobile\\Widget\\Controller\\ActionController',
+    'alias' => 'Mobile\\Widget\\Controller\\Action',
+    'path' => 'module\\Mobile\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+  1403 => 
+  array (
+    'id' => 4,
+    'wid' => 1403,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 4000,
+    'key' => '1403',
+    'config' => 'invokables',
+    'class' => 'Parking\\Widget\\Controller\\ActionController',
+    'alias' => 'Parking\\Widget\\Controller\\Action',
+    'path' => 'module\\Parking\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+  1404 => 
+  array (
+    'id' => 5,
+    'wid' => 1404,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 5000,
+    'key' => '1404',
+    'config' => 'invokables',
+    'class' => 'Purchases\\Widget\\Controller\\ActionController',
+    'alias' => 'Purchases\\Widget\\Controller\\Action',
+    'path' => 'module\\Purchases\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+  1405 => 
+  array (
+    'id' => 6,
+    'wid' => 1405,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 6000,
+    'key' => '1405',
+    'config' => 'invokables',
+    'class' => 'Services\\Widget\\Controller\\ActionController',
+    'alias' => 'Services\\Widget\\Controller\\Action',
+    'path' => 'module\\Services\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+  1406 => 
+  array (
+    'id' => 7,
+    'wid' => 1406,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 7000,
+    'key' => '1406',
+    'config' => 'invokables',
+    'class' => 'Transport\\Widget\\Controller\\ActionController',
+    'alias' => 'Transport\\Widget\\Controller\\Action',
+    'path' => 'module\\Transport\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+)
+2016-06-21 12:16:24 INFO (6): array (
+)
+2016-06-21 12:16:24 INFO (6): array (
+)
+2016-06-21 12:16:24 INFO (6): array (
+)
+2016-06-21 12:16:24 INFO (6): array (
+)
+2016-06-21 12:17:16 INFO (6): array (
+)
+2016-06-21 12:17:16 INFO (6): array (
+  95 => 
+  array (
+    'id' => 275,
+    'wid' => 95,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 1,
+    'key' => '95',
+    'config' => 'invokables',
+    'class' => 'Account\\Profile\\Widget\\Controller\\ActionController',
+    'alias' => 'Account\\Profile\\Widget\\Controller\\Action',
+    'path' => 'module\\Account\\Profile\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+  1400 => 
+  array (
+    'id' => 1,
+    'wid' => 1400,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 1000,
+    'key' => '1400',
+    'config' => 'invokables',
+    'class' => 'Bill\\Widget\\Controller\\ActionController',
+    'alias' => 'Bill\\Widget\\Controller\\Action',
+    'path' => 'module\\Bill\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+  1401 => 
+  array (
+    'id' => 2,
+    'wid' => 1401,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 2000,
+    'key' => '1401',
+    'config' => 'invokables',
+    'class' => 'Charity\\Widget\\Controller\\ActionController',
+    'alias' => 'Charity\\Widget\\Controller\\Action',
+    'path' => 'module\\Charity\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+  1402 => 
+  array (
+    'id' => 3,
+    'wid' => 1402,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 3000,
+    'key' => '1402',
+    'config' => 'invokables',
+    'class' => 'Mobile\\Widget\\Controller\\ActionController',
+    'alias' => 'Mobile\\Widget\\Controller\\Action',
+    'path' => 'module\\Mobile\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+  1403 => 
+  array (
+    'id' => 4,
+    'wid' => 1403,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 4000,
+    'key' => '1403',
+    'config' => 'invokables',
+    'class' => 'Parking\\Widget\\Controller\\ActionController',
+    'alias' => 'Parking\\Widget\\Controller\\Action',
+    'path' => 'module\\Parking\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+  1404 => 
+  array (
+    'id' => 5,
+    'wid' => 1404,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 5000,
+    'key' => '1404',
+    'config' => 'invokables',
+    'class' => 'Purchases\\Widget\\Controller\\ActionController',
+    'alias' => 'Purchases\\Widget\\Controller\\Action',
+    'path' => 'module\\Purchases\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+  1405 => 
+  array (
+    'id' => 6,
+    'wid' => 1405,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 6000,
+    'key' => '1405',
+    'config' => 'invokables',
+    'class' => 'Services\\Widget\\Controller\\ActionController',
+    'alias' => 'Services\\Widget\\Controller\\Action',
+    'path' => 'module\\Services\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+  1406 => 
+  array (
+    'id' => 7,
+    'wid' => 1406,
+    'location' => 'left',
+    'status' => 1,
+    'visitor' => 0,
+    'sort' => 7000,
+    'key' => '1406',
+    'config' => 'invokables',
+    'class' => 'Transport\\Widget\\Controller\\ActionController',
+    'alias' => 'Transport\\Widget\\Controller\\Action',
+    'path' => 'module\\Transport\\Widget',
+    'file' => 'Controller\\Action.php',
+  ),
+)
+2016-06-21 12:17:17 INFO (6): array (
+)
+2016-06-21 12:17:18 INFO (6): array (
+)
+2016-06-21 12:17:18 INFO (6): array (
+)
+2016-06-21 12:17:18 INFO (6): array (
+)
+2016-06-21 12:17:18 INFO (6): array (
+)
+2016-06-21 12:20:40 INFO (6): SELECT `ssg`.`system_service_group_id` AS `id` FROM `system_service_group` AS `ssg` WHERE `ssg`.`system_service_group_key` = 'service_bill' LIMIT '1'
+2016-06-21 12:20:40 INFO (6): SELECT `ssg`.`system_service_group_id` AS `id`, `ssg`.`system_service_group_name` AS `name`, `ssg`.`system_service_group_status` AS `status`, `ssg`.`system_service_group_key` AS `key` FROM `system_service_group` AS `ssg` WHERE `ssg`.`system_service_group_id` = '1'
+2016-06-21 12:21:46 INFO (6): SELECT `ssg`.`system_service_group_id` AS `id` FROM `system_service_group` AS `ssg` WHERE `ssg`.`system_service_group_key` = 'service_bill' LIMIT '1'
+2016-06-21 12:21:46 INFO (6): SELECT `ssg`.`system_service_group_id` AS `id`, `ssg`.`system_service_group_name` AS `name`, `ssg`.`system_service_group_status` AS `status`, `ssg`.`system_service_group_key` AS `key` FROM `system_service_group` AS `ssg` WHERE `ssg`.`system_service_group_id` = '1'
+2016-06-21 12:21:46 INFO (6): array (
+  1 => 
+  array (
+    'id' => 1,
+    'name' => 'Bill',
+    'status' => true,
+    'key' => 'service_bill',
+    'message' => 'text_system_service_bill',
+  ),
+)
+2016-06-21 12:22:56 INFO (6): SELECT `ssg`.`system_service_group_id` AS `id` FROM `system_service_group` AS `ssg` WHERE `ssg`.`system_service_group_key` = 'service_bill' LIMIT '1'
+2016-06-21 12:22:56 INFO (6): SELECT `ssg`.`system_service_group_id` AS `id`, `ssg`.`system_service_group_name` AS `name`, `ssg`.`system_service_group_status` AS `status`, `ssg`.`system_service_group_key` AS `key` FROM `system_service_group` AS `ssg` WHERE `ssg`.`system_service_group_id` = '1'
+2016-06-21 12:23:16 INFO (6): SELECT `ssg`.`system_service_group_id` AS `id` FROM `system_service_group` AS `ssg` WHERE `ssg`.`system_service_group_key` = 'service_bill' LIMIT '1'
+2016-06-21 12:23:16 INFO (6): SELECT `ssg`.`system_service_group_id` AS `id`, `ssg`.`system_service_group_name` AS `name`, `ssg`.`system_service_group_status` AS `status`, `ssg`.`system_service_group_key` AS `key` FROM `system_service_group` AS `ssg` WHERE `ssg`.`system_service_group_id` = '1'
+2016-06-21 12:23:16 INFO (6): array (
+  1 => 
+  array (
+    'id' => 1,
+    'name' => 'Bill',
+    'status' => true,
+    'key' => 'service_bill',
+    'message' => 'text_system_service_bill',
+  ),
+)
+2016-06-21 12:26:13 INFO (6): 1
+2016-06-21 12:26:13 INFO (6): array (
+  'id' => 1,
+  'name' => 'Bill',
+  'status' => true,
+  'key' => 'service_bill',
+  'message' => 'text_system_service_bill',
+)
+2016-06-21 12:26:13 INFO (6): array (
+  1 => 
+  array (
+    'id' => 1,
+    'name' => 'Bill',
+    'status' => true,
+    'key' => 'service_bill',
+    'message' => 'text_system_service_bill',
+  ),
+)
+2016-06-21 12:26:36 INFO (6): array (
+  1 => 
+  array (
+    'id' => 1,
+    'name' => 'Bill',
+    'status' => true,
+    'key' => 'service_bill',
+    'message' => 'text_system_service_bill',
+  ),
+)
+2016-06-21 12:29:07 INFO (6): aaa
+2016-06-21 12:29:24 INFO (6): aaa
+2016-06-21 12:30:06 INFO (6): SELECT `ss`.`system_service_id` AS `id`, `ss`.`system_service_group_id` AS `group_id`, `ss`.`system_service_name` AS `name`, `ss`.`system_service_key` AS `key`, `ss`.`system_service_status` AS `status`, `ss`.`system_service_class` AS `class`, `ss`.`system_service_alias` AS `class_alias`, `ss`.`system_service_priority` AS `priority` FROM `system_service` AS `ss` WHERE `ss`.`system_service_status` = '1' AND `ss`.`system_service_group_id` = '1' ORDER BY `ss`.`system_service_priority` ASC
+2016-06-21 12:30:07 INFO (6): array (
+  1 => 
+  array (
+    'id' => 1,
+    'name' => 'Bill',
+    'status' => true,
+    'key' => 'service_bill',
+    'message' => 'text_system_service_bill',
+    'service' => 
+    array (
+      12 => 
+      array (
+        'id' => 12,
+        'group_id' => 1,
+        'name' => 'Bill Payment Mobile',
+        'key' => 'service_bill_payment_mobile',
+        'status' => true,
+        'class' => 'Bill\\Payment\\Mobile\\Controller\\ActionController',
+        'class_alias' => 'Bill\\Payment\\Mobile\\Controller\\Action',
+        'priority' => 1,
+        'message' => 'text_system_service_bill_payment_mobile',
+      ),
+      38 => 
+      array (
+        'id' => 38,
+        'group_id' => 1,
+        'name' => 'Bill Payment Utilities',
+        'key' => 'service_bill_payment_utilities',
+        'status' => true,
+        'class' => 'Bill\\Payment\\Utilities\\Controller\\ActionController',
+        'class_alias' => 'Bill\\Payment\\Utilities\\Controller\\Action',
+        'priority' => 1,
+        'message' => 'text_system_service_bill_payment_utilities',
+      ),
+    ),
+  ),
+)
+2016-06-21 12:30:07 NOTICE (5): Array to string conversion {"errno":8,"file":"/Library/WebServer/Documents/Core/module/Bill/Widget/View/Initial.phtml","line":8}
+2016-06-21 12:30:43 INFO (6): aaa
+2016-06-21 12:32:10 INFO (6): SELECT `ss`.`system_service_id` AS `id`, `ss`.`system_service_group_id` AS `group_id`, `ss`.`system_service_name` AS `name`, `ss`.`system_service_key` AS `key`, `ss`.`system_service_status` AS `status`, `ss`.`system_service_class` AS `class`, `ss`.`system_service_alias` AS `class_alias`, `ss`.`system_service_priority` AS `priority` FROM `system_service` AS `ss` WHERE `ss`.`system_service_status` = '1' AND `ss`.`system_service_group_id` = '1' ORDER BY `ss`.`system_service_priority` ASC
+2016-06-21 12:32:10 INFO (6): array (
+  1 => 
+  array (
+    'id' => 1,
+    'name' => 'Bill',
+    'status' => true,
+    'key' => 'service_bill',
+    'message' => 'text_system_service_bill',
+    'service' => 
+    array (
+      12 => 
+      array (
+        'id' => 12,
+        'group_id' => 1,
+        'name' => 'Bill Payment Mobile',
+        'key' => 'service_bill_payment_mobile',
+        'status' => true,
+        'class' => 'Bill\\Payment\\Mobile\\Controller\\ActionController',
+        'class_alias' => 'Bill\\Payment\\Mobile\\Controller\\Action',
+        'priority' => 1,
+        'message' => 'text_system_service_bill_payment_mobile',
+      ),
+      38 => 
+      array (
+        'id' => 38,
+        'group_id' => 1,
+        'name' => 'Bill Payment Utilities',
+        'key' => 'service_bill_payment_utilities',
+        'status' => true,
+        'class' => 'Bill\\Payment\\Utilities\\Controller\\ActionController',
+        'class_alias' => 'Bill\\Payment\\Utilities\\Controller\\Action',
+        'priority' => 1,
+        'message' => 'text_system_service_bill_payment_utilities',
+      ),
+    ),
+  ),
+)
+2016-06-21 12:32:10 NOTICE (5): Array to string conversion {"errno":8,"file":"/Library/WebServer/Documents/Core/module/Bill/Widget/View/Initial.phtml","line":8}
+2016-06-21 12:33:18 INFO (6): array (
+  'id' => 1,
+  'name' => 'Bill',
+  'status' => true,
+  'key' => 'service_bill',
+  'message' => 'text_system_service_bill',
+  'service' => 
+  array (
+    12 => 
+    array (
+      'id' => 12,
+      'group_id' => 1,
+      'name' => 'Bill Payment Mobile',
+      'key' => 'service_bill_payment_mobile',
+      'status' => true,
+      'class' => 'Bill\\Payment\\Mobile\\Controller\\ActionController',
+      'class_alias' => 'Bill\\Payment\\Mobile\\Controller\\Action',
+      'priority' => 1,
+      'message' => 'text_system_service_bill_payment_mobile',
+    ),
+    38 => 
+    array (
+      'id' => 38,
+      'group_id' => 1,
+      'name' => 'Bill Payment Utilities',
+      'key' => 'service_bill_payment_utilities',
+      'status' => true,
+      'class' => 'Bill\\Payment\\Utilities\\Controller\\ActionController',
+      'class_alias' => 'Bill\\Payment\\Utilities\\Controller\\Action',
+      'priority' => 1,
+      'message' => 'text_system_service_bill_payment_utilities',
+    ),
+  ),
+)
+2016-06-21 12:33:18 NOTICE (5): Array to string conversion {"errno":8,"file":"/Library/WebServer/Documents/Core/module/Bill/Widget/View/Initial.phtml","line":8}
+2016-06-21 12:47:55 NOTICE (5): Undefined offset: 2 {"errno":8,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":102}
+2016-06-21 12:49:17 NOTICE (5): Undefined offset: 2 {"errno":8,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":103}
+2016-06-21 12:49:17 WARN (4): array_key_exists() expects parameter 2 to be array, null given {"errno":2,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":104}
+2016-06-21 12:49:17 WARN (4): array_key_exists() expects parameter 2 to be array, null given {"errno":2,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":104}
+2016-06-21 12:49:17 WARN (4): array_key_exists() expects parameter 2 to be array, null given {"errno":2,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":104}
+2016-06-21 12:49:17 WARN (4): array_key_exists() expects parameter 2 to be array, null given {"errno":2,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":104}
+2016-06-21 12:49:17 WARN (4): array_key_exists() expects parameter 2 to be array, null given {"errno":2,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":104}
+2016-06-21 12:49:17 WARN (4): array_key_exists() expects parameter 2 to be array, null given {"errno":2,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":104}
+2016-06-21 12:49:53 INFO (6): array (
+  1 => 
+  array (
+    'id' => 1,
+    'name' => 'Bill',
+    'status' => true,
+    'key' => 'service_bill',
+    'title' => 'Bill',
+  ),
+)
+2016-06-21 12:49:53 INFO (6): array (
+  1 => 
+  array (
+    'id' => 1,
+    'name' => 'Bill',
+    'status' => true,
+    'key' => 'service_bill',
+    'title' => 'Bill',
+  ),
+)
+2016-06-21 12:49:53 NOTICE (5): Undefined offset: 2 {"errno":8,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":104}
+2016-06-21 12:49:53 WARN (4): array_key_exists() expects parameter 2 to be array, null given {"errno":2,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":105}
+2016-06-21 12:49:53 INFO (6): array (
+  1 => 
+  array (
+    'id' => 1,
+    'name' => 'Bill',
+    'status' => true,
+    'key' => 'service_bill',
+    'title' => 'Bill',
+  ),
+)
+2016-06-21 12:49:53 WARN (4): array_key_exists() expects parameter 2 to be array, null given {"errno":2,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":105}
+2016-06-21 12:49:53 INFO (6): array (
+  1 => 
+  array (
+    'id' => 1,
+    'name' => 'Bill',
+    'status' => true,
+    'key' => 'service_bill',
+    'title' => 'Bill',
+  ),
+)
+2016-06-21 12:49:53 WARN (4): array_key_exists() expects parameter 2 to be array, null given {"errno":2,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":105}
+2016-06-21 12:49:53 INFO (6): array (
+  1 => 
+  array (
+    'id' => 1,
+    'name' => 'Bill',
+    'status' => true,
+    'key' => 'service_bill',
+    'title' => 'Bill',
+  ),
+)
+2016-06-21 12:49:53 WARN (4): array_key_exists() expects parameter 2 to be array, null given {"errno":2,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":105}
+2016-06-21 12:49:53 INFO (6): array (
+  1 => 
+  array (
+    'id' => 1,
+    'name' => 'Bill',
+    'status' => true,
+    'key' => 'service_bill',
+    'title' => 'Bill',
+  ),
+)
+2016-06-21 12:49:53 WARN (4): array_key_exists() expects parameter 2 to be array, null given {"errno":2,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":105}
+2016-06-21 12:49:53 INFO (6): array (
+  1 => 
+  array (
+    'id' => 1,
+    'name' => 'Bill',
+    'status' => true,
+    'key' => 'service_bill',
+    'title' => 'Bill',
+  ),
+)
+2016-06-21 12:49:53 WARN (4): array_key_exists() expects parameter 2 to be array, null given {"errno":2,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":105}
+2016-06-21 12:50:37 INFO (6): SELECT `ssg`.`system_service_group_id` AS `id`, `ssg`.`system_service_group_name` AS `name`, `ssg`.`system_service_group_status` AS `status`, `ssg`.`system_service_group_key` AS `key` FROM `system_service_group` AS `ssg` WHERE `ssg`.`system_service_group_id` = '1'
+2016-06-21 12:50:37 NOTICE (5): Undefined offset: 2 {"errno":8,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":104}
+2016-06-21 12:50:37 WARN (4): array_key_exists() expects parameter 2 to be array, null given {"errno":2,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":105}
+2016-06-21 12:50:37 WARN (4): array_key_exists() expects parameter 2 to be array, null given {"errno":2,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":105}
+2016-06-21 12:50:37 WARN (4): array_key_exists() expects parameter 2 to be array, null given {"errno":2,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":105}
+2016-06-21 12:50:37 WARN (4): array_key_exists() expects parameter 2 to be array, null given {"errno":2,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":105}
+2016-06-21 12:50:37 WARN (4): array_key_exists() expects parameter 2 to be array, null given {"errno":2,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":105}
+2016-06-21 12:50:37 WARN (4): array_key_exists() expects parameter 2 to be array, null given {"errno":2,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":105}
+2016-06-21 12:51:58 NOTICE (5): Undefined offset: 1 {"errno":8,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":51}
+2016-06-21 12:57:21 NOTICE (5): Undefined property: Techfever\Service\System::$system_group_data {"errno":8,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Services.php","line":55}
+2016-06-21 12:57:49 NOTICE (5): Undefined property: Techfever\Service\System::$system_group_data {"errno":8,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Group.php","line":44}
+2016-06-21 13:00:55 NOTICE (5): Undefined offset: 1 {"errno":8,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Services.php","line":58}
+2016-06-21 13:00:55 INFO (6): SELECT `ss`.`system_service_id` AS `id`, `ss`.`system_service_group_id` AS `group_id`, `ss`.`system_service_name` AS `name`, `ss`.`system_service_key` AS `key`, `ss`.`system_service_status` AS `status`, `ss`.`system_service_class` AS `class`, `ss`.`system_service_alias` AS `class_alias`, `ss`.`system_service_priority` AS `priority` FROM `system_service` AS `ss` WHERE `ss`.`system_service_status` = '1' AND `ss`.`system_service_group_id` = '1' ORDER BY `ss`.`system_service_priority` ASC
+2016-06-21 13:00:55 INFO (6): SELECT `ss`.`system_service_id` AS `id`, `ss`.`system_service_group_id` AS `group_id`, `ss`.`system_service_name` AS `name`, `ss`.`system_service_key` AS `key`, `ss`.`system_service_status` AS `status`, `ss`.`system_service_class` AS `class`, `ss`.`system_service_alias` AS `class_alias`, `ss`.`system_service_priority` AS `priority` FROM `system_service` AS `ss` WHERE `ss`.`system_service_status` = '1' AND `ss`.`system_service_group_id` = '2' ORDER BY `ss`.`system_service_priority` ASC
+2016-06-21 13:00:55 INFO (6): SELECT `ss`.`system_service_id` AS `id`, `ss`.`system_service_group_id` AS `group_id`, `ss`.`system_service_name` AS `name`, `ss`.`system_service_key` AS `key`, `ss`.`system_service_status` AS `status`, `ss`.`system_service_class` AS `class`, `ss`.`system_service_alias` AS `class_alias`, `ss`.`system_service_priority` AS `priority` FROM `system_service` AS `ss` WHERE `ss`.`system_service_status` = '1' AND `ss`.`system_service_group_id` = '3' ORDER BY `ss`.`system_service_priority` ASC
+2016-06-21 13:00:55 INFO (6): SELECT `ss`.`system_service_id` AS `id`, `ss`.`system_service_group_id` AS `group_id`, `ss`.`system_service_name` AS `name`, `ss`.`system_service_key` AS `key`, `ss`.`system_service_status` AS `status`, `ss`.`system_service_class` AS `class`, `ss`.`system_service_alias` AS `class_alias`, `ss`.`system_service_priority` AS `priority` FROM `system_service` AS `ss` WHERE `ss`.`system_service_status` = '1' AND `ss`.`system_service_group_id` = '4' ORDER BY `ss`.`system_service_priority` ASC
+2016-06-21 13:00:55 INFO (6): SELECT `ss`.`system_service_id` AS `id`, `ss`.`system_service_group_id` AS `group_id`, `ss`.`system_service_name` AS `name`, `ss`.`system_service_key` AS `key`, `ss`.`system_service_status` AS `status`, `ss`.`system_service_class` AS `class`, `ss`.`system_service_alias` AS `class_alias`, `ss`.`system_service_priority` AS `priority` FROM `system_service` AS `ss` WHERE `ss`.`system_service_status` = '1' AND `ss`.`system_service_group_id` = '5' ORDER BY `ss`.`system_service_priority` ASC
+2016-06-21 13:00:55 INFO (6): SELECT `ss`.`system_service_id` AS `id`, `ss`.`system_service_group_id` AS `group_id`, `ss`.`system_service_name` AS `name`, `ss`.`system_service_key` AS `key`, `ss`.`system_service_status` AS `status`, `ss`.`system_service_class` AS `class`, `ss`.`system_service_alias` AS `class_alias`, `ss`.`system_service_priority` AS `priority` FROM `system_service` AS `ss` WHERE `ss`.`system_service_status` = '1' AND `ss`.`system_service_group_id` = '6' ORDER BY `ss`.`system_service_priority` ASC
+2016-06-21 13:00:55 INFO (6): SELECT `ss`.`system_service_id` AS `id`, `ss`.`system_service_group_id` AS `group_id`, `ss`.`system_service_name` AS `name`, `ss`.`system_service_key` AS `key`, `ss`.`system_service_status` AS `status`, `ss`.`system_service_class` AS `class`, `ss`.`system_service_alias` AS `class_alias`, `ss`.`system_service_priority` AS `priority` FROM `system_service` AS `ss` WHERE `ss`.`system_service_status` = '1' AND `ss`.`system_service_group_id` = '7' ORDER BY `ss`.`system_service_priority` ASC
+2016-06-21 13:01:37 NOTICE (5): Undefined offset: 1 {"errno":8,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Services.php","line":58}
+2016-06-21 13:01:37 INFO (6): array (
+  1 => 
+  array (
+    12 => 
+    array (
+      'id' => 12,
+      'group_id' => 1,
+      'name' => 'Bill Payment Mobile',
+      'key' => 'service_bill_payment_mobile',
+      'status' => true,
+      'class' => 'Bill\\Payment\\Mobile\\Controller\\ActionController',
+      'class_alias' => 'Bill\\Payment\\Mobile\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_bill_payment_mobile',
+    ),
+    38 => 
+    array (
+      'id' => 38,
+      'group_id' => 1,
+      'name' => 'Bill Payment Utilities',
+      'key' => 'service_bill_payment_utilities',
+      'status' => true,
+      'class' => 'Bill\\Payment\\Utilities\\Controller\\ActionController',
+      'class_alias' => 'Bill\\Payment\\Utilities\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_bill_payment_utilities',
+    ),
+  ),
+)
+2016-06-21 13:01:37 INFO (6): array (
+  1 => 
+  array (
+    12 => 
+    array (
+      'id' => 12,
+      'group_id' => 1,
+      'name' => 'Bill Payment Mobile',
+      'key' => 'service_bill_payment_mobile',
+      'status' => true,
+      'class' => 'Bill\\Payment\\Mobile\\Controller\\ActionController',
+      'class_alias' => 'Bill\\Payment\\Mobile\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_bill_payment_mobile',
+    ),
+    38 => 
+    array (
+      'id' => 38,
+      'group_id' => 1,
+      'name' => 'Bill Payment Utilities',
+      'key' => 'service_bill_payment_utilities',
+      'status' => true,
+      'class' => 'Bill\\Payment\\Utilities\\Controller\\ActionController',
+      'class_alias' => 'Bill\\Payment\\Utilities\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_bill_payment_utilities',
+    ),
+  ),
+  2 => 
+  array (
+    13 => 
+    array (
+      'id' => 13,
+      'group_id' => 2,
+      'name' => 'Charity Animals',
+      'key' => 'service_charity_animals',
+      'status' => true,
+      'class' => 'Charity\\NGO\\Controller\\ActionController',
+      'class_alias' => 'Charity\\NGO\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_animals',
+    ),
+    14 => 
+    array (
+      'id' => 14,
+      'group_id' => 2,
+      'name' => 'Charity NGO',
+      'key' => 'service_charity_ngo',
+      'status' => true,
+      'class' => 'Charity\\NGO\\Controller\\ActionController',
+      'class_alias' => 'Charity\\NGO\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_ngo',
+    ),
+    15 => 
+    array (
+      'id' => 15,
+      'group_id' => 2,
+      'name' => 'Charity OKU',
+      'key' => 'service_charity_oku',
+      'status' => true,
+      'class' => 'Charity\\OKU\\Controller\\ActionController',
+      'class_alias' => 'Charity\\OKU\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_oku',
+    ),
+    16 => 
+    array (
+      'id' => 16,
+      'group_id' => 2,
+      'name' => 'Charity Old Folks',
+      'key' => 'service_charity_old_folks',
+      'status' => true,
+      'class' => 'Charity\\OldFolks\\Controller\\ActionController',
+      'class_alias' => 'Charity\\OldFolks\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_old_folks',
+    ),
+    17 => 
+    array (
+      'id' => 17,
+      'group_id' => 2,
+      'name' => 'Charity Orphan',
+      'key' => 'service_charity_orphan',
+      'status' => true,
+      'class' => 'Charity\\Orphan\\Controller\\ActionController',
+      'class_alias' => 'Charity\\Orphan\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_orphan',
+    ),
+    18 => 
+    array (
+      'id' => 18,
+      'group_id' => 2,
+      'name' => 'Charity Special',
+      'key' => 'service_charity_special',
+      'status' => true,
+      'class' => 'Charity\\Special\\Controller\\ActionController',
+      'class_alias' => 'Charity\\Special\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_special',
+    ),
+  ),
+)
+2016-06-21 13:01:37 INFO (6): array (
+  1 => 
+  array (
+    12 => 
+    array (
+      'id' => 12,
+      'group_id' => 1,
+      'name' => 'Bill Payment Mobile',
+      'key' => 'service_bill_payment_mobile',
+      'status' => true,
+      'class' => 'Bill\\Payment\\Mobile\\Controller\\ActionController',
+      'class_alias' => 'Bill\\Payment\\Mobile\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_bill_payment_mobile',
+    ),
+    38 => 
+    array (
+      'id' => 38,
+      'group_id' => 1,
+      'name' => 'Bill Payment Utilities',
+      'key' => 'service_bill_payment_utilities',
+      'status' => true,
+      'class' => 'Bill\\Payment\\Utilities\\Controller\\ActionController',
+      'class_alias' => 'Bill\\Payment\\Utilities\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_bill_payment_utilities',
+    ),
+  ),
+  2 => 
+  array (
+    13 => 
+    array (
+      'id' => 13,
+      'group_id' => 2,
+      'name' => 'Charity Animals',
+      'key' => 'service_charity_animals',
+      'status' => true,
+      'class' => 'Charity\\NGO\\Controller\\ActionController',
+      'class_alias' => 'Charity\\NGO\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_animals',
+    ),
+    14 => 
+    array (
+      'id' => 14,
+      'group_id' => 2,
+      'name' => 'Charity NGO',
+      'key' => 'service_charity_ngo',
+      'status' => true,
+      'class' => 'Charity\\NGO\\Controller\\ActionController',
+      'class_alias' => 'Charity\\NGO\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_ngo',
+    ),
+    15 => 
+    array (
+      'id' => 15,
+      'group_id' => 2,
+      'name' => 'Charity OKU',
+      'key' => 'service_charity_oku',
+      'status' => true,
+      'class' => 'Charity\\OKU\\Controller\\ActionController',
+      'class_alias' => 'Charity\\OKU\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_oku',
+    ),
+    16 => 
+    array (
+      'id' => 16,
+      'group_id' => 2,
+      'name' => 'Charity Old Folks',
+      'key' => 'service_charity_old_folks',
+      'status' => true,
+      'class' => 'Charity\\OldFolks\\Controller\\ActionController',
+      'class_alias' => 'Charity\\OldFolks\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_old_folks',
+    ),
+    17 => 
+    array (
+      'id' => 17,
+      'group_id' => 2,
+      'name' => 'Charity Orphan',
+      'key' => 'service_charity_orphan',
+      'status' => true,
+      'class' => 'Charity\\Orphan\\Controller\\ActionController',
+      'class_alias' => 'Charity\\Orphan\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_orphan',
+    ),
+    18 => 
+    array (
+      'id' => 18,
+      'group_id' => 2,
+      'name' => 'Charity Special',
+      'key' => 'service_charity_special',
+      'status' => true,
+      'class' => 'Charity\\Special\\Controller\\ActionController',
+      'class_alias' => 'Charity\\Special\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_special',
+    ),
+  ),
+  3 => 
+  array (
+    19 => 
+    array (
+      'id' => 19,
+      'group_id' => 3,
+      'name' => 'Mobile Call',
+      'key' => 'service_mobile_call',
+      'status' => true,
+      'class' => 'Mobile\\Call\\Controller\\ActionController',
+      'class_alias' => 'Mobile\\Call\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_mobile_call',
+    ),
+    20 => 
+    array (
+      'id' => 20,
+      'group_id' => 3,
+      'name' => 'Mobile Usage',
+      'key' => 'service_mobile_usage',
+      'status' => true,
+      'class' => 'Mobile\\Usage\\Controller\\ActionController',
+      'class_alias' => 'Mobile\\Usage\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_mobile_usage',
+    ),
+  ),
+)
+2016-06-21 13:01:37 INFO (6): array (
+  1 => 
+  array (
+    12 => 
+    array (
+      'id' => 12,
+      'group_id' => 1,
+      'name' => 'Bill Payment Mobile',
+      'key' => 'service_bill_payment_mobile',
+      'status' => true,
+      'class' => 'Bill\\Payment\\Mobile\\Controller\\ActionController',
+      'class_alias' => 'Bill\\Payment\\Mobile\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_bill_payment_mobile',
+    ),
+    38 => 
+    array (
+      'id' => 38,
+      'group_id' => 1,
+      'name' => 'Bill Payment Utilities',
+      'key' => 'service_bill_payment_utilities',
+      'status' => true,
+      'class' => 'Bill\\Payment\\Utilities\\Controller\\ActionController',
+      'class_alias' => 'Bill\\Payment\\Utilities\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_bill_payment_utilities',
+    ),
+  ),
+  2 => 
+  array (
+    13 => 
+    array (
+      'id' => 13,
+      'group_id' => 2,
+      'name' => 'Charity Animals',
+      'key' => 'service_charity_animals',
+      'status' => true,
+      'class' => 'Charity\\NGO\\Controller\\ActionController',
+      'class_alias' => 'Charity\\NGO\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_animals',
+    ),
+    14 => 
+    array (
+      'id' => 14,
+      'group_id' => 2,
+      'name' => 'Charity NGO',
+      'key' => 'service_charity_ngo',
+      'status' => true,
+      'class' => 'Charity\\NGO\\Controller\\ActionController',
+      'class_alias' => 'Charity\\NGO\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_ngo',
+    ),
+    15 => 
+    array (
+      'id' => 15,
+      'group_id' => 2,
+      'name' => 'Charity OKU',
+      'key' => 'service_charity_oku',
+      'status' => true,
+      'class' => 'Charity\\OKU\\Controller\\ActionController',
+      'class_alias' => 'Charity\\OKU\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_oku',
+    ),
+    16 => 
+    array (
+      'id' => 16,
+      'group_id' => 2,
+      'name' => 'Charity Old Folks',
+      'key' => 'service_charity_old_folks',
+      'status' => true,
+      'class' => 'Charity\\OldFolks\\Controller\\ActionController',
+      'class_alias' => 'Charity\\OldFolks\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_old_folks',
+    ),
+    17 => 
+    array (
+      'id' => 17,
+      'group_id' => 2,
+      'name' => 'Charity Orphan',
+      'key' => 'service_charity_orphan',
+      'status' => true,
+      'class' => 'Charity\\Orphan\\Controller\\ActionController',
+      'class_alias' => 'Charity\\Orphan\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_orphan',
+    ),
+    18 => 
+    array (
+      'id' => 18,
+      'group_id' => 2,
+      'name' => 'Charity Special',
+      'key' => 'service_charity_special',
+      'status' => true,
+      'class' => 'Charity\\Special\\Controller\\ActionController',
+      'class_alias' => 'Charity\\Special\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_special',
+    ),
+  ),
+  3 => 
+  array (
+    19 => 
+    array (
+      'id' => 19,
+      'group_id' => 3,
+      'name' => 'Mobile Call',
+      'key' => 'service_mobile_call',
+      'status' => true,
+      'class' => 'Mobile\\Call\\Controller\\ActionController',
+      'class_alias' => 'Mobile\\Call\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_mobile_call',
+    ),
+    20 => 
+    array (
+      'id' => 20,
+      'group_id' => 3,
+      'name' => 'Mobile Usage',
+      'key' => 'service_mobile_usage',
+      'status' => true,
+      'class' => 'Mobile\\Usage\\Controller\\ActionController',
+      'class_alias' => 'Mobile\\Usage\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_mobile_usage',
+    ),
+  ),
+  4 => 
+  array (
+    21 => 
+    array (
+      'id' => 21,
+      'group_id' => 4,
+      'name' => 'Parking Booking',
+      'key' => 'service_parking_booking',
+      'status' => true,
+      'class' => 'Parking\\Booking\\Controller\\ActionController',
+      'class_alias' => 'Parking\\Booking\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_parking_booking',
+    ),
+    22 => 
+    array (
+      'id' => 22,
+      'group_id' => 4,
+      'name' => 'Parking Lot Finder',
+      'key' => 'service_parking_lot_finder',
+      'status' => true,
+      'class' => 'Parking\\LotFinder\\Controller\\ActionController',
+      'class_alias' => 'Parking\\LotFinder\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_parking_lot_finder',
+    ),
+    23 => 
+    array (
+      'id' => 23,
+      'group_id' => 4,
+      'name' => 'Parking Payment',
+      'key' => 'service_parking_payment',
+      'status' => true,
+      'class' => 'Parking\\Payment\\Controller\\ActionController',
+      'class_alias' => 'Parking\\Payment\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_parking_payment',
+    ),
+    24 => 
+    array (
+      'id' => 24,
+      'group_id' => 4,
+      'name' => 'Parking Seasons',
+      'key' => 'service_parking_seasons',
+      'status' => true,
+      'class' => 'Parking\\Seasons\\Controller\\ActionController',
+      'class_alias' => 'Parking\\Seasons\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_parking_seasons',
+    ),
+  ),
+)
+2016-06-21 13:01:38 INFO (6): array (
+  1 => 
+  array (
+    12 => 
+    array (
+      'id' => 12,
+      'group_id' => 1,
+      'name' => 'Bill Payment Mobile',
+      'key' => 'service_bill_payment_mobile',
+      'status' => true,
+      'class' => 'Bill\\Payment\\Mobile\\Controller\\ActionController',
+      'class_alias' => 'Bill\\Payment\\Mobile\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_bill_payment_mobile',
+    ),
+    38 => 
+    array (
+      'id' => 38,
+      'group_id' => 1,
+      'name' => 'Bill Payment Utilities',
+      'key' => 'service_bill_payment_utilities',
+      'status' => true,
+      'class' => 'Bill\\Payment\\Utilities\\Controller\\ActionController',
+      'class_alias' => 'Bill\\Payment\\Utilities\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_bill_payment_utilities',
+    ),
+  ),
+  2 => 
+  array (
+    13 => 
+    array (
+      'id' => 13,
+      'group_id' => 2,
+      'name' => 'Charity Animals',
+      'key' => 'service_charity_animals',
+      'status' => true,
+      'class' => 'Charity\\NGO\\Controller\\ActionController',
+      'class_alias' => 'Charity\\NGO\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_animals',
+    ),
+    14 => 
+    array (
+      'id' => 14,
+      'group_id' => 2,
+      'name' => 'Charity NGO',
+      'key' => 'service_charity_ngo',
+      'status' => true,
+      'class' => 'Charity\\NGO\\Controller\\ActionController',
+      'class_alias' => 'Charity\\NGO\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_ngo',
+    ),
+    15 => 
+    array (
+      'id' => 15,
+      'group_id' => 2,
+      'name' => 'Charity OKU',
+      'key' => 'service_charity_oku',
+      'status' => true,
+      'class' => 'Charity\\OKU\\Controller\\ActionController',
+      'class_alias' => 'Charity\\OKU\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_oku',
+    ),
+    16 => 
+    array (
+      'id' => 16,
+      'group_id' => 2,
+      'name' => 'Charity Old Folks',
+      'key' => 'service_charity_old_folks',
+      'status' => true,
+      'class' => 'Charity\\OldFolks\\Controller\\ActionController',
+      'class_alias' => 'Charity\\OldFolks\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_old_folks',
+    ),
+    17 => 
+    array (
+      'id' => 17,
+      'group_id' => 2,
+      'name' => 'Charity Orphan',
+      'key' => 'service_charity_orphan',
+      'status' => true,
+      'class' => 'Charity\\Orphan\\Controller\\ActionController',
+      'class_alias' => 'Charity\\Orphan\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_orphan',
+    ),
+    18 => 
+    array (
+      'id' => 18,
+      'group_id' => 2,
+      'name' => 'Charity Special',
+      'key' => 'service_charity_special',
+      'status' => true,
+      'class' => 'Charity\\Special\\Controller\\ActionController',
+      'class_alias' => 'Charity\\Special\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_special',
+    ),
+  ),
+  3 => 
+  array (
+    19 => 
+    array (
+      'id' => 19,
+      'group_id' => 3,
+      'name' => 'Mobile Call',
+      'key' => 'service_mobile_call',
+      'status' => true,
+      'class' => 'Mobile\\Call\\Controller\\ActionController',
+      'class_alias' => 'Mobile\\Call\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_mobile_call',
+    ),
+    20 => 
+    array (
+      'id' => 20,
+      'group_id' => 3,
+      'name' => 'Mobile Usage',
+      'key' => 'service_mobile_usage',
+      'status' => true,
+      'class' => 'Mobile\\Usage\\Controller\\ActionController',
+      'class_alias' => 'Mobile\\Usage\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_mobile_usage',
+    ),
+  ),
+  4 => 
+  array (
+    21 => 
+    array (
+      'id' => 21,
+      'group_id' => 4,
+      'name' => 'Parking Booking',
+      'key' => 'service_parking_booking',
+      'status' => true,
+      'class' => 'Parking\\Booking\\Controller\\ActionController',
+      'class_alias' => 'Parking\\Booking\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_parking_booking',
+    ),
+    22 => 
+    array (
+      'id' => 22,
+      'group_id' => 4,
+      'name' => 'Parking Lot Finder',
+      'key' => 'service_parking_lot_finder',
+      'status' => true,
+      'class' => 'Parking\\LotFinder\\Controller\\ActionController',
+      'class_alias' => 'Parking\\LotFinder\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_parking_lot_finder',
+    ),
+    23 => 
+    array (
+      'id' => 23,
+      'group_id' => 4,
+      'name' => 'Parking Payment',
+      'key' => 'service_parking_payment',
+      'status' => true,
+      'class' => 'Parking\\Payment\\Controller\\ActionController',
+      'class_alias' => 'Parking\\Payment\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_parking_payment',
+    ),
+    24 => 
+    array (
+      'id' => 24,
+      'group_id' => 4,
+      'name' => 'Parking Seasons',
+      'key' => 'service_parking_seasons',
+      'status' => true,
+      'class' => 'Parking\\Seasons\\Controller\\ActionController',
+      'class_alias' => 'Parking\\Seasons\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_parking_seasons',
+    ),
+  ),
+  5 => 
+  array (
+    25 => 
+    array (
+      'id' => 25,
+      'group_id' => 5,
+      'name' => 'Purchases Online',
+      'key' => 'service_purchase_online',
+      'status' => true,
+      'class' => 'Purchase\\Online\\Controller\\ActionController',
+      'class_alias' => 'Purchase\\Online\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_purchase_online',
+    ),
+    26 => 
+    array (
+      'id' => 26,
+      'group_id' => 5,
+      'name' => 'Purchases Retail',
+      'key' => 'service_purchase_retial',
+      'status' => true,
+      'class' => 'Purchase\\Retail\\Controller\\ActionController',
+      'class_alias' => 'Purchase\\Retail\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_purchase_retial',
+    ),
+  ),
+)
+2016-06-21 13:01:38 INFO (6): array (
+  1 => 
+  array (
+    12 => 
+    array (
+      'id' => 12,
+      'group_id' => 1,
+      'name' => 'Bill Payment Mobile',
+      'key' => 'service_bill_payment_mobile',
+      'status' => true,
+      'class' => 'Bill\\Payment\\Mobile\\Controller\\ActionController',
+      'class_alias' => 'Bill\\Payment\\Mobile\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_bill_payment_mobile',
+    ),
+    38 => 
+    array (
+      'id' => 38,
+      'group_id' => 1,
+      'name' => 'Bill Payment Utilities',
+      'key' => 'service_bill_payment_utilities',
+      'status' => true,
+      'class' => 'Bill\\Payment\\Utilities\\Controller\\ActionController',
+      'class_alias' => 'Bill\\Payment\\Utilities\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_bill_payment_utilities',
+    ),
+  ),
+  2 => 
+  array (
+    13 => 
+    array (
+      'id' => 13,
+      'group_id' => 2,
+      'name' => 'Charity Animals',
+      'key' => 'service_charity_animals',
+      'status' => true,
+      'class' => 'Charity\\NGO\\Controller\\ActionController',
+      'class_alias' => 'Charity\\NGO\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_animals',
+    ),
+    14 => 
+    array (
+      'id' => 14,
+      'group_id' => 2,
+      'name' => 'Charity NGO',
+      'key' => 'service_charity_ngo',
+      'status' => true,
+      'class' => 'Charity\\NGO\\Controller\\ActionController',
+      'class_alias' => 'Charity\\NGO\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_ngo',
+    ),
+    15 => 
+    array (
+      'id' => 15,
+      'group_id' => 2,
+      'name' => 'Charity OKU',
+      'key' => 'service_charity_oku',
+      'status' => true,
+      'class' => 'Charity\\OKU\\Controller\\ActionController',
+      'class_alias' => 'Charity\\OKU\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_oku',
+    ),
+    16 => 
+    array (
+      'id' => 16,
+      'group_id' => 2,
+      'name' => 'Charity Old Folks',
+      'key' => 'service_charity_old_folks',
+      'status' => true,
+      'class' => 'Charity\\OldFolks\\Controller\\ActionController',
+      'class_alias' => 'Charity\\OldFolks\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_old_folks',
+    ),
+    17 => 
+    array (
+      'id' => 17,
+      'group_id' => 2,
+      'name' => 'Charity Orphan',
+      'key' => 'service_charity_orphan',
+      'status' => true,
+      'class' => 'Charity\\Orphan\\Controller\\ActionController',
+      'class_alias' => 'Charity\\Orphan\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_orphan',
+    ),
+    18 => 
+    array (
+      'id' => 18,
+      'group_id' => 2,
+      'name' => 'Charity Special',
+      'key' => 'service_charity_special',
+      'status' => true,
+      'class' => 'Charity\\Special\\Controller\\ActionController',
+      'class_alias' => 'Charity\\Special\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_special',
+    ),
+  ),
+  3 => 
+  array (
+    19 => 
+    array (
+      'id' => 19,
+      'group_id' => 3,
+      'name' => 'Mobile Call',
+      'key' => 'service_mobile_call',
+      'status' => true,
+      'class' => 'Mobile\\Call\\Controller\\ActionController',
+      'class_alias' => 'Mobile\\Call\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_mobile_call',
+    ),
+    20 => 
+    array (
+      'id' => 20,
+      'group_id' => 3,
+      'name' => 'Mobile Usage',
+      'key' => 'service_mobile_usage',
+      'status' => true,
+      'class' => 'Mobile\\Usage\\Controller\\ActionController',
+      'class_alias' => 'Mobile\\Usage\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_mobile_usage',
+    ),
+  ),
+  4 => 
+  array (
+    21 => 
+    array (
+      'id' => 21,
+      'group_id' => 4,
+      'name' => 'Parking Booking',
+      'key' => 'service_parking_booking',
+      'status' => true,
+      'class' => 'Parking\\Booking\\Controller\\ActionController',
+      'class_alias' => 'Parking\\Booking\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_parking_booking',
+    ),
+    22 => 
+    array (
+      'id' => 22,
+      'group_id' => 4,
+      'name' => 'Parking Lot Finder',
+      'key' => 'service_parking_lot_finder',
+      'status' => true,
+      'class' => 'Parking\\LotFinder\\Controller\\ActionController',
+      'class_alias' => 'Parking\\LotFinder\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_parking_lot_finder',
+    ),
+    23 => 
+    array (
+      'id' => 23,
+      'group_id' => 4,
+      'name' => 'Parking Payment',
+      'key' => 'service_parking_payment',
+      'status' => true,
+      'class' => 'Parking\\Payment\\Controller\\ActionController',
+      'class_alias' => 'Parking\\Payment\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_parking_payment',
+    ),
+    24 => 
+    array (
+      'id' => 24,
+      'group_id' => 4,
+      'name' => 'Parking Seasons',
+      'key' => 'service_parking_seasons',
+      'status' => true,
+      'class' => 'Parking\\Seasons\\Controller\\ActionController',
+      'class_alias' => 'Parking\\Seasons\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_parking_seasons',
+    ),
+  ),
+  5 => 
+  array (
+    25 => 
+    array (
+      'id' => 25,
+      'group_id' => 5,
+      'name' => 'Purchases Online',
+      'key' => 'service_purchase_online',
+      'status' => true,
+      'class' => 'Purchase\\Online\\Controller\\ActionController',
+      'class_alias' => 'Purchase\\Online\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_purchase_online',
+    ),
+    26 => 
+    array (
+      'id' => 26,
+      'group_id' => 5,
+      'name' => 'Purchases Retail',
+      'key' => 'service_purchase_retial',
+      'status' => true,
+      'class' => 'Purchase\\Retail\\Controller\\ActionController',
+      'class_alias' => 'Purchase\\Retail\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_purchase_retial',
+    ),
+  ),
+  6 => 
+  array (
+    27 => 
+    array (
+      'id' => 27,
+      'group_id' => 6,
+      'name' => 'Services Aircond',
+      'key' => 'service_service_aircond',
+      'status' => true,
+      'class' => 'Service\\Aircond\\Controller\\ActionController',
+      'class_alias' => 'Service\\Aircond\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_service_aircond',
+    ),
+    28 => 
+    array (
+      'id' => 28,
+      'group_id' => 6,
+      'name' => 'Services Electrice',
+      'key' => 'service_service_electrice',
+      'status' => true,
+      'class' => 'Service\\Electrice\\Controller\\ActionController',
+      'class_alias' => 'Service\\Electrice\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_service_electrice',
+    ),
+    29 => 
+    array (
+      'id' => 29,
+      'group_id' => 6,
+      'name' => 'Services Locksmith',
+      'key' => 'service_service_locksmith',
+      'status' => true,
+      'class' => 'Service\\Looksmith\\Controller\\ActionController',
+      'class_alias' => 'Service\\Electrice\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_service_locksmith',
+    ),
+    30 => 
+    array (
+      'id' => 30,
+      'group_id' => 6,
+      'name' => 'Services Towing',
+      'key' => 'service_service_towing',
+      'status' => true,
+      'class' => 'Service\\Towing\\Controller\\ActionController',
+      'class_alias' => 'Service\\Towing\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_service_towing',
+    ),
+    31 => 
+    array (
+      'id' => 31,
+      'group_id' => 6,
+      'name' => 'Services Workshop',
+      'key' => 'service_service_workshop',
+      'status' => true,
+      'class' => 'Service\\Workshop\\Controller\\ActionController',
+      'class_alias' => 'Service\\Workshop\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_service_workshop',
+    ),
+  ),
+)
+2016-06-21 13:01:38 INFO (6): array (
+  1 => 
+  array (
+    12 => 
+    array (
+      'id' => 12,
+      'group_id' => 1,
+      'name' => 'Bill Payment Mobile',
+      'key' => 'service_bill_payment_mobile',
+      'status' => true,
+      'class' => 'Bill\\Payment\\Mobile\\Controller\\ActionController',
+      'class_alias' => 'Bill\\Payment\\Mobile\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_bill_payment_mobile',
+    ),
+    38 => 
+    array (
+      'id' => 38,
+      'group_id' => 1,
+      'name' => 'Bill Payment Utilities',
+      'key' => 'service_bill_payment_utilities',
+      'status' => true,
+      'class' => 'Bill\\Payment\\Utilities\\Controller\\ActionController',
+      'class_alias' => 'Bill\\Payment\\Utilities\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_bill_payment_utilities',
+    ),
+  ),
+  2 => 
+  array (
+    13 => 
+    array (
+      'id' => 13,
+      'group_id' => 2,
+      'name' => 'Charity Animals',
+      'key' => 'service_charity_animals',
+      'status' => true,
+      'class' => 'Charity\\NGO\\Controller\\ActionController',
+      'class_alias' => 'Charity\\NGO\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_animals',
+    ),
+    14 => 
+    array (
+      'id' => 14,
+      'group_id' => 2,
+      'name' => 'Charity NGO',
+      'key' => 'service_charity_ngo',
+      'status' => true,
+      'class' => 'Charity\\NGO\\Controller\\ActionController',
+      'class_alias' => 'Charity\\NGO\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_ngo',
+    ),
+    15 => 
+    array (
+      'id' => 15,
+      'group_id' => 2,
+      'name' => 'Charity OKU',
+      'key' => 'service_charity_oku',
+      'status' => true,
+      'class' => 'Charity\\OKU\\Controller\\ActionController',
+      'class_alias' => 'Charity\\OKU\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_oku',
+    ),
+    16 => 
+    array (
+      'id' => 16,
+      'group_id' => 2,
+      'name' => 'Charity Old Folks',
+      'key' => 'service_charity_old_folks',
+      'status' => true,
+      'class' => 'Charity\\OldFolks\\Controller\\ActionController',
+      'class_alias' => 'Charity\\OldFolks\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_old_folks',
+    ),
+    17 => 
+    array (
+      'id' => 17,
+      'group_id' => 2,
+      'name' => 'Charity Orphan',
+      'key' => 'service_charity_orphan',
+      'status' => true,
+      'class' => 'Charity\\Orphan\\Controller\\ActionController',
+      'class_alias' => 'Charity\\Orphan\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_orphan',
+    ),
+    18 => 
+    array (
+      'id' => 18,
+      'group_id' => 2,
+      'name' => 'Charity Special',
+      'key' => 'service_charity_special',
+      'status' => true,
+      'class' => 'Charity\\Special\\Controller\\ActionController',
+      'class_alias' => 'Charity\\Special\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_charity_special',
+    ),
+  ),
+  3 => 
+  array (
+    19 => 
+    array (
+      'id' => 19,
+      'group_id' => 3,
+      'name' => 'Mobile Call',
+      'key' => 'service_mobile_call',
+      'status' => true,
+      'class' => 'Mobile\\Call\\Controller\\ActionController',
+      'class_alias' => 'Mobile\\Call\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_mobile_call',
+    ),
+    20 => 
+    array (
+      'id' => 20,
+      'group_id' => 3,
+      'name' => 'Mobile Usage',
+      'key' => 'service_mobile_usage',
+      'status' => true,
+      'class' => 'Mobile\\Usage\\Controller\\ActionController',
+      'class_alias' => 'Mobile\\Usage\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_mobile_usage',
+    ),
+  ),
+  4 => 
+  array (
+    21 => 
+    array (
+      'id' => 21,
+      'group_id' => 4,
+      'name' => 'Parking Booking',
+      'key' => 'service_parking_booking',
+      'status' => true,
+      'class' => 'Parking\\Booking\\Controller\\ActionController',
+      'class_alias' => 'Parking\\Booking\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_parking_booking',
+    ),
+    22 => 
+    array (
+      'id' => 22,
+      'group_id' => 4,
+      'name' => 'Parking Lot Finder',
+      'key' => 'service_parking_lot_finder',
+      'status' => true,
+      'class' => 'Parking\\LotFinder\\Controller\\ActionController',
+      'class_alias' => 'Parking\\LotFinder\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_parking_lot_finder',
+    ),
+    23 => 
+    array (
+      'id' => 23,
+      'group_id' => 4,
+      'name' => 'Parking Payment',
+      'key' => 'service_parking_payment',
+      'status' => true,
+      'class' => 'Parking\\Payment\\Controller\\ActionController',
+      'class_alias' => 'Parking\\Payment\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_parking_payment',
+    ),
+    24 => 
+    array (
+      'id' => 24,
+      'group_id' => 4,
+      'name' => 'Parking Seasons',
+      'key' => 'service_parking_seasons',
+      'status' => true,
+      'class' => 'Parking\\Seasons\\Controller\\ActionController',
+      'class_alias' => 'Parking\\Seasons\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_parking_seasons',
+    ),
+  ),
+  5 => 
+  array (
+    25 => 
+    array (
+      'id' => 25,
+      'group_id' => 5,
+      'name' => 'Purchases Online',
+      'key' => 'service_purchase_online',
+      'status' => true,
+      'class' => 'Purchase\\Online\\Controller\\ActionController',
+      'class_alias' => 'Purchase\\Online\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_purchase_online',
+    ),
+    26 => 
+    array (
+      'id' => 26,
+      'group_id' => 5,
+      'name' => 'Purchases Retail',
+      'key' => 'service_purchase_retial',
+      'status' => true,
+      'class' => 'Purchase\\Retail\\Controller\\ActionController',
+      'class_alias' => 'Purchase\\Retail\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_purchase_retial',
+    ),
+  ),
+  6 => 
+  array (
+    27 => 
+    array (
+      'id' => 27,
+      'group_id' => 6,
+      'name' => 'Services Aircond',
+      'key' => 'service_service_aircond',
+      'status' => true,
+      'class' => 'Service\\Aircond\\Controller\\ActionController',
+      'class_alias' => 'Service\\Aircond\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_service_aircond',
+    ),
+    28 => 
+    array (
+      'id' => 28,
+      'group_id' => 6,
+      'name' => 'Services Electrice',
+      'key' => 'service_service_electrice',
+      'status' => true,
+      'class' => 'Service\\Electrice\\Controller\\ActionController',
+      'class_alias' => 'Service\\Electrice\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_service_electrice',
+    ),
+    29 => 
+    array (
+      'id' => 29,
+      'group_id' => 6,
+      'name' => 'Services Locksmith',
+      'key' => 'service_service_locksmith',
+      'status' => true,
+      'class' => 'Service\\Looksmith\\Controller\\ActionController',
+      'class_alias' => 'Service\\Electrice\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_service_locksmith',
+    ),
+    30 => 
+    array (
+      'id' => 30,
+      'group_id' => 6,
+      'name' => 'Services Towing',
+      'key' => 'service_service_towing',
+      'status' => true,
+      'class' => 'Service\\Towing\\Controller\\ActionController',
+      'class_alias' => 'Service\\Towing\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_service_towing',
+    ),
+    31 => 
+    array (
+      'id' => 31,
+      'group_id' => 6,
+      'name' => 'Services Workshop',
+      'key' => 'service_service_workshop',
+      'status' => true,
+      'class' => 'Service\\Workshop\\Controller\\ActionController',
+      'class_alias' => 'Service\\Workshop\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_service_workshop',
+    ),
+  ),
+  7 => 
+  array (
+    32 => 
+    array (
+      'id' => 32,
+      'group_id' => 7,
+      'name' => 'Transport Bus',
+      'key' => 'service_transport_bus',
+      'status' => true,
+      'class' => 'Transport\\Bus\\Controller\\ActionController',
+      'class_alias' => 'Transport\\Bus\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_transport_bus',
+    ),
+    33 => 
+    array (
+      'id' => 33,
+      'group_id' => 7,
+      'name' => 'Transport Courier',
+      'key' => 'service_transport_courier',
+      'status' => true,
+      'class' => 'Transport\\Courier\\Controller\\ActionController',
+      'class_alias' => 'Transport\\Courier\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_transport_courier',
+    ),
+    34 => 
+    array (
+      'id' => 34,
+      'group_id' => 7,
+      'name' => 'Transport Flight',
+      'key' => 'service_transport_flight',
+      'status' => true,
+      'class' => 'Transport\\Flight\\Controller\\ActionController',
+      'class_alias' => 'Transport\\Flight\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_transport_flight',
+    ),
+    35 => 
+    array (
+      'id' => 35,
+      'group_id' => 7,
+      'name' => 'Transport Movers',
+      'key' => 'service_transport_mover',
+      'status' => true,
+      'class' => 'Transport\\Mover\\Controller\\ActionController',
+      'class_alias' => 'Transport\\Mover\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_transport_mover',
+    ),
+    36 => 
+    array (
+      'id' => 36,
+      'group_id' => 7,
+      'name' => 'Transport Riders',
+      'key' => 'service_transport_rider',
+      'status' => true,
+      'class' => 'Transport\\Rider\\Controller\\ActionController',
+      'class_alias' => 'Transport\\Rider\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_transport_rider',
+    ),
+    37 => 
+    array (
+      'id' => 37,
+      'group_id' => 7,
+      'name' => 'Transport Taxi',
+      'key' => 'service_transport_taxi',
+      'status' => true,
+      'class' => 'Transport\\Taxi\\Controller\\ActionController',
+      'class_alias' => 'Transport\\Taxi\\Controller\\Action',
+      'priority' => 1,
+      'title' => 'text_system_service_transport_taxi',
+    ),
+  ),
+)
+2016-06-21 13:02:00 NOTICE (5): Undefined offset: 1 {"errno":8,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Services.php","line":58}
+2016-06-21 13:02:00 INFO (6): array (
+  12 => 
+  array (
+    'id' => 12,
+    'group_id' => 1,
+    'name' => 'Bill Payment Mobile',
+    'key' => 'service_bill_payment_mobile',
+    'status' => true,
+    'class' => 'Bill\\Payment\\Mobile\\Controller\\ActionController',
+    'class_alias' => 'Bill\\Payment\\Mobile\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_bill_payment_mobile',
+  ),
+  38 => 
+  array (
+    'id' => 38,
+    'group_id' => 1,
+    'name' => 'Bill Payment Utilities',
+    'key' => 'service_bill_payment_utilities',
+    'status' => true,
+    'class' => 'Bill\\Payment\\Utilities\\Controller\\ActionController',
+    'class_alias' => 'Bill\\Payment\\Utilities\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_bill_payment_utilities',
+  ),
+)
+2016-06-21 13:02:00 INFO (6): array (
+  13 => 
+  array (
+    'id' => 13,
+    'group_id' => 2,
+    'name' => 'Charity Animals',
+    'key' => 'service_charity_animals',
+    'status' => true,
+    'class' => 'Charity\\NGO\\Controller\\ActionController',
+    'class_alias' => 'Charity\\NGO\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_charity_animals',
+  ),
+  14 => 
+  array (
+    'id' => 14,
+    'group_id' => 2,
+    'name' => 'Charity NGO',
+    'key' => 'service_charity_ngo',
+    'status' => true,
+    'class' => 'Charity\\NGO\\Controller\\ActionController',
+    'class_alias' => 'Charity\\NGO\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_charity_ngo',
+  ),
+  15 => 
+  array (
+    'id' => 15,
+    'group_id' => 2,
+    'name' => 'Charity OKU',
+    'key' => 'service_charity_oku',
+    'status' => true,
+    'class' => 'Charity\\OKU\\Controller\\ActionController',
+    'class_alias' => 'Charity\\OKU\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_charity_oku',
+  ),
+  16 => 
+  array (
+    'id' => 16,
+    'group_id' => 2,
+    'name' => 'Charity Old Folks',
+    'key' => 'service_charity_old_folks',
+    'status' => true,
+    'class' => 'Charity\\OldFolks\\Controller\\ActionController',
+    'class_alias' => 'Charity\\OldFolks\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_charity_old_folks',
+  ),
+  17 => 
+  array (
+    'id' => 17,
+    'group_id' => 2,
+    'name' => 'Charity Orphan',
+    'key' => 'service_charity_orphan',
+    'status' => true,
+    'class' => 'Charity\\Orphan\\Controller\\ActionController',
+    'class_alias' => 'Charity\\Orphan\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_charity_orphan',
+  ),
+  18 => 
+  array (
+    'id' => 18,
+    'group_id' => 2,
+    'name' => 'Charity Special',
+    'key' => 'service_charity_special',
+    'status' => true,
+    'class' => 'Charity\\Special\\Controller\\ActionController',
+    'class_alias' => 'Charity\\Special\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_charity_special',
+  ),
+)
+2016-06-21 13:02:00 INFO (6): array (
+  19 => 
+  array (
+    'id' => 19,
+    'group_id' => 3,
+    'name' => 'Mobile Call',
+    'key' => 'service_mobile_call',
+    'status' => true,
+    'class' => 'Mobile\\Call\\Controller\\ActionController',
+    'class_alias' => 'Mobile\\Call\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_mobile_call',
+  ),
+  20 => 
+  array (
+    'id' => 20,
+    'group_id' => 3,
+    'name' => 'Mobile Usage',
+    'key' => 'service_mobile_usage',
+    'status' => true,
+    'class' => 'Mobile\\Usage\\Controller\\ActionController',
+    'class_alias' => 'Mobile\\Usage\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_mobile_usage',
+  ),
+)
+2016-06-21 13:02:00 INFO (6): array (
+  21 => 
+  array (
+    'id' => 21,
+    'group_id' => 4,
+    'name' => 'Parking Booking',
+    'key' => 'service_parking_booking',
+    'status' => true,
+    'class' => 'Parking\\Booking\\Controller\\ActionController',
+    'class_alias' => 'Parking\\Booking\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_parking_booking',
+  ),
+  22 => 
+  array (
+    'id' => 22,
+    'group_id' => 4,
+    'name' => 'Parking Lot Finder',
+    'key' => 'service_parking_lot_finder',
+    'status' => true,
+    'class' => 'Parking\\LotFinder\\Controller\\ActionController',
+    'class_alias' => 'Parking\\LotFinder\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_parking_lot_finder',
+  ),
+  23 => 
+  array (
+    'id' => 23,
+    'group_id' => 4,
+    'name' => 'Parking Payment',
+    'key' => 'service_parking_payment',
+    'status' => true,
+    'class' => 'Parking\\Payment\\Controller\\ActionController',
+    'class_alias' => 'Parking\\Payment\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_parking_payment',
+  ),
+  24 => 
+  array (
+    'id' => 24,
+    'group_id' => 4,
+    'name' => 'Parking Seasons',
+    'key' => 'service_parking_seasons',
+    'status' => true,
+    'class' => 'Parking\\Seasons\\Controller\\ActionController',
+    'class_alias' => 'Parking\\Seasons\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_parking_seasons',
+  ),
+)
+2016-06-21 13:02:00 INFO (6): array (
+  25 => 
+  array (
+    'id' => 25,
+    'group_id' => 5,
+    'name' => 'Purchases Online',
+    'key' => 'service_purchase_online',
+    'status' => true,
+    'class' => 'Purchase\\Online\\Controller\\ActionController',
+    'class_alias' => 'Purchase\\Online\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_purchase_online',
+  ),
+  26 => 
+  array (
+    'id' => 26,
+    'group_id' => 5,
+    'name' => 'Purchases Retail',
+    'key' => 'service_purchase_retial',
+    'status' => true,
+    'class' => 'Purchase\\Retail\\Controller\\ActionController',
+    'class_alias' => 'Purchase\\Retail\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_purchase_retial',
+  ),
+)
+2016-06-21 13:02:00 INFO (6): array (
+  27 => 
+  array (
+    'id' => 27,
+    'group_id' => 6,
+    'name' => 'Services Aircond',
+    'key' => 'service_service_aircond',
+    'status' => true,
+    'class' => 'Service\\Aircond\\Controller\\ActionController',
+    'class_alias' => 'Service\\Aircond\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_service_aircond',
+  ),
+  28 => 
+  array (
+    'id' => 28,
+    'group_id' => 6,
+    'name' => 'Services Electrice',
+    'key' => 'service_service_electrice',
+    'status' => true,
+    'class' => 'Service\\Electrice\\Controller\\ActionController',
+    'class_alias' => 'Service\\Electrice\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_service_electrice',
+  ),
+  29 => 
+  array (
+    'id' => 29,
+    'group_id' => 6,
+    'name' => 'Services Locksmith',
+    'key' => 'service_service_locksmith',
+    'status' => true,
+    'class' => 'Service\\Looksmith\\Controller\\ActionController',
+    'class_alias' => 'Service\\Electrice\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_service_locksmith',
+  ),
+  30 => 
+  array (
+    'id' => 30,
+    'group_id' => 6,
+    'name' => 'Services Towing',
+    'key' => 'service_service_towing',
+    'status' => true,
+    'class' => 'Service\\Towing\\Controller\\ActionController',
+    'class_alias' => 'Service\\Towing\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_service_towing',
+  ),
+  31 => 
+  array (
+    'id' => 31,
+    'group_id' => 6,
+    'name' => 'Services Workshop',
+    'key' => 'service_service_workshop',
+    'status' => true,
+    'class' => 'Service\\Workshop\\Controller\\ActionController',
+    'class_alias' => 'Service\\Workshop\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_service_workshop',
+  ),
+)
+2016-06-21 13:02:00 INFO (6): array (
+  32 => 
+  array (
+    'id' => 32,
+    'group_id' => 7,
+    'name' => 'Transport Bus',
+    'key' => 'service_transport_bus',
+    'status' => true,
+    'class' => 'Transport\\Bus\\Controller\\ActionController',
+    'class_alias' => 'Transport\\Bus\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_transport_bus',
+  ),
+  33 => 
+  array (
+    'id' => 33,
+    'group_id' => 7,
+    'name' => 'Transport Courier',
+    'key' => 'service_transport_courier',
+    'status' => true,
+    'class' => 'Transport\\Courier\\Controller\\ActionController',
+    'class_alias' => 'Transport\\Courier\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_transport_courier',
+  ),
+  34 => 
+  array (
+    'id' => 34,
+    'group_id' => 7,
+    'name' => 'Transport Flight',
+    'key' => 'service_transport_flight',
+    'status' => true,
+    'class' => 'Transport\\Flight\\Controller\\ActionController',
+    'class_alias' => 'Transport\\Flight\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_transport_flight',
+  ),
+  35 => 
+  array (
+    'id' => 35,
+    'group_id' => 7,
+    'name' => 'Transport Movers',
+    'key' => 'service_transport_mover',
+    'status' => true,
+    'class' => 'Transport\\Mover\\Controller\\ActionController',
+    'class_alias' => 'Transport\\Mover\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_transport_mover',
+  ),
+  36 => 
+  array (
+    'id' => 36,
+    'group_id' => 7,
+    'name' => 'Transport Riders',
+    'key' => 'service_transport_rider',
+    'status' => true,
+    'class' => 'Transport\\Rider\\Controller\\ActionController',
+    'class_alias' => 'Transport\\Rider\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_transport_rider',
+  ),
+  37 => 
+  array (
+    'id' => 37,
+    'group_id' => 7,
+    'name' => 'Transport Taxi',
+    'key' => 'service_transport_taxi',
+    'status' => true,
+    'class' => 'Transport\\Taxi\\Controller\\ActionController',
+    'class_alias' => 'Transport\\Taxi\\Controller\\Action',
+    'priority' => 1,
+    'title' => 'text_system_service_transport_taxi',
+  ),
+)
+2016-06-21 13:02:38 INFO (6): array (
+  1 => 
+  array (
+    'id' => 1,
+    'name' => 'Bill',
+    'status' => true,
+    'key' => 'service_bill',
+    'title' => 'Bill',
+  ),
+)
+2016-06-21 13:02:38 NOTICE (5): Undefined offset: 1 {"errno":8,"file":"/Library/WebServer/Documents/Core/vendor/Techfever/Service/Services.php","line":58}
+2016-06-21 13:03:15 INFO (6): array (
+  1 => 
+  array (
+    'id' => 1,
+    'name' => 'Bill',
+    'status' => true,
+    'key' => 'service_bill',
+    'title' => 'Bill',
+    'services' => 
+    array (
+      12 => 
+      array (
+        'id' => 12,
+        'group_id' => 1,
+        'name' => 'Bill Payment Mobile',
+        'key' => 'service_bill_payment_mobile',
+        'status' => true,
+        'class' => 'Bill\\Payment\\Mobile\\Controller\\ActionController',
+        'class_alias' => 'Bill\\Payment\\Mobile\\Controller\\Action',
+        'priority' => 1,
+        'title' => 'text_system_service_bill_payment_mobile',
+      ),
+      38 => 
+      array (
+        'id' => 38,
+        'group_id' => 1,
+        'name' => 'Bill Payment Utilities',
+        'key' => 'service_bill_payment_utilities',
+        'status' => true,
+        'class' => 'Bill\\Payment\\Utilities\\Controller\\ActionController',
+        'class_alias' => 'Bill\\Payment\\Utilities\\Controller\\Action',
+        'priority' => 1,
+        'title' => 'text_system_service_bill_payment_utilities',
+      ),
+    ),
+  ),
+)
+2016-06-21 13:49:59 WARN (4): array_key_exists() expects parameter 2 to be array, string given {"errno":2,"file":"/Library/WebServer/Documents/Core/module/Account/Dashboard/Widget/View/Initial.phtml","line":9}
+2016-06-21 14:00:24 WARN (4): array_key_exists() expects parameter 2 to be array, string given {"errno":2,"file":"/Library/WebServer/Documents/Core/module/Account/Dashboard/Widget/View/Initial.phtml","line":9}
+2016-06-21 14:08:34 WARN (4): require_once(/Library/WebServer/Documents/Core/module/ Advertising/Widget/Controller/Action.php): failed to open stream: No such file or directory {"errno":2,"file":"/Library/WebServer/Documents/Core/vendor/Zend/Loader/ClassMapAutoloader.php","line":138}
+2016-06-21 14:08:35 WARN (4): require_once(/Library/WebServer/Documents/Core/module/ Advertising/Widget/Controller/Action.php): failed to open stream: No such file or directory {"errno":2,"file":"/Library/WebServer/Documents/Core/vendor/Zend/Loader/ClassMapAutoloader.php","line":138}
+2016-06-21 14:08:35 WARN (4): require_once(/Library/WebServer/Documents/Core/module/ Advertising/Widget/Controller/Action.php): failed to open stream: No such file or directory {"errno":2,"file":"/Library/WebServer/Documents/Core/vendor/Zend/Loader/ClassMapAutoloader.php","line":138}
+2016-06-21 14:15:04 WARN (4): array_key_exists() expects parameter 2 to be array, string given {"errno":2,"file":"/Library/WebServer/Documents/Core/module/Advertising/Widget/View/Initial.phtml","line":9}
+2016-06-21 14:16:25 WARN (4): array_key_exists() expects parameter 2 to be array, string given {"errno":2,"file":"/Library/WebServer/Documents/Core/module/Advertising/Widget/View/Initial.phtml","line":9}
+2016-06-21 14:16:43 WARN (4): array_key_exists() expects parameter 2 to be array, string given {"errno":2,"file":"/Library/WebServer/Documents/Core/module/Advertising/Widget/View/Initial.phtml","line":9}
+2016-06-21 14:17:19 WARN (4): array_key_exists() expects parameter 2 to be array, string given {"errno":2,"file":"/Library/WebServer/Documents/Core/module/Advertising/Widget/View/Initial.phtml","line":9}
+2016-06-21 14:17:46 WARN (4): array_key_exists() expects parameter 2 to be array, string given {"errno":2,"file":"/Library/WebServer/Documents/Core/module/Advertising/Widget/View/Initial.phtml","line":9}
+2016-06-21 14:34:14 ERR (3): URI is not valid and cannot be converted into a string {"file":"/Library/WebServer/Documents/Core/vendor/Zend/Uri/Uri.php","line":359,"trace":"[{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/Http/Header/AbstractLocation.php\",\"line\":98,\"function\":\"toString\",\"class\":\"Zend\\\\Uri\\\\Uri\",\"type\":\"->\",\"args\":[]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/Http/Header/AbstractLocation.php\",\"line\":133,\"function\":\"getUri\",\"class\":\"Zend\\\\Http\\\\Header\\\\AbstractLocation\",\"type\":\"->\",\"args\":[]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/Mvc/ResponseSender/AbstractResponseSender.php\",\"line\":35,\"function\":\"toString\",\"class\":\"Zend\\\\Http\\\\Header\\\\AbstractLocation\",\"type\":\"->\",\"args\":[]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/Mvc/ResponseSender/PhpEnvironmentResponseSender.php\",\"line\":29,\"function\":\"sendHeaders\",\"class\":\"Zend\\\\Mvc\\\\ResponseSender\\\\AbstractResponseSender\",\"type\":\"->\",\"args\":[{}]},{\"function\":\"__invoke\",\"class\":\"Zend\\\\Mvc\\\\ResponseSender\\\\PhpEnvironmentResponseSender\",\"type\":\"->\",\"args\":[{}]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/EventManager/EventManager.php\",\"line\":444,\"function\":\"call_user_func\",\"args\":[{},{}]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/EventManager/EventManager.php\",\"line\":205,\"function\":\"triggerListeners\",\"class\":\"Zend\\\\EventManager\\\\EventManager\",\"type\":\"->\",\"args\":[\"sendResponse\",{},null]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/Mvc/SendResponseListener.php\",\"line\":94,\"function\":\"trigger\",\"class\":\"Zend\\\\EventManager\\\\EventManager\",\"type\":\"->\",\"args\":[{}]},{\"function\":\"sendResponse\",\"class\":\"Zend\\\\Mvc\\\\SendResponseListener\",\"type\":\"->\",\"args\":[{}]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/EventManager/EventManager.php\",\"line\":444,\"function\":\"call_user_func\",\"args\":[[{},\"sendResponse\"],{}]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/EventManager/EventManager.php\",\"line\":205,\"function\":\"triggerListeners\",\"class\":\"Zend\\\\EventManager\\\\EventManager\",\"type\":\"->\",\"args\":[\"finish\",{},[]]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/Mvc/Application.php\",\"line\":321,\"function\":\"trigger\",\"class\":\"Zend\\\\EventManager\\\\EventManager\",\"type\":\"->\",\"args\":[\"finish\",{}]},{\"file\":\"/Library/WebServer/Documents/Core/public/index.php\",\"line\":24,\"function\":\"run\",\"class\":\"Zend\\\\Mvc\\\\Application\",\"type\":\"->\",\"args\":[]}]"}
+2016-06-21 16:20:57 ERR (3): URI is not valid and cannot be converted into a string {"file":"/Library/WebServer/Documents/Core/vendor/Zend/Uri/Uri.php","line":359,"trace":"[{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/Http/Header/AbstractLocation.php\",\"line\":98,\"function\":\"toString\",\"class\":\"Zend\\\\Uri\\\\Uri\",\"type\":\"->\",\"args\":[]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/Http/Header/AbstractLocation.php\",\"line\":133,\"function\":\"getUri\",\"class\":\"Zend\\\\Http\\\\Header\\\\AbstractLocation\",\"type\":\"->\",\"args\":[]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/Mvc/ResponseSender/AbstractResponseSender.php\",\"line\":35,\"function\":\"toString\",\"class\":\"Zend\\\\Http\\\\Header\\\\AbstractLocation\",\"type\":\"->\",\"args\":[]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/Mvc/ResponseSender/PhpEnvironmentResponseSender.php\",\"line\":29,\"function\":\"sendHeaders\",\"class\":\"Zend\\\\Mvc\\\\ResponseSender\\\\AbstractResponseSender\",\"type\":\"->\",\"args\":[{}]},{\"function\":\"__invoke\",\"class\":\"Zend\\\\Mvc\\\\ResponseSender\\\\PhpEnvironmentResponseSender\",\"type\":\"->\",\"args\":[{}]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/EventManager/EventManager.php\",\"line\":444,\"function\":\"call_user_func\",\"args\":[{},{}]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/EventManager/EventManager.php\",\"line\":205,\"function\":\"triggerListeners\",\"class\":\"Zend\\\\EventManager\\\\EventManager\",\"type\":\"->\",\"args\":[\"sendResponse\",{},null]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/Mvc/SendResponseListener.php\",\"line\":94,\"function\":\"trigger\",\"class\":\"Zend\\\\EventManager\\\\EventManager\",\"type\":\"->\",\"args\":[{}]},{\"function\":\"sendResponse\",\"class\":\"Zend\\\\Mvc\\\\SendResponseListener\",\"type\":\"->\",\"args\":[{}]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/EventManager/EventManager.php\",\"line\":444,\"function\":\"call_user_func\",\"args\":[[{},\"sendResponse\"],{}]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/EventManager/EventManager.php\",\"line\":205,\"function\":\"triggerListeners\",\"class\":\"Zend\\\\EventManager\\\\EventManager\",\"type\":\"->\",\"args\":[\"finish\",{},[]]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/Mvc/Application.php\",\"line\":321,\"function\":\"trigger\",\"class\":\"Zend\\\\EventManager\\\\EventManager\",\"type\":\"->\",\"args\":[\"finish\",{}]},{\"file\":\"/Library/WebServer/Documents/Core/public/index.php\",\"line\":24,\"function\":\"run\",\"class\":\"Zend\\\\Mvc\\\\Application\",\"type\":\"->\",\"args\":[]}]"}
+2016-06-21 16:30:37 ERR (3): URI is not valid and cannot be converted into a string {"file":"/Library/WebServer/Documents/Core/vendor/Zend/Uri/Uri.php","line":359,"trace":"[{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/Http/Header/AbstractLocation.php\",\"line\":98,\"function\":\"toString\",\"class\":\"Zend\\\\Uri\\\\Uri\",\"type\":\"->\",\"args\":[]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/Http/Header/AbstractLocation.php\",\"line\":133,\"function\":\"getUri\",\"class\":\"Zend\\\\Http\\\\Header\\\\AbstractLocation\",\"type\":\"->\",\"args\":[]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/Mvc/ResponseSender/AbstractResponseSender.php\",\"line\":35,\"function\":\"toString\",\"class\":\"Zend\\\\Http\\\\Header\\\\AbstractLocation\",\"type\":\"->\",\"args\":[]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/Mvc/ResponseSender/PhpEnvironmentResponseSender.php\",\"line\":29,\"function\":\"sendHeaders\",\"class\":\"Zend\\\\Mvc\\\\ResponseSender\\\\AbstractResponseSender\",\"type\":\"->\",\"args\":[{}]},{\"function\":\"__invoke\",\"class\":\"Zend\\\\Mvc\\\\ResponseSender\\\\PhpEnvironmentResponseSender\",\"type\":\"->\",\"args\":[{}]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/EventManager/EventManager.php\",\"line\":444,\"function\":\"call_user_func\",\"args\":[{},{}]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/EventManager/EventManager.php\",\"line\":205,\"function\":\"triggerListeners\",\"class\":\"Zend\\\\EventManager\\\\EventManager\",\"type\":\"->\",\"args\":[\"sendResponse\",{},null]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/Mvc/SendResponseListener.php\",\"line\":94,\"function\":\"trigger\",\"class\":\"Zend\\\\EventManager\\\\EventManager\",\"type\":\"->\",\"args\":[{}]},{\"function\":\"sendResponse\",\"class\":\"Zend\\\\Mvc\\\\SendResponseListener\",\"type\":\"->\",\"args\":[{}]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/EventManager/EventManager.php\",\"line\":444,\"function\":\"call_user_func\",\"args\":[[{},\"sendResponse\"],{}]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/EventManager/EventManager.php\",\"line\":205,\"function\":\"triggerListeners\",\"class\":\"Zend\\\\EventManager\\\\EventManager\",\"type\":\"->\",\"args\":[\"finish\",{},[]]},{\"file\":\"/Library/WebServer/Documents/Core/vendor/Zend/Mvc/Application.php\",\"line\":321,\"function\":\"trigger\",\"class\":\"Zend\\\\EventManager\\\\EventManager\",\"type\":\"->\",\"args\":[\"finish\",{}]},{\"file\":\"/Library/WebServer/Documents/Core/public/index.php\",\"line\":24,\"function\":\"run\",\"class\":\"Zend\\\\Mvc\\\\Application\",\"type\":\"->\",\"args\":[]}]"}
+2016-06-21 16:32:10 WARN (4): array_key_exists() expects parameter 2 to be array, null given {"errno":2,"file":"/Library/WebServer/Documents/Core/module/Account/Login/Controller/Action.php","line":48}
+2016-06-21 17:04:43 WARN (4): require_once(/Library/WebServer/Documents/Core/module/News/List/Widget/Controller/Action.php): failed to open stream: No such file or directory {"errno":2,"file":"/Library/WebServer/Documents/Core/vendor/Zend/Loader/ClassMapAutoloader.php","line":138}

@@ -13,6 +13,9 @@ class ActionController extends AbstractActionController {
 	public function IndexAction() {
 		$this->getUserAccess ()->setLogout ();
 		$this->getUserAccess ()->setLogoutWallet ();
-		$this->redirectHome ();
+		
+		return $this->redirect ()->toRoute ( 'Index', array (
+				'action' => 'Index' 
+		) );
 	}
 }

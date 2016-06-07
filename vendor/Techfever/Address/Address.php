@@ -108,8 +108,8 @@ class Address extends Country {
 	 */
 	public function createUserAddress($profile, $data) {
 		if (! empty ( $profile ) && count ( $data ) > 0) {
-			$data ['user_address_country'] = $this->getCountryID($data ['user_address_country_text']);
-			$data ['user_address_state'] = $this->getCountryID($data ['user_address_state_text']);
+			$data ['user_address_country'] = $this->getCountryID ( $data ['user_address_country_text'] );
+			$data ['user_address_state'] = $this->getCountryID ( $data ['user_address_state_text'] );
 			$IAddress = $this->getDatabase ();
 			$IAddress->insert ();
 			$IAddress->into ( 'user_address' );
@@ -155,8 +155,8 @@ class Address extends Country {
 	public function updateUserAddress($profile, $data) {
 		if ($profile > 0 && count ( $data ) > 0) {
 			$address = $this->getUserAddressDefaultID ( $profile );
-			$data ['user_address_country'] = $this->getCountryID($data ['user_address_country_text']);
-			$data ['user_address_state'] = $this->getCountryID($data ['user_address_state_text']);
+			$data ['user_address_country'] = $this->getCountryID ( $data ['user_address_country_text'] );
+			$data ['user_address_state'] = $this->getCountryID ( $data ['user_address_state_text'] );
 			if ($address > 0) {
 				$UAddress = $this->getDatabase ();
 				$UAddress->update ();

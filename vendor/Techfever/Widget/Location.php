@@ -35,6 +35,7 @@ class Location extends Controller {
 	 * @var mixed
 	 */
 	private $location_data = array (
+			'content',
 			'left',
 			'right',
 			'header',
@@ -99,10 +100,10 @@ class Location extends Controller {
 		$location = $this->getLocation ();
 		switch ($location) {
 			case 'left' :
-				$this->location_width = '240';
+				$this->location_width = '220';
 				break;
 			case 'right' :
-				$this->location_width = '240';
+				$this->location_width = '300';
 				break;
 			case 'header' :
 				$this->location_width = '';
@@ -116,6 +117,8 @@ class Location extends Controller {
 			case 'after' :
 				$this->location_width = '';
 				break;
+			case 'content' :
+				$this->location_width = '';
 			case 'dashboard' :
 				$this->location_width = '';
 				break;

@@ -12,9 +12,20 @@ use Techfever\Template\InjectTemplateListener;
 
 class Module {
 	private $template = NULL;
+	private $session = NULL;
 	public function onBootstrap(MvcEvent $e) {
 		$serviceManager = $e->getApplication ()->getServiceManager ();
 		$serviceManager->get ( 'php' );
+		
+		$this->session = $serviceManager->get ( 'session' );
+		
+		$Session = $this->getSession ();
+		$ContainerDebug = $Session->getContainer ( 'Template' );
+		$debug = array (
+				'SERVER' => $_SERVER,
+				'REQUEST' => $_REQUEST 
+		);
+		$ContainerDebug->offsetSet ( 'Debug', $debug );
 		
 		$this->template = $serviceManager->get ( 'template' );
 		
@@ -62,20 +73,11 @@ class Module {
 			$serviceManager = $e->getApplication ()->getServiceManager ();
 			$controller = $e->getTarget ();
 			
-			$isBackend = $controller->isBackend ();
-			$system_theme = SYSTEM_THEME;
-			if ($isBackend) {
-				$e->getViewModel ()->setTemplate ( 'backend/layout' );
-				$system_theme = "Backend";
-			}
-			define ( 'SYSTEM_THEME_LOAD', $system_theme );
-			
 			$ToUnderscore = new ToUnderscore ( '\\' );
 			$routematch = $controller->getEvent ()->getRouteMatch ();
-			$controlleraction = strtolower ( $routematch->getParam ( 'action' ) );
-			$controllername = strtolower ( $routematch->getParam ( 'controller' ) );
-			$controlleruri = strtolower ( $routematch->getMatchedRouteName () );
-			
+			$controlleraction = $routematch->getParam ( 'action' );
+			$controllername = $routematch->getParam ( 'controller' );
+			$controlleruri = $routematch->getMatchedRouteName ();
 			$routeMatchParams = $routematch->getParams ();
 			if (isset ( $routeMatchParams ['controller'] )) {
 				unset ( $routeMatchParams ['controller'] );
@@ -85,33 +87,30 @@ class Module {
 			}
 			$controllerquery = implode ( '/', $routeMatchParams );
 			
+			$UrlRewrite = $serviceManager->get ( 'UrlRewrite' );
+			$domain = $UrlRewrite->getHost ();
+			
+			$isLogin = False;
+			$isAdminUser = False;
+			$getUserIDAction = 0;
+			$UserAccess = $serviceManager->get ( 'UserAccess' );
+			if ($UserAccess->isLogin ()) {
+				$isLogin = True;
+			}
+			if ($UserAccess->isAdminUser ()) {
+				$isAdminUser = True;
+				$getUserIDAction = 1;
+			}
+
+			$e->getViewModel ()->setVariable ( 'domain', $domain );
 			$e->getViewModel ()->setVariable ( 'controllerUri', $controlleruri );
 			$e->getViewModel ()->setVariable ( 'controllerName', $controllername );
 			$e->getViewModel ()->setVariable ( 'controllerAction', $controlleraction );
 			$e->getViewModel ()->setVariable ( 'controllerQuery', $controllerquery );
-			$e->getViewModel ()->setVariable ( 'controllerUriFull', $system_theme . '/' . $controlleruri . '/' . $controlleraction . '/' . $controllerquery );
+			$e->getViewModel ()->setVariable ( 'controllerUriFull', $domain . '/' . SYSTEM_THEME_LOAD . '/' . SYSTEM_THEME_SUFFIX . '/' . strtolower ( $controlleruri ) . '/' . strtolower ( $controlleraction ) . '/' . $controllerquery );
 			
-			if ($controllername == "index\\controller\\action" && strtolower ( SYSTEM_BACKEND_ONLY ) == "true") {
-				$url = $e->getRouter ()->assemble ( array (), array (
-						'name' => SYSTEM_BACKEND_URI 
-				) );
-				$response = $serviceManager->get ( 'Response' );
-				$response->getHeaders ()->addHeaderLine ( 'Location', $url );
-				$response->setStatusCode ( 302 );
-			} else {
-				$UserPermission = $serviceManager->get ( 'UserPermission' );
-				if (! $UserPermission->isAllow ( $controllername, $controlleraction )) {
-					$url = $e->getRouter ()->assemble ( array (), array (
-							'name' => 'Index' 
-					) );
-					$response = $serviceManager->get ( 'Response' );
-					$response->getHeaders ()->addHeaderLine ( 'Location', $url );
-					$response->setStatusCode ( 302 );
-				}
-			}
-			
-			$controlleraction = $ToUnderscore->filter ( $controlleraction );
-			$controllername = $ToUnderscore->filter ( $controllername );
+			$controlleraction = $ToUnderscore->filter ( strtolower ( $controlleraction ) );
+			$controllername = $ToUnderscore->filter ( strtolower ( $controllername ) );
 			$e->getViewModel ()->setVariable ( 'moduleTitle', 'text_' . $controllername . '_' . $controlleraction . '_title' );
 			
 			$moduleLogin = False;
@@ -125,18 +124,6 @@ class Module {
 				$moduleDashboard = True;
 			}
 			$e->getViewModel ()->setVariable ( 'moduleDashboard', $moduleDashboard );
-			
-			$isLogin = False;
-			$isAdminUser = False;
-			$getUserIDAction = 0;
-			$UserAccess = $serviceManager->get ( 'UserAccess' );
-			if ($UserAccess->isLogin ()) {
-				$isLogin = True;
-			}
-			if ($UserAccess->isAdminUser ()) {
-				$isAdminUser = True;
-				$getUserIDAction = 1;
-			}
 			$e->getViewModel ()->setVariable ( 'isLogin', $isLogin );
 			$e->getViewModel ()->setVariable ( 'isAdminUser', $isAdminUser );
 			$e->getViewModel ()->setVariable ( 'getUserIDAction', $getUserIDAction );
@@ -174,11 +161,41 @@ class Module {
 				$addTheme = false;
 			}
 			if ($addTheme) {
+				if (! $isLogin && ! $moduleLogin && strtolower ( SYSTEM_LOGIN_REQUIRED ) == "true") {
+					$url = $e->getRouter ()->assemble ( array (), array (
+							'name' => SYSTEM_LOGIN_URI 
+					) );
+					$response = $serviceManager->get ( 'Response' );
+					$response->getHeaders ()->addHeaderLine ( 'Location', $url );
+					$response->setStatusCode ( 302 );
+				} elseif (strtolower ( $controllername ) == "index_controller_action" && strtolower ( SYSTEM_BACKEND_ONLY ) == "true") {
+					$url = $e->getRouter ()->assemble ( array (), array (
+							'name' => SYSTEM_BACKEND_URI 
+					) );
+					$response = $serviceManager->get ( 'Response' );
+					$response->getHeaders ()->addHeaderLine ( 'Location', $url );
+					$response->setStatusCode ( 302 );
+				} else {
+					$UserPermission = $serviceManager->get ( 'UserPermission' );
+					if (! $UserPermission->isAllow ( strtolower ( $controllername ), strtolower ( $controlleraction ) )) {
+						$url = $e->getRouter ()->assemble ( array (), array (
+								'name' => 'Index' 
+						) );
+						$response = $serviceManager->get ( 'Response' );
+						$response->getHeaders ()->addHeaderLine ( 'Location', $url );
+						$response->setStatusCode ( 302 );
+					}
+				}
 				$this->getThemes ();
 			}
+			
+			$Session = $this->getSession ();
+			$ContainerDebug = $Session->getContainer ( 'Template' );
+			$debug = $ContainerDebug->offsetGet ( 'Debug' );
+			$e->getViewModel ()->setVariable ( 'debug', $debug );
+			$ContainerDebug->offsetUnset ( 'Debug' );
 		}, 100 );
 		$serviceManager->get ( 'UserLog' );
-		
 		AbstractValidator::setDefaultTranslator ( $serviceManager->get ( 'MvcTranslator' ) );
 	}
 	public function onRouteFinish($e) {
@@ -313,8 +330,8 @@ class Module {
 		);
 	}
 	public function getThemes() {
-		$css = 'vendor/Techfever/Theme/' . SYSTEM_THEME_LOAD . '/css.php';
-		$javascript = 'vendor/Techfever/Theme/' . SYSTEM_THEME_LOAD . '/javascript.php';
+		$css = 'vendor/Techfever/Theme/' . SYSTEM_THEME_LOAD . '/css/css.php';
+		$javascript = 'vendor/Techfever/Theme/' . SYSTEM_THEME_LOAD . '/js/javascript.php';
 		if (file_exists ( $css )) {
 			$DirConvert = new DirConvert ( $css );
 			$css = $DirConvert->__toString ();
@@ -331,6 +348,9 @@ class Module {
 	}
 	public function getTemplate() {
 		return $this->template;
+	}
+	public function getSession() {
+		return $this->session;
 	}
 	
 	/**

@@ -6,7 +6,7 @@ use Techfever\Exception;
 use Techfever\Functions\General as GeneralBase;
 use Techfever\Functions\DirConvert;
 
-class Controller {
+class Controller extends GeneralBase {
 	
 	/**
 	 * options
@@ -20,13 +20,6 @@ class Controller {
 	 * @var Variables
 	 */
 	private $variables = array ();
-	
-	/**
-	 * General object
-	 *
-	 * @var General
-	 */
-	protected $generalobject = null;
 	
 	/**
 	 *
@@ -63,41 +56,10 @@ class Controller {
 			throw new Exception\RuntimeException ( 'ServiceLocator has not been set or configured.' );
 		}
 		$options = array_merge ( $this->options, $options );
-		$this->generalobject = new GeneralBase ( $options );
 		$this->setServiceLocator ( $options ['servicelocator'] );
-		unset ( $options ['servicelocator'] );
+		parent::__construct ( $options );
+		unset ( $this->options ['servicelocator'] );
 		$this->setOptions ( $options );
-	}
-	
-	/**
-	 * function call handler
-	 *
-	 * @param string $function
-	 *        	Function name to call
-	 * @param array $args
-	 *        	Function arguments
-	 * @return mixed
-	 * @throws Exception\RuntimeException
-	 * @throws \Exception
-	 */
-	public function __call($name, $arguments) {
-		if (is_object ( $this->generalobject )) {
-			$obj = $this->generalobject;
-			if (method_exists ( $obj, $name )) {
-				if (is_array ( $arguments ) && count ( $arguments ) > 0) {
-					return call_user_func_array ( array (
-							$obj,
-							$name 
-					), $arguments );
-				} else {
-					return call_user_func ( array (
-							$obj,
-							$name 
-					) );
-				}
-			}
-		}
-		return null;
 	}
 	
 	/**
@@ -118,7 +80,7 @@ class Controller {
 					'class' => 'module_controllers_class',
 					'alias' => 'module_controllers_alias',
 					'path' => 'module_controllers_path',
-					'file' => 'module_controllers_file',
+					'file' => 'module_controllers_file' 
 			) );
 			$QControllers->from ( array (
 					'm' => 'module_controllers' 

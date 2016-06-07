@@ -416,7 +416,7 @@ class Form extends BaseZForm {
 				foreach ( $validatorChain as $validators ) {
 					$options = $validators ['instance']->getOptions ();
 					foreach ( $options as $option_key => $option_value ) {
-						if ($option_key == 'chain' && !empty($option_value)) {
+						if ($option_key == 'chain' && ! empty ( $option_value )) {
 							$chain [] = $option_value;
 						}
 					}

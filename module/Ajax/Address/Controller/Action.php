@@ -12,10 +12,8 @@ class ActionController extends AbstractActionController {
 		$address_data = array ();
 		$country = $this->params ()->fromQuery ( 'country' );
 		$state = $this->params ()->fromQuery ( 'state' );
-		$this->getLog()->info($country);
-		$this->getLog()->info($state);
 		if ($request->isXmlHttpRequest ()) {
-			$country = $this->getUserAddress ()->getCountryID($country);
+			$country = $this->getUserAddress ()->getCountryID ( $country );
 			$this->getUserAddress ()->setOption ( 'country', $country );
 			$this->getUserAddress ()->clearUserAddressData ();
 			$address_data = $this->getUserAddress ()->getStateByExpr ( $state );

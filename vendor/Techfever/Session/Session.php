@@ -48,7 +48,7 @@ class Session {
 			$options = isset ( $session ['config'] ['options'] ) ? $session ['config'] ['options'] : array ();
 			$sessionConfig = new $class ();
 			$sessionConfig->setOptions ( $options );
-			define("SYSTEM_SESSION_MAX_LIFETIME", $options['gc_maxlifetime']);
+			define ( "SYSTEM_SESSION_MAX_LIFETIME", $options ['gc_maxlifetime'] );
 		}
 		
 		if (array_key_exists ( 'storage', $session ) && isset ( $session ['storage'] )) {

@@ -3,6 +3,8 @@ $update = $this->update;
 echo $this->FormFactory ( $update );
 $js = $this->js;
 if (! empty ( $js )) {
+	echo '<script type="text/javascript">';
 	echo $js;
+	echo '</script>';
 }
 ?>

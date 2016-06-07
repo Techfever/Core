@@ -3,6 +3,8 @@ $view = $this->view;
 echo $this->ViewFactory ( $view );
 $js = $this->js;
 if (! empty ( $js )) {
+	echo '<script type="text/javascript">';
 	echo $js;
+	echo '</script>';
 }
 ?>

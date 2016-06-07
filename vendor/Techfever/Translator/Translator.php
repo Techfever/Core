@@ -252,7 +252,7 @@ class Translator extends BaseTranslator implements TranslatorInterface {
 				$UCount->where ( array (
 						'system_language_defination_id' => $key_id 
 				) );
-				$UCount->setDisableCache(true);
+				$UCount->setDisableCache ( true );
 				$UCount->execute ();
 			}
 		}

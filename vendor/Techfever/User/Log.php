@@ -146,7 +146,7 @@ class Log {
 		$referuri = $this->getReferer ();
 		$currenturicheck = explode ( '/', $currenturi );
 		$currenturistatus = true;
-		if (is_array ( $currenturicheck ) && count ( $currenturicheck ) > 1 && $currenturicheck [2] === 'Theme') {
+		if (is_array ( $currenturicheck ) && count ( $currenturicheck ) > 2 && $currenturicheck [2] === 'Theme') {
 			$currenturistatus = false;
 		}
 		$location = array (

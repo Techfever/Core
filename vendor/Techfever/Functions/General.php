@@ -90,6 +90,20 @@ class General {
 	
 	/**
 	 *
+	 * @var Mobile Detect
+	 *     
+	 */
+	private $mobiledetect = null;
+	
+	/**
+	 *
+	 * @var URL Rewrite
+	 *     
+	 */
+	private $urlrewrite = null;
+	
+	/**
+	 *
 	 * @var Is Admin
 	 */
 	private $isAdminUser = false;
@@ -157,8 +171,6 @@ class General {
 		if (isset ( $this->options ) && array_key_exists ( $option, $this->options )) {
 			return $this->options [$option];
 		}
-		
-		throw new Exception\InvalidArgumentException ( "Invalid option '$option'" );
 	}
 	
 	/**
@@ -557,6 +569,32 @@ class General {
 			$this->useraccess = $this->getServiceLocator ()->get ( 'UserAccess' );
 		}
 		return $this->useraccess;
+	}
+	
+	/**
+	 * getMobileDetect()
+	 *
+	 * @throws Exception\RuntimeException
+	 * @return Mobile Detect
+	 */
+	public function getMobileDetect() {
+		if (! is_object ( $this->mobiledetect )) {
+			$this->mobiledetect = $this->getServiceLocator ()->get ( 'MobileDetect' );
+		}
+		return $this->mobiledetect;
+	}
+	
+	/**
+	 * getUrlRewrite()
+	 *
+	 * @throws Exception\RuntimeException
+	 * @return Url Rewrite
+	 */
+	public function getUrlRewrite() {
+		if (! is_object ( $this->urlrewrite )) {
+			$this->urlrewrite = $this->getServiceLocator ()->get ( 'UrlRewrite' );
+		}
+		return $this->urlrewrite;
 	}
 	
 	/**

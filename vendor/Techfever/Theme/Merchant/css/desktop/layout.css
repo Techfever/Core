@@ -1,0 +1,232 @@
+body {
+	margin: 0;
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 11px;
+}
+
+body.ui-layout {
+	
+}
+
+.ui-dialog.ui-front {
+	
+}
+
+.ui-front {
+	
+}
+
+A {
+	cursor: pointer;
+}
+
+A:link {
+	text-decoration: none
+}
+
+A:visited {
+	text-decoration: none
+}
+
+A:active {
+	text-decoration: none
+}
+
+A:hover {
+	text-decoration: underline;
+}
+
+div.ui-layout-center {
+	border: 1px solid black;
+}
+
+div.ui-layout-center2 {
+	border: 1px solid black;
+}
+
+div.ui-layout-center3 {
+	border: 1px solid black;
+}
+
+div.ui-layout-content {
+}
+
+div.ui-layout-content-container {
+	position: relative;
+	overflow: hidden;
+}
+
+div.ui-layout-left {
+	border: 1px solid black;
+}
+
+div.ui-layout-left-container {
+	position: relative;
+	overflow: hidden;
+}
+
+div.ui-layout-right {
+	border: 1px solid black;
+}
+
+div.ui-layout-right-container {
+	position: relative;
+	overflow: hidden;
+}
+
+div.ui-layout-header {
+}
+
+div.ui-layout-header .ui-header-navigator {
+	display: block;
+	height: 30px;
+	bottom: 5px;
+	position: absolute;
+	width: 100%;	
+}
+
+div.ui-layout-header .ui-header-navigator .ui-header-search {
+	text-align: center;
+	width: 50%;
+	margin: 0 auto;	
+	border: 1px solid black;	
+}
+
+div.ui-layout-header .ui-header-navigator .ui-header-categories {
+	position: absolute;	
+	left: 5px;	
+	top: 0px;	
+	cursor: pointer;
+}
+
+div.ui-layout-header .ui-header-navigator .ui-header-categories .ui-header-categories-label {
+	float: left;
+	margin-left: 5px;
+	font-size: 17px;
+	font-family: Arial;
+	margin-top: 5px;
+}
+
+div.ui-layout-header .ui-header-navigator .ui-header-categories .ui-header-categories-icon {
+	float: left;		
+	height: 25px;
+	margin-top: 3px;	
+}
+
+div.ui-layout-header .ui-header-navigator .ui-header-login {
+	position: absolute;	
+	right: 5px;	
+	top: 0px;	
+}
+
+div.ui-layout-header .ui-header-navigator .ui-header-login .ui-header-login-label {
+	float: right;	
+	margin-right: 5px;
+	font-size: 17px;
+	font-family: Arial;
+	margin-top: 5px;	
+}
+
+div.ui-layout-header .ui-header-navigator .ui-header-login .ui-header-login-icon {
+	float: right;	
+	height: 25px;
+	margin-top: 3px;	
+}
+
+div.ui-layout-footer {
+	padding-top: 5px;
+	padding-bottom: 30px;
+}
+
+div.ui-layout-footer .ui-footer-seperator {
+	margin: 0px auto;
+}
+
+div.ui-layout-footer .ui-footer-icons {
+	display: block;
+	position: relative;
+}
+
+div.ui-layout-footer .ui-footer-icons .ui-footer-app-label {
+	width: 35px;
+	float: left;
+	margin-top: 7px;
+}
+
+div.ui-layout-footer .ui-footer-icons .ui-footer-app {
+	position: absolute;
+	left: 10px;
+}
+
+div.ui-layout-footer .ui-footer-icons .ui-footer-followus-label {
+	width: 70px;
+	float: left;
+	margin-top: 7px;
+}
+
+div.ui-layout-footer .ui-footer-icons .ui-footer-followus {
+	position: absolute;
+	right: 10px;
+}
+
+div.ui-layout-footer .ui-footer-copyright {
+	text-align: center;
+	display: block;
+	margin: 0px auto;
+}
+
+div.ui-layout-footer .ui-footer-sitemap {
+	text-align: center;
+	display: block;
+	margin: 0px auto;
+}
+
+div.ui-layout-debug {
+	border: 1px solid black;
+}
+
+div.ui-layout-debug .content-row {
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+
+div.ui-layout-debug-toggler {
+	height: 10px;
+	cursor: pointer;
+	background-color: red;
+}
+
+div.ui-content {
+	
+}
+
+div.ui-content-header {
+	margin-right: 5px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+div.ui-content-header .ui-content-cell {
+	display: block;
+	padding-right: 10px;
+	padding-left: 10px;
+	text-align: center;
+}
+
+div.ui-content-row {
+	width: auto;
+	float: left;
+	margin-right: 5px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+div.ui-content-cell {
+	display: table-cell;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+
+div.ui-content-clear {
+	clear: both;
+}

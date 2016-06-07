@@ -1,0 +1,349 @@
+<?php
+$request_uri = $this->Encrypt ( $this->controllerUriFull, false );
+echo $this->doctype ( 'XHTML1_STRICT' ) . "\n";
+$html = $this->htmlTag ( array (
+		'dir' => 'ltr',
+		'lang' => 'en',
+		'xml:lang' => 'en' 
+) );
+$html->setUseNamespaces ( true );
+echo $html->openTag () . "\n";
+
+$htmlHead = $this->htmlElement ( array (
+		'tag' => 'head' 
+) );
+echo $htmlHead->openTag ();
+
+echo $this->headTitle () . "\n";
+echo $this->headMeta ()->appendName ( 'viewport', 'width=device-width, initial-scale=1.0' )->appendHttpEquiv ( 'Content-Type', 'text/html; charset=utf-8' ) . "\n";
+
+echo $this->headLink ( array (
+		'rel' => 'shortcut icon',
+		'type' => 'image/png',
+		'href' => $this->serverUrl ( $this->baseHref () . '/Theme/Image/favicon.png' ) 
+) )->prependStylesheet ( $this->serverUrl ( $this->baseHref () . '/Theme/CSS/' . (! empty ( $request_uri ) ? $request_uri . '/' : null) ) ) . "\n";
+
+echo $this->headScript ()->prependScript ( '
+	$(document).ready(function(){ 
+	});
+' )->prependFile ( $this->serverUrl ( $this->baseHref () . '/Theme/Javascript/' . (! empty ( $request_uri ) ? $request_uri . '/' : null) . 'Javascript/respond.min.js' ), 'text/javascript', array (
+		'conditional' => 'lt IE 9' 
+) )->prependFile ( $this->serverUrl ( $this->baseHref () . '/Theme/Javascript/' . (! empty ( $request_uri ) ? $request_uri . '/' : null) . 'Javascript/html5.js' ), 'text/javascript', array (
+		'conditional' => 'lt IE 9' 
+) )->prependFile ( $this->serverUrl ( $this->baseHref () . '/Theme/Javascript/' . (! empty ( $request_uri ) ? $request_uri . '/' : null) ) ) . "\n";
+
+echo $htmlHead->closeTag () . "\n";
+$divLayoutCenterInner = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-inner-center',
+				'id' => 'ui-layout-inner-center' 
+		),
+		'content' => $this->content 
+) );
+
+$divLayoutSouthInnerLeftIcon = $this->htmlElement ( array (
+		'tag' => 'span',
+		'attributes' => array (
+				'class' => 'ui-menu-icon ui-icon ui-icon-carat-1-w' 
+		) 
+) );
+
+$divLayoutSouthInnerLeft = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-inner-south-left ui-state-default',
+				'id' => 'ui-layout-inner-south-left' 
+		),
+		'element' => array (
+				$divLayoutSouthInnerLeftIcon 
+		) 
+) );
+
+$divLayoutSouthInnerRightIcon = $this->htmlElement ( array (
+		'tag' => 'span',
+		'attributes' => array (
+				'class' => 'ui-menu-icon ui-icon ui-icon-carat-1-e' 
+		) 
+) );
+
+$divLayoutSouthInnerRight = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-inner-south-right ui-state-default',
+				'id' => 'ui-layout-inner-south-right' 
+		),
+		'element' => array (
+				$divLayoutSouthInnerRightIcon 
+		) 
+) );
+
+$divLayoutSouthInner = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-inner-south ui-widget-header',
+				'id' => 'ui-layout-inner-south' 
+		),
+		'element' => array (
+				$divLayoutSouthInnerLeft,
+				$divLayoutSouthInnerRight 
+		) 
+) );
+
+$divLayoutOuterCenter = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-outer-center',
+				'id' => 'ui-layout-outer-center' 
+		),
+		'element' => array (
+				$divLayoutSouthInner,
+				$divLayoutCenterInner 
+		) 
+) );
+
+$divLogoTitle = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-company-name' 
+		),
+		'content' => $this->translate ( 'text_system_title' ) 
+) );
+
+$divLogo = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-logo' 
+		),
+		'element' => array (
+				$divLogoTitle 
+		) 
+) );
+
+$divMenuTitle = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-menu-name' 
+		),
+		'content' => $this->translate ( 'text_menu' ) 
+) );
+
+$divMenu = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-icon-menu',
+				'title' => $this->translate ( 'text_menu' ) 
+		),
+		'element' => array (
+				$divMenuTitle 
+		) 
+) );
+$divNotificationTitle = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-notification-name' 
+		),
+		'content' => $this->translate ( 'text_notification' ) 
+) );
+
+$divNotification = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-icon-notification',
+				'title' => $this->translate ( 'text_notification' ),
+				'style' => (SYSTEM_BACKEND_NOTIFICATION_ENABLE === True ? "" : "display: none") 
+		),
+		'element' => array (
+				$divNotificationTitle 
+		) 
+) );
+$divLayoutOuterNorth = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-outer-north ui-widget-header',
+				'id' => 'ui-layout-outer-north' 
+		),
+		'element' => array (
+				$divMenu,
+				$divNotification,
+				$divLogo 
+		) 
+) );
+
+$divLayoutNavigator = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-navigator' 
+		) 
+) );
+
+$divShortcutLogout = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-icon-logout',
+				'title' => $this->translate ( 'text_logout' ) 
+		) 
+) );
+
+$divShortcutWebsite = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-icon-website',
+				'title' => $this->translate ( 'text_website' ) 
+		) 
+) );
+
+$divLayoutShortcut = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-shortcut',
+				'style' => (SYSTEM_BACKEND_SHORTCUT_ENABLE === True ? "" : "display: none") 
+		),
+		'content' => $this->htmlLink ( $this->serverUrl ( $this->baseHref () . '/' ), $divShortcutWebsite->render () ) . $this->htmlLink ( $this->serverUrl ( $this->baseHref () . '/Account/Logout' ), $divShortcutLogout->render () ) 
+) );
+
+$divLayoutOuterWestInnerSouth = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-outer-west-inner-south ui-widget-header',
+				'id' => 'ui-layout-outer-west-inner-south' ,
+				'style' => (SYSTEM_BACKEND_SHORTCUT_ENABLE === True ? "" : "display: none") 
+		),
+		'element' => array (
+				$divLayoutShortcut 
+		) 
+) );
+
+$divLayoutOuterWestInnerCenter = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-outer-west-inner-center ui-widget-content',
+				'id' => 'ui-layout-outer-west-inner-center' 
+		),
+		'element' => array (
+				$divLayoutNavigator 
+		) 
+) );
+
+$divLayoutOuterWest = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-outer-west',
+				'id' => 'ui-layout-outer-west' 
+		),
+		'element' => array (
+				$divLayoutOuterWestInnerSouth,
+				$divLayoutOuterWestInnerCenter 
+		) 
+) );
+
+$divTimeHours = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-clock-time ui-clock-time-hours',
+				'id' => 'ui-clock-time-hours' 
+		) 
+) );
+
+$divTimeHoursSeperator = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-clock-time ui-clock-time-seperator',
+				'id' => 'ui-clock-time-seperator' 
+		),
+		'content' => ':' 
+) );
+
+$divTimeMinutes = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-clock-time ui-clock-time-minutes',
+				'id' => 'ui-clock-time-minutes' 
+		) 
+) );
+
+$divTimeMinutesSeperator = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-clock-time ui-clock-time-seperator',
+				'id' => 'ui-clock-time-seperator' 
+		),
+		'content' => ':' 
+) );
+
+$divTimeSeconds = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-clock-time ui-clock-time-seconds',
+				'id' => 'ui-clock-time-seconds' 
+		) 
+) );
+
+$divTime = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-clock-time',
+				'id' => 'ui-clock-time' 
+		),
+		'element' => array (
+				$divTimeHours,
+				$divTimeHoursSeperator,
+				$divTimeMinutes,
+				$divTimeMinutesSeperator,
+				$divTimeSeconds 
+		) 
+) );
+
+$divDateDay = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-clock-date ui-clock-date-day',
+				'id' => 'ui-clock-date-day' 
+		) 
+) );
+
+$divDateDate = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-clock-date ui-clock-date-date',
+				'id' => 'ui-clock-date-date' 
+		) 
+) );
+
+$divDateMonth = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-clock-date ui-clock-date-month',
+				'id' => 'ui-clock-date-month' 
+		) 
+) );
+
+$divDateYear = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-clock-date ui-clock-date-year',
+				'id' => 'ui-clock-date-year' 
+		) 
+) );
+
+$divDate = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-clock-date',
+				'id' => 'ui-clock-date' 
+		),
+		'element' => array (
+				$divDateDay,
+				$divDateDate,
+				$divDateMonth,
+				$divDateYear 
+		) 
+) );
+
+$divClock = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-clock',
+				'id' => 'ui-clock' 
+		),
+		'element' => array (
+				$divDate,
+				$divTime 
+		) 
+) );
+
+$divLayoutOuterEast = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-outer-east ui-widget-content',
+				'id' => 'ui-layout-outer-east' 
+		),
+		'element' => array (
+				$divClock 
+		) 
+) );
+
+$htmlBody = $this->htmlElement ( array (
+		'tag' => 'body',
+		'attributes' => array (
+				'class' => 'ui-layout',
+				'style' => 'overflow: hidden' 
+		),
+		'element' => array (
+				$divLayoutOuterNorth,
+				$divLayoutOuterEast,
+				$divLayoutOuterWest,
+				$divLayoutOuterCenter 
+		) 
+) );
+echo $htmlBody->render ();
+echo $html->closeTag () . "\n";
+?>

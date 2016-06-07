@@ -39,7 +39,6 @@ class isBackend extends AbstractPlugin {
 	public function __invoke() {
 		$isBackend = false;
 		$controller = $this->getController ();
-		$path = (array_key_exists ( 'REDIRECT_BASE', $_SERVER ) ? $_SERVER ['REDIRECT_BASE'] : "");
 		
 		$Request = $controller->getServiceLocator ()->get ( 'request' );
 		$CurrentUri = $Request->getUriString ();

@@ -5,7 +5,7 @@ namespace Techfever\Navigator;
 use Techfever\Functions\General as GeneralBase;
 use Techfever\Exception;
 
-class Navigator {
+class Navigator extends GeneralBase {
 	
 	/**
 	 * options
@@ -19,13 +19,6 @@ class Navigator {
 	 * @var Variables
 	 */
 	private $variables = array ();
-	
-	/**
-	 * General object
-	 *
-	 * @var General
-	 */
-	protected $generalobject = null;
 	
 	/**
 	 *
@@ -54,43 +47,11 @@ class Navigator {
 		if (! isset ( $options ['servicelocator'] )) {
 			throw new Exception\RuntimeException ( 'ServiceLocator has not been set or configured.' );
 		}
-		
-		$this->generalobject = new GeneralBase ( $options );
+		$options = array_merge ( $this->options, $options );
 		$this->setServiceLocator ( $options ['servicelocator'] );
-		unset ( $options ['servicelocator'] );
-		
+		parent::__construct ( $options );
+		unset ( $this->options ['servicelocator'] );
 		$this->setOptions ( $options );
-	}
-	
-	/**
-	 * function call handler
-	 *
-	 * @param string $function
-	 *        	Function name to call
-	 * @param array $args
-	 *        	Function arguments
-	 * @return mixed
-	 * @throws Exception\RuntimeException
-	 * @throws \Exception
-	 */
-	public function __call($name, $arguments) {
-		if (is_object ( $this->generalobject )) {
-			$obj = $this->generalobject;
-			if (method_exists ( $obj, $name )) {
-				if (is_array ( $arguments ) && count ( $arguments ) > 0) {
-					return call_user_func_array ( array (
-							$obj,
-							$name 
-					), $arguments );
-				} else {
-					return call_user_func ( array (
-							$obj,
-							$name 
-					) );
-				}
-			}
-		}
-		return null;
 	}
 	
 	/**
@@ -118,34 +79,43 @@ class Navigator {
 					$permission_array [] = str_replace ( '\\', '\\\\', $permissionvalue ['controller'] );
 				}
 			}
+			$themesuffix = "theme";
+			$themeid = THEME_ID;
+			if ($this->getUrlRewrite ()->validateBlog ()) {
+				$rawblog = $this->getUrlRewrite ()->detectBlog ();
+				if (strlen ( $rawblog ) > 0) {
+					$themesuffix = "blog";
+					$themeid = SYSTEM_THEME_BLOG_ID;
+				}
+			}
 			$QNavigator = $this->getDatabase ();
 			$QNavigator->select ();
 			$QNavigator->columns ( array (
-					'root' => 'theme_navigator_id',
-					'label' => 'theme_navigator_label',
-					'route' => 'theme_navigator_route',
-					'action' => 'theme_navigator_action',
-					'controller' => 'theme_navigator_controller',
-					'uri' => 'theme_navigator_uri',
-					'class' => 'theme_navigator_css_class',
-					'order' => 'theme_navigator_order',
-					'visible' => 'theme_navigator_visible',
-					'parent' => 'theme_navigator_parent',
-					'backend' => 'theme_navigator_backend' 
+					'root' => $themesuffix . '_navigator_id',
+					'label' => $themesuffix . '_navigator_label',
+					'route' => $themesuffix . '_navigator_route',
+					'action' => $themesuffix . '_navigator_action',
+					'controller' => $themesuffix . '_navigator_controller',
+					'uri' => $themesuffix . '_navigator_uri',
+					'class' => $themesuffix . '_navigator_css_class',
+					'order' => $themesuffix . '_navigator_order',
+					'visible' => $themesuffix . '_navigator_visible',
+					'parent' => $themesuffix . '_navigator_parent',
+					'backend' => $themesuffix . '_navigator_backend' 
 			) );
 			$QNavigator->from ( array (
-					'sn' => 'theme_navigator' 
+					'sn' => $themesuffix . '_navigator' 
 			) );
 			$where = array (
-					'theme_navigator_visible = 1' 
+					$themesuffix . '_navigator_visible = 1' 
 			);
-			$where [] = 'theme_id = ' . THEME_ID;
-			$where [] = '(theme_navigator_controller in ("' . implode ( '", "', $permission_array ) . '") or theme_navigator_controller is null or theme_navigator_controller = "")';
+			$where [] = $themesuffix . '_id = ' . $themeid;
+			$where [] = '(' . $themesuffix . '_navigator_controller in ("' . implode ( '", "', $permission_array ) . '") or ' . $themesuffix . '_navigator_controller is null or ' . $themesuffix . '_navigator_controller = "")';
 			$QNavigator->where ( $where );
 			$QNavigator->order ( array (
-					'theme_navigator_parent ASC',
-					'theme_navigator_order ASC',
-					'theme_navigator_label ASC' 
+					$themesuffix . '_navigator_parent ASC',
+					$themesuffix . '_navigator_order ASC',
+					$themesuffix . '_navigator_label ASC' 
 			) );
 			$QNavigator->execute ();
 			if ($QNavigator->hasResult ()) {
@@ -171,7 +141,7 @@ class Navigator {
 					$structure = array ();
 					$structure ['class'] = "";
 					if (! empty ( $dbdata ['label'] )) {
-						$structure ['label'] = "<span></span>" . $this->getTranslate ( 'text_navigator_' . strtolower ( $dbdata ['label'] ) );
+						$structure ['label'] = $this->getTranslate ( 'text_navigator_' . strtolower ( $dbdata ['label'] ) );
 						$structure ['id'] = strtolower ( $dbdata ['label'] );
 						$structure ['class'] .= $dbdata ['label'];
 					}

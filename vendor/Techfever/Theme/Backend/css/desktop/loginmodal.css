@@ -1,0 +1,91 @@
+.ui-dialog-account-login-index-modal {
+	overflow: unset;
+}
+
+.ui-dialog-account-login-index-modal .ui-dialog-titlebar{
+	border: 0;
+	padding: 0;
+	margin: 0;
+	background: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/login-logo.png') ?>') center center no-repeat;
+	width: 100px; 
+	height: 87px;
+	position: absolute;
+	top: -46px;
+	display: block;
+}
+
+.ui-dialog-account-login-index-modal .ui-dialog-titlebar .ui-dialog-title{
+	display: none;	
+}
+
+.ui-dialog-account-login-index-modal .ui-dialog-titlebar .ui-dialog-titlebar-close {
+	display: none;
+}
+
+.ui-dialog-account-login-index-modal .ui-dialog-content{
+	margin-top: 45px;
+}
+
+.ui-dialog-account-login-index-modal .ui-dialog-content > p{
+	display: none;
+}
+
+.ui-dialog-account-login-index-modal .ui-dialog-content .row{
+	margin-bottom: 5px;
+	width: 188px;
+}
+
+.ui-dialog-account-login-index-modal .ui-dialog-content .row .label {
+	display: none;	
+}
+
+.ui-dialog-account-login-index-modal .ui-dialog-content .row .value {
+}
+
+.ui-dialog-account-login-index-modal .ui-dialog-content .row .value > input{
+	margin-left: 30px;
+	width: 154px;
+	height: 20px;	
+}
+
+.ui-dialog-account-login-index-modal .ui-dialog-content .row .help {
+	display: none;	
+}
+
+.ui-dialog-account-login-index-modal .ui-dialog-content .row .captcha {
+	
+}
+
+.ui-dialog-account-login-index-modal .ui-dialog-content .row .captcha img{
+	margin-left: 31px;
+	width: 156px;	
+	background-color: white;
+}
+
+.ui-dialog-account-login-index-modal .ui-dialog-content .row .captcha input{
+	margin-left: 30px;
+	width: 154px;	
+	height: 20px;
+	margin-top: -3px;	
+}
+
+.ui-dialog-account-login-index-modal .ui-dialog-content #account_username.row{
+	background: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Backend/Icons/41x41/user.png') ?>') left center no-repeat;
+	background-size: 22px 22px;	
+	background-color: #5B5B5B;
+	background-position: 3px;	
+}
+
+.ui-dialog-account-login-index-modal .ui-dialog-content #account_password.row{
+	background: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Backend/Icons/41x41/password.png') ?>') left center no-repeat;
+	background-size: 22px 22px;	
+	background-color: #5B5B5B;	
+	background-position: 3px;	
+}
+
+.ui-dialog-account-login-index-modal .ui-dialog-content #account_captcha.row{
+	background: url('<?php echo $this->serverUrl($this->baseHref() . '/Theme/Image/Backend/Icons/41x41/lock.png') ?>') left center no-repeat;	
+	background-size: 22px 22px;	
+	background-color: #5B5B5B;	
+	background-position: 3px;	
+}

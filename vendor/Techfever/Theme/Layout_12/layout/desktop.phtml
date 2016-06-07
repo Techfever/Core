@@ -1,0 +1,626 @@
+<?php
+$request_uri = $this->Encrypt ( $this->controllerUriFull, false );
+echo $this->doctype ( 'XHTML1_STRICT' ) . "\n";
+$html = $this->htmlTag ( array (
+		'dir' => 'ltr',
+		'lang' => 'en',
+		'xml:lang' => 'en' 
+) );
+$html->setUseNamespaces ( true );
+echo $html->openTag () . "\n";
+
+$htmlHead = $this->htmlElement ( array (
+		'tag' => 'head' 
+) );
+echo $htmlHead->openTag ();
+
+echo $this->headTitle () . "\n";
+echo $this->headMeta ()->appendName ( 'viewport', 'width=device-width, initial-scale=1.0' )->appendHttpEquiv ( 'Content-Type', 'text/html; charset=utf-8' ) . "\n";
+
+echo $this->headLink ( array (
+		'rel' => 'shortcut icon',
+		'type' => 'image/png',
+		'href' => $this->serverUrl ( $this->baseHref () . '/Theme/Image/favicon.png' ) 
+) )->prependStylesheet ( $this->serverUrl ( $this->baseHref () . '/Theme/CSS/' . (! empty ( $request_uri ) ? $request_uri . '/' : null) ) ) . "\n";
+
+echo $this->headScript ()->prependScript ( '
+	$(document).ready(function(){ 
+	});
+' )->prependFile ( $this->serverUrl ( $this->baseHref () . '/Theme/Javascript/' . (! empty ( $request_uri ) ? $request_uri . '/' : null) . 'Javascript/respond.min.js' ), 'text/javascript', array (
+		'conditional' => 'lt IE 9' 
+) )->prependFile ( $this->serverUrl ( $this->baseHref () . '/Theme/Javascript/' . (! empty ( $request_uri ) ? $request_uri . '/' : null) . 'Javascript/html5.js' ), 'text/javascript', array (
+		'conditional' => 'lt IE 9' 
+) )->prependFile ( $this->serverUrl ( $this->baseHref () . '/Theme/Javascript/' . (! empty ( $request_uri ) ? $request_uri . '/' : null) ) ) . "\n";
+
+echo $htmlHead->closeTag () . "\n";
+
+$divLayoutHeader = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-header',
+				'id' => 'ui-layout-header' 
+		) 
+) );
+
+$divLayoutFooter = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-footer',
+				'id' => 'ui-layout-footer' 
+		) 
+) );
+
+$divLayoutLeftContainer = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-left-container',
+				'id' => 'ui-layout-left-container' 
+		) 
+) );
+
+$divLayoutLeft = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-left',
+				'id' => 'ui-layout-left' 
+		),
+		'element' => array (
+				$divLayoutLeftContainer 
+		) 
+) );
+
+$divLayoutRightContainer = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-right-container',
+				'id' => 'ui-layout-right-container' 
+		) 
+) );
+
+$divLayoutRight = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-right',
+				'id' => 'ui-layout-right' 
+		),
+		'element' => array (
+				$divLayoutRightContainer 
+		) 
+) );
+
+$divLayoutContentContainer = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-content-container',
+				'id' => 'ui-layout-content-container' 
+		),
+		'content' => $this->content 
+) );
+
+$divLayoutContent = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-content',
+				'id' => 'ui-layout-content' 
+		),
+		'element' => array (
+				$divLayoutContentContainer 
+		) 
+) );
+
+$divLayoutCenter2 = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-inner',
+				'id' => 'ui-layout-inner' 
+		),
+		'element' => array (
+				$divLayoutContent,
+				$divLayoutRight,
+				$divLayoutHeader 
+		) 
+) );
+
+$divLayoutCenter = $this->htmlElement ( array (
+		'attributes' => array (
+				'class' => 'ui-layout-center',
+				'id' => 'ui-layout-center' 
+		),
+		'element' => array (
+				$divLayoutCenter2,
+				$divLayoutLeft 
+		) 
+) );
+
+$htmlLayout = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-layout',
+				'id' => 'ui-layout' 
+		),
+		'element' => array (
+				$divLayoutCenter,
+				$divLayoutFooter 
+		) 
+) );
+
+$htmlLayoutClear = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-clear',
+				'id' => 'ui-content-clear' 
+		) 
+) );
+
+$htmlLayoutDebugControllerActionData = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-cell ui-content-debug-controller-action',
+				'id' => 'ui-content-cell' 
+		),
+		'content' => (! empty ( $this->controllerAction ) ? $this->controllerAction : 'null') 
+) );
+
+$htmlLayoutDebugControllerActionLabel = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-cell ui-state-active',
+				'id' => 'ui-content-cell' 
+		),
+		'content' => $this->translate ( 'text_action' ) . ' :' 
+) );
+
+$htmlLayoutDebugControllerAction = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-row ui-state-default',
+				'id' => 'ui-content-row' 
+		),
+		'element' => array (
+				$htmlLayoutDebugControllerActionLabel,
+				$htmlLayoutDebugControllerActionData 
+		) 
+) );
+
+$htmlLayoutDebugControllerNameData = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-cell ui-content-debug-controller-name',
+				'id' => 'ui-content-cell' 
+		),
+		'content' => (! empty ( $this->controllerName ) ? $this->controllerName : 'null') 
+) );
+
+$htmlLayoutDebugControllerNameLabel = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-cell ui-state-active',
+				'id' => 'ui-content-cell' 
+		),
+		'content' => $this->translate ( 'text_name' ) . ' :' 
+) );
+
+$htmlLayoutDebugControllerName = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-row ui-state-default',
+				'id' => 'ui-content-row' 
+		),
+		'element' => array (
+				$htmlLayoutDebugControllerNameLabel,
+				$htmlLayoutDebugControllerNameData 
+		) 
+) );
+
+$htmlLayoutDebugControllerQueryData = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-cell ui-content-debug-controller-query',
+				'id' => 'ui-content-cell' 
+		),
+		'content' => (! empty ( $this->controllerQuery ) ? $this->controllerQuery : 'null') 
+) );
+
+$htmlLayoutDebugControllerQueryLabel = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-cell ui-state-active',
+				'id' => 'ui-content-cell' 
+		),
+		'content' => $this->translate ( 'text_query' ) . ' :' 
+) );
+
+$htmlLayoutDebugControllerQuery = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-row ui-state-default',
+				'id' => 'ui-content-row' 
+		),
+		'element' => array (
+				$htmlLayoutDebugControllerQueryLabel,
+				$htmlLayoutDebugControllerQueryData 
+		) 
+) );
+
+$htmlLayoutDebugControllerLabel = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-cell ui-state-active',
+				'id' => 'ui-content-cell' 
+		),
+		'content' => '-='. $this->translate ( 'text_controller' ) .'=-' 
+) );
+
+$htmlLayoutDebugController = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-header ui-state-default',
+				'id' => 'ui-content-header' 
+		),
+		'element' => array (
+				$htmlLayoutDebugControllerLabel 
+		) 
+) );
+
+$htmlLayoutDebugControllerRow = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content ui-content-controller',
+				'id' => 'ui-content' 
+		),
+		'element' => array (
+				$htmlLayoutDebugController,
+				$htmlLayoutDebugControllerName,
+				$htmlLayoutDebugControllerAction,
+				$htmlLayoutDebugControllerQuery,
+				$htmlLayoutClear 
+		) 
+) );
+
+$DebugTime = new DateTime ( 'NOW' );
+$htmlLayoutDebugLayoutTimeData = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-cell ui-content-debug-time',
+				'id' => 'ui-content-cell' 
+		),
+		'content' => $DebugTime->getTimestamp () - $this->debug ['SERVER'] ['REQUEST_TIME'] . "s" 
+) );
+
+$htmlLayoutDebugLayoutTimeLabel = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-cell ui-state-active',
+				'id' => 'ui-content-cell' 
+		),
+		'content' => $this->translate ( 'text_debug_time' ) . ' :' 
+) );
+
+$htmlLayoutDebugLayoutTime = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-row ui-state-default',
+				'id' => 'ui-content-row' 
+		),
+		'element' => array (
+				$htmlLayoutDebugLayoutTimeLabel,
+				$htmlLayoutDebugLayoutTimeData 
+		) 
+) );
+
+$htmlLayoutDebugLayoutThemeData = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-cell ui-content-debug-theme',
+				'id' => 'ui-content-cell' 
+		),
+		'content' => SYSTEM_THEME_LOAD 
+) );
+
+$htmlLayoutDebugLayoutThemeLabel = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-cell ui-state-active',
+				'id' => 'ui-content-cell' 
+		),
+		'content' => $this->translate ( 'text_theme' ) . ' :' 
+) );
+
+$htmlLayoutDebugLayoutTheme = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-row ui-state-default',
+				'id' => 'ui-content-row' 
+		),
+		'element' => array (
+				$htmlLayoutDebugLayoutThemeLabel,
+				$htmlLayoutDebugLayoutThemeData 
+		) 
+) );
+
+$htmlLayoutDebugLayoutBrowserData = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-cell ui-content-debug-browser',
+				'id' => 'ui-content-cell' 
+		),
+		'content' => SYSTEM_THEME_SUFFIX 
+) );
+
+$htmlLayoutDebugLayoutBrowserLabel = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-cell ui-state-active',
+				'id' => 'ui-content-cell' 
+		),
+		'content' => $this->translate ( 'text_browser' ) . ' :' 
+) );
+
+$htmlLayoutDebugLayoutBrowser = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-row ui-state-default',
+				'id' => 'ui-content-row' 
+		),
+		'element' => array (
+				$htmlLayoutDebugLayoutBrowserLabel,
+				$htmlLayoutDebugLayoutThemeData 
+		) 
+) );
+
+$htmlLayoutDebugLayoutLabel = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-cell ui-state-active',
+				'id' => 'ui-content-cell' 
+		),
+		'content' => '-='. $this->translate ( 'text_layout' ) .'=-' 
+) );
+
+$htmlLayoutDebugLayout = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-header ui-state-default',
+				'id' => 'ui-content-header' 
+		),
+		'element' => array (
+				$htmlLayoutDebugLayoutLabel 
+		) 
+) );
+
+$htmlLayoutDebugLayoutRow = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content ui-content-browser',
+				'id' => 'ui-content' 
+		),
+		'element' => array (
+				$htmlLayoutDebugLayout,
+				$htmlLayoutDebugLayoutTheme,
+				$htmlLayoutDebugLayoutBrowser,
+				$htmlLayoutDebugLayoutTime,
+				$htmlLayoutClear 
+		) 
+) );
+
+$htmlLayoutDebugDomainUriData = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-cell ui-content-debug-domain-uri',
+				'id' => 'ui-content-cell' 
+		),
+		'content' => (! empty ( $this->controllerUri ) ? $this->controllerUri : 'null') 
+) );
+
+$htmlLayoutDebugDomainUriLabel = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-cell ui-state-active',
+				'id' => 'ui-content-cell' 
+		),
+		'content' => $this->translate ( 'text_uri' ) . ' :' 
+) );
+
+$htmlLayoutDebugDomainUri = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-row ui-state-default',
+				'id' => 'ui-content-row' 
+		),
+		'element' => array (
+				$htmlLayoutDebugDomainUriLabel,
+				$htmlLayoutDebugDomainUriData 
+		) 
+) );
+
+$htmlLayoutDebugDomainNameData = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-cell ui-content-debug-domain-name',
+				'id' => 'ui-content-cell' 
+		),
+		'content' => (! empty ( $this->domain ) ? $this->domain : 'null') 
+) );
+
+$htmlLayoutDebugDomainNameLabel = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-cell ui-state-active',
+				'id' => 'ui-content-cell' 
+		),
+		'content' => $this->translate ( 'text_name' ) . ' :' 
+) );
+
+$htmlLayoutDebugDomainName = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-row ui-state-default',
+				'id' => 'ui-content-row' 
+		),
+		'element' => array (
+				$htmlLayoutDebugDomainNameLabel,
+				$htmlLayoutDebugDomainNameData 
+		) 
+) );
+
+$htmlLayoutDebugDomainLabel = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-cell ui-state-active',
+				'id' => 'ui-content-cell' 
+		),
+		'content' => '-='. $this->translate ( 'text_domain' ) .'=-' 
+) );
+
+$htmlLayoutDebugDomain = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-header ui-state-default',
+				'id' => 'ui-content-header' 
+		),
+		'element' => array (
+				$htmlLayoutDebugDomainLabel 
+		) 
+) );
+
+$htmlLayoutDebugDomainRow = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content ui-content-domain',
+				'id' => 'ui-content' 
+		),
+		'element' => array (
+				$htmlLayoutDebugDomain,
+				$htmlLayoutDebugDomainName,
+				$htmlLayoutDebugDomainUri,
+				$htmlLayoutClear 
+		) 
+) );
+
+$debug_server_content = null;
+if (is_array ( $this->debug ['SERVER'] ) && count ( $this->debug ['SERVER'] ) > 0) {
+	foreach ( $this->debug ['SERVER'] as $debug_key => $debug_value ) {
+		$debug_server_content .= '<div class="ui-content-row ui-state-default" id="ui-content-row">';
+		$debug_server_content .= '<div class="ui-content-cell ui-state-active" id="ui-content-cell">';
+		$debug_server_content .= '' . $debug_key . '';
+		$debug_server_content .= ':</div>';
+		$debug_server_content .= '<div class="ui-content-cell ui-content-debug-controller-query" id="ui-content-cell">';
+		$debug_server_content .= '' . (! empty ( $debug_value ) ? $debug_value : 'null') . '';
+		$debug_server_content .= '</div>';
+		$debug_server_content .= '</div>';
+	}
+}
+$htmlLayoutDebugServerData = $this->htmlElement ( array (
+		'tag' => 'div',
+		'content' => $debug_server_content 
+) );
+
+$htmlLayoutDebugServerLabel = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-cell ui-state-active',
+				'id' => 'ui-content-cell' 
+		),
+		'content' => '-='. $this->translate ( 'text_server' ) .'=-' 
+) );
+
+$htmlLayoutDebugServer = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-header ui-state-default',
+				'id' => 'ui-content-header' 
+		),
+		'element' => array (
+				$htmlLayoutDebugServerLabel 
+		) 
+) );
+
+$htmlLayoutDebugServerRow = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content ui-content-browser',
+				'id' => 'ui-content' 
+		),
+		'element' => array (
+				$htmlLayoutDebugServer,
+				$htmlLayoutDebugServerData,
+				$htmlLayoutClear 
+		) 
+) );
+$debug_request_content = null;
+if (is_array ( $this->debug ['REQUEST'] ) && count ( $this->debug ['REQUEST'] ) > 0) {
+	foreach ( $this->debug ['REQUEST'] as $debug_key => $debug_value ) {
+		$debug_request_content .= '<div class="ui-content-row ui-state-default" id="ui-content-row">';
+		$debug_request_content .= '<div class="ui-content-cell ui-state-active" id="ui-content-cell">';
+		$debug_request_content .= '' . $debug_key . '';
+		$debug_request_content .= ':</div>';
+		$debug_request_content .= '<div class="ui-content-cell ui-content-debug-controller-query" id="ui-content-cell">';
+		$debug_request_content .= '' . (! empty ( $debug_value ) ? $debug_value : 'null') . '';
+		$debug_request_content .= '</div>';
+		$debug_request_content .= '</div>';
+	}
+}
+$htmlLayoutDebugRequestData = $this->htmlElement ( array (
+		'tag' => 'div',
+		'content' => $debug_request_content 
+) );
+
+$htmlLayoutDebugRequestLabel = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-cell ui-state-active',
+				'id' => 'ui-content-cell' 
+		),
+		'content' => '-='. $this->translate ( 'text_request' ) .'=-'
+) );
+
+$htmlLayoutDebugRequest = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content-header ui-state-default',
+				'id' => 'ui-content-header' 
+		),
+		'element' => array (
+				$htmlLayoutDebugRequestLabel 
+		) 
+) );
+
+$htmlLayoutDebugRequestRow = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-content ui-content-browser',
+				'id' => 'ui-content' 
+		),
+		'element' => array (
+				$htmlLayoutDebugRequest,
+				$htmlLayoutDebugRequestData,
+				$htmlLayoutClear 
+		) 
+) );
+
+$htmlLayoutDebug = $this->htmlElement ( array (
+		'tag' => 'div',
+		'attributes' => array (
+				'class' => 'ui-layout-debug',
+				'id' => 'ui-layout-debug' 
+		),
+		'element' => array (
+				$htmlLayoutDebugLayoutRow,
+				$htmlLayoutDebugDomainRow,
+				$htmlLayoutDebugControllerRow,
+				$htmlLayoutDebugServerRow ,
+				$htmlLayoutDebugRequestRow 
+		) 
+) );
+
+if (SYSTEM_DEBUG === "True") {
+	$htmlBody = $this->htmlElement ( array (
+			'tag' => 'body',
+			'element' => array (
+					$htmlLayout,
+					$htmlLayoutDebug 
+			) 
+	) );
+} else {
+	$htmlBody = $this->htmlElement ( array (
+			'tag' => 'body',
+			'element' => array (
+					$htmlLayout 
+			) 
+	) );
+}
+
+echo $htmlBody->render ();
+echo $html->closeTag () . "\n";
+?>

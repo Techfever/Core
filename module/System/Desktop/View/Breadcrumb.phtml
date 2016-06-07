@@ -1,0 +1,5 @@
+<?php
+$container = $this->navigation ( 'navigator' )->getContainer ();
+$beradcrumbcontainer = clone $container;
+echo $this->navigation ( $beradcrumbcontainer )->breadcrumbs ()->setPartial ( 'breadcrumb/layout' )->render ();
+?>

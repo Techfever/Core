@@ -1,15 +1,20 @@
-<div class="layoutBoxes"><?php
+<?php
 $success = $this->success;
 if ($success) {
-	$content = $this->content;
-	?><div class="body">
-		<div class="bodyheader">
-			<div><?php
-	echo $this->title;
-	?></div>
-		</div>
-		<div class="bodycontent" align="center"></div>
-	</div><?php
+    $content = $this->content;
+    ?>
+<div id="<?php echo $this->id; ?>"
+	class="ui-layout-boxes ui-widget ui-corner-all <?php echo $this->id; ?>">
+	<div class="ui-layout-boxes-content ui-widget-content"><?php
+    if (array_key_exists('services', $content) && is_array($content['services'])) {
+        foreach ($content['services'] as $service) {
+            echo '<div class="ui-layout-boxes-content-row"><a href="#"><span class="ui-icon-left ui-icon-' . $service['key'] . '"></span><p>' . $this->translate($service['title']) . '</p></a></div>' . "\n";
+        }
+    }
+    ?></div>
+	<div class="ui-layout-boxes-footer ui-widget-footer"></div>
+	<div class="ui-layout-boxes-clear"></div>
+</div>
+<?php
 }
 ?>
-</div>

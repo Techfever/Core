@@ -249,7 +249,7 @@ class Data extends GData {
 				'cd.document_type_id = ' . $type_id,
 				'cd.document_data_delete_status = 0',
 				'cdd.document_data_detail_delete_status = 0',
-				'cdd.system_language_id = ' . $language_id,
+				'cdd.system_language_id = ' . $language_id 
 		);
 		if (is_array ( $search ) && count ( $search ) > 0 && array_key_exists ( 'document_data', $search )) {
 			$where = array_merge ( $where, $search ['document_data'] );
@@ -385,7 +385,7 @@ class Data extends GData {
 				'cd.document_type_id = ' . $type_id,
 				'cd.document_data_delete_status = 0',
 				'cdd.document_data_detail_delete_status = 0',
-				'cdd.system_language_id = ' . $language_id,
+				'cdd.system_language_id = ' . $language_id 
 		);
 		if (is_array ( $search ) && count ( $search ) > 0 && array_key_exists ( 'document_data', $search )) {
 			$where = array_merge ( $where, $search ['document_data'] );

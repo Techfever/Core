@@ -45,7 +45,7 @@ class FormStep extends AbstractFormHelper {
 		if (! empty ( $content ['content'] )) {
 			$content_data = $content ['content'];
 			$content_data = sprintf ( '			<div %s>' . "\n" . '%s				<div class="row"></div>' . "\n" . '			</div>', $this->createAttributesString ( $attributes_content ), $content_data ) . "\n";
-
+			
 			$attributes_step ['id'] = $name;
 			$attributes_step ['class'] = "ui-step-tabcontrol";
 			$label = $element->getLabel ();

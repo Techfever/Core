@@ -1,102 +1,130 @@
-<div class="layoutBoxes"><?php
+<?php
 $success = $this->success;
 if ($success) {
 	$content = $this->content;
-	?><div class="body">
-		<div class="bodyheader">
-			<div><?php
-	echo $this->title;
-	?></div>
-		</div>
-		<div class="bodycontent">
-			<div class="widgetTable"><?php
+	?>
+<div id="<?php echo $this->id; ?>"
+	class="ui-layout-boxes ui-widget ui-corner-all <?php echo $this->id; ?>">
+	<div class="ui-layout-boxes-center ui-widget-content">
+		<div class="ui-layout-boxes-left ui-widget-content ui-corner-all"></div>
+		<div class="ui-layout-boxes-content"><?php
 	if (WIDGET_USER_RANK == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_rank' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_rank_text'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_rank' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_rank_text'] . '</div></div>';
 	}
 	if (WIDGET_USER_ACCESS_USERNAME == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_access_username' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_access_username'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_access_username' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_access_username'] . '</div></div>';
 	}
 	if (WIDGET_USER_ACCESS_STATUS == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_access_status' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_access_status_text'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_access_status' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_access_status_text'] . '</div></div>';
 	}
 	if (WIDGET_USER_PROFILE_FULLNAME == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_profile_fullname' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_profile_fullname'] . '</p></div></div>';
+		// echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_profile_fullname' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_profile_fullname'] . '</div></div>';
 	}
 	if (WIDGET_USER_PROFILE_FIRSTNAME == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_profile_firstname' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_profile_firstname'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_profile_firstname' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_profile_firstname'] . '</div></div>';
 	}
 	if (WIDGET_USER_PROFILE_LASTNAME == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_profile_lastname' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_profile_lastname'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_profile_lastname' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_profile_lastname'] . '</div></div>';
 	}
 	if (WIDGET_USER_PROFILE_NATIONALITY == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_profile_nationality' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_profile_nationality_text'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_profile_nationality' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_profile_nationality_text'] . '</div></div>';
 	}
 	if (WIDGET_USER_PROFILE_DESIGNATION == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_profile_designation' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_profile_designation_text'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_profile_designation' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_profile_designation_text'] . '</div></div>';
 	}
 	if (WIDGET_USER_PROFILE_NRIC_PASSPORT == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_profile_nric_passport' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_profile_nric_passport'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_profile_nric_passport' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_profile_nric_passport'] . '</div></div>';
 	}
 	if (WIDGET_USER_PROFILE_GENDER == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_profile_gender' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_profile_gender_text'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_profile_gender' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_profile_gender_text'] . '</div></div>';
 	}
 	if (WIDGET_USER_PROFILE_DOB == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_profile_dob' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_profile_dob_format'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_profile_dob' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_profile_dob_format'] . '</div></div>';
 	}
 	if (WIDGET_USER_PROFILE_EMAIL_ADDRESS == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_profile_email_address' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_profile_email_address'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_profile_email_address' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_profile_email_address'] . '</div></div>';
 	}
 	if (WIDGET_USER_PROFILE_MOBILE_NO == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_profile_mobile_no' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_profile_mobile_no'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_profile_mobile_no' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_profile_mobile_no'] . '</div></div>';
 	}
 	if (WIDGET_USER_PROFILE_TELEPHONE_NO == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_profile_telephone_no' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_profile_telephone_no'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_profile_telephone_no' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_profile_telephone_no'] . '</div></div>';
 	}
 	if (WIDGET_USER_PROFILE_OFFICE_NO == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_profile_office_no' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_profile_office_no'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_profile_office_no' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_profile_office_no'] . '</div></div>';
 	}
 	if (WIDGET_USER_PROFILE_FAX_NO == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_profile_fax_no' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_profile_fax_no'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_profile_fax_no' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_profile_fax_no'] . '</div></div>';
 	}
 	if (WIDGET_USER_ACCESS_NO_OF_LOGIN == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_access_no_of_login' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_access_no_of_login'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_access_no_of_login' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_access_no_of_login'] . '</div></div>';
 	}
 	if (WIDGET_USER_ACCESS_LAST_LOGIN_IP == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_access_last_login_ip' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_access_last_login_ip'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_access_last_login_ip' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_access_last_login_ip'] . '</div></div>';
 	}
 	if (WIDGET_USER_ACCESS_LAST_LOGIN_DATE == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_access_last_login_date' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_access_last_login_date_format'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_access_last_login_date' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_access_last_login_date_format'] . '</div></div>';
 	}
 	if (WIDGET_USER_ACCESS_CREATED_BY == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_access_created_by' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_access_created_by'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_access_created_by' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_access_created_by'] . '</div></div>';
 	}
 	if (WIDGET_USER_ACCESS_CREATED_DATE == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_access_created_date' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_access_created_date_format'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_access_created_date' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_access_created_date_format'] . '</div></div>';
 	}
 	if (WIDGET_USER_ACCESS_MODIFIED_DATE == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_access_modified_date' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_access_modified_date_format'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_access_modified_date' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_access_modified_date_format'] . '</div></div>';
 	}
 	if (WIDGET_USER_ACCESS_ACTIVATED_DATE == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_access_activated_date' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_access_activated_date_format'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_access_activated_date' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_access_activated_date_format'] . '</div></div>';
 	}
 	if (WIDGET_USER_ACCESS_EXPIRED_DATE == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_access_expired_date' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_access_expired_date_format'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_access_expired_date' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_access_expired_date_format'] . '</div></div>';
 	}
 	if (WIDGET_USER_PROFILE_MODIFIED_BY == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_profile_modified_by' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_profile_modified_by'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_profile_modified_by' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_profile_modified_by'] . '</div></div>';
 	}
 	if (WIDGET_USER_PROFILE_MODIFIED_DATE == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_profile_modified_date' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_profile_modified_date_format'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_profile_modified_date' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_profile_modified_date_format'] . '</div></div>';
 	}
 	if (WIDGET_USER_PROFILE_CREATED_BY == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_profile_created_by' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_profile_created_by'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_profile_created_by' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_profile_created_by'] . '</div></div>';
 	}
 	if (WIDGET_USER_PROFILE_CREATED_DATE == "True") {
-		echo '<div class="widgetRow"><div class="widgetCellLabel"><p>' . $this->translate ( 'text_user_profile_created_date' ) . ':</p></div><div class="widgetCellData"><p>' . $content ['user_profile_created_date_format'] . '</p></div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-label">' . $this->translate ( 'text_user_profile_created_date' ) . '</div></div>';
+		echo '<div class="ui-layout-boxes-content-row"><div class="ui-layout-boxes-content-data">' . $content ['user_profile_created_date_format'] . '</div></div>';
 	}
 	?></div>
-		</div>
-	</div><?php
+	</div>
+	<div class="ui-layout-boxes-footer ui-widget-footer"></div>
+		<div class="ui-layout-boxes-clear"></div>
+</div>
+<?php
 }
 ?>
-</div>
